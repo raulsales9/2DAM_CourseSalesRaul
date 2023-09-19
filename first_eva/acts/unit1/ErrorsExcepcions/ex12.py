@@ -1,21 +1,33 @@
 import random
 
-class ErrorEnterMassaGran
+class ErrorEnterMassaGran(Exception):
+    pass
 
-class RandomNumber(Exception):
+class ErrorMassaMenut(Exception):
+    pass
+
+class ErrorNoEsEnter(Exception):
+    pass
+
+random_num = random.randint(0, 100)
+while True:
     try:
-        num = int(input("Introdueix un nombre aleatori entre 0 i 100"))
-        if(num >= 0 && num <= 100){
-            print("El nombre esta dintre del radi, anem a comprobar")
-            random_num = random.randint(1, 100)
-            if(num > random_num){
-                ErrorEnterMassaGran
-            }elif(num < random_num){
-                Error
-            }elif(num == random_num){
-                print("Felicitats, esta correcte")
-            }
-        } else{
-            exce
-        }
+        num = input("Introdueix un nombre aleatori entre 0 i 100: ")
+        # convertim l'entrada a enter
+        numero = int(num)
+        if numero < random_num:
+            raise ErrorMassaMenut("Massa menut")
+        elif numero > random_num:
+            raise ErrorEnterMassaGran("Massa gran")
+        else:
+             print("Enorabona, has endevinat el número {numero_aleatori}")
+             break
+    except ErrorNoEsEnter:
+        print("Error, no es numeric")
+
+    except ErrorMassaMenut as ene:
+        print(ene)
+    
+    except ErrorEnterMassaGran as emg:
+        print(emg)
         
