@@ -2,7 +2,7 @@
 suma = lambda a, b: a + b
 resta = lambda a, b: a - b
 multiplicacion = lambda a, b: a * b
-division = lambda a, b : a % b
+division = lambda a, b : a / b
 
 #Funcio a la que se li indica en la cridada el nom dels fitxers origen-final
 def Calculadora_linea(file_int, file_ext):
@@ -31,7 +31,7 @@ def Calculadora_linea(file_int, file_ext):
                         result = resta(operador1, operador2)
                     elif signe == "*":
                         result = multiplicacion(operador1, operador2)
-                    elif signe == "%":
+                    elif signe == "/":
                         result = division(operador1, operador2)
                     else:
                         # Raise per utilitzat per a llançar una excepció
