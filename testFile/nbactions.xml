@@ -12,8 +12,8 @@
             <properties>
                 <exec.vmArgs></exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.appArgs>file1.txt</exec.appArgs>
-                <exec.mainClass>${packageClassName}</exec.mainClass>
+                <exec.appArgs>C:\\2DAM_Course\testFile\prueba newfile3.txt</exec.appArgs>
+                <exec.mainClass>filereader.fileReader</exec.mainClass>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
@@ -29,8 +29,8 @@
             <properties>
                 <exec.vmArgs>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.appArgs>file1.txt</exec.appArgs>
-                <exec.mainClass>${packageClassName}</exec.mainClass>
+                <exec.appArgs>C:\\2DAM_Course\testFile\prueba newfile3.txt</exec.appArgs>
+                <exec.mainClass>filereader.fileReader</exec.mainClass>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
             </properties>
@@ -47,9 +47,9 @@
             <properties>
                 <exec.vmArgs></exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.mainClass>${packageClassName}</exec.mainClass>
+                <exec.mainClass>filereader.fileReader</exec.mainClass>
                 <exec.executable>java</exec.executable>
-                <exec.appArgs>file1.txt</exec.appArgs>
+                <exec.appArgs>C:\\2DAM_Course\testFile\prueba newfile3.txt</exec.appArgs>
             </properties>
         </action>
     </actions>

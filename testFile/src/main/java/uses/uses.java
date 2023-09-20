@@ -16,8 +16,6 @@ public class uses {
                 System.out.println("exec" + file.canExecute());
                 System.out.println("Read" + file.canRead());
                 System.out.println("Write" + file.canWrite());
-                
-                
             }
         }
         else{
