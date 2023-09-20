@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 import math
-import random
 
 class Figura(ABC):
     @abstractmethod
@@ -45,13 +44,14 @@ class Quadrat(Rectangle):
     def __init__(self, costat: float):
         super().__init__(costat, costat)
 
+# donem valors per al calcul
 cercle = Cercle(8)
 triangle = Triangle(10)
 rectangle = Rectangle(7, 4)
 quadrat = Quadrat(4)
 
 
-
+# \n per a imprimir per consola salto linea
 print("\nCercle: ")
 print("Area: " + str(cercle.area()))
 print("Perimetre: " + str(cercle.perimetre()))
