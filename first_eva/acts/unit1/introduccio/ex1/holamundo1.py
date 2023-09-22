@@ -1,1 +1,0 @@
-print("Hola món 1")
