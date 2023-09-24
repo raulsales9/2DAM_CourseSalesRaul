@@ -12,7 +12,7 @@
             <properties>
                 <exec.vmArgs></exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.appArgs>C:\\2DAM_Course\testFile\newfile3.txt</exec.appArgs>
+                <exec.appArgs>C:\\2DAM_Course\testFile\newfile3.txt \prueba\newfile2.txt</exec.appArgs>
                 <exec.mainClass>readerWritter.NumberLines</exec.mainClass>
                 <exec.executable>java</exec.executable>
             </properties>
@@ -29,7 +29,7 @@
             <properties>
                 <exec.vmArgs>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.appArgs>C:\\2DAM_Course\testFile\newfile3.txt</exec.appArgs>
+                <exec.appArgs>C:\\2DAM_Course\testFile\newfile3.txt \prueba\newfile2.txt</exec.appArgs>
                 <exec.mainClass>readerWritter.NumberLines</exec.mainClass>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
@@ -49,7 +49,7 @@
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.mainClass>readerWritter.NumberLines</exec.mainClass>
                 <exec.executable>java</exec.executable>
-                <exec.appArgs>C:\\2DAM_Course\testFile\newfile3.txt</exec.appArgs>
+                <exec.appArgs>C:\\2DAM_Course\testFile\newfile3.txt \prueba\newfile2.txt</exec.appArgs>
             </properties>
         </action>
     </actions>
