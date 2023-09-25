@@ -1,5 +1,6 @@
 import pygame
 import os.path
+import render
 from pygame.locals import (
     K_UP,
     K_DOWN,
@@ -19,9 +20,6 @@ from Tamany import *
 class Joc:
     def __init__(self):
         pygame.mixer.init()
-        self.sound_manager = Sound()
-        self.player = Player(SCREEN_WIDTH, SCREEN_HEIGHT)
-        self.cloud_instance = Cloud(SCREEN_WIDTH, SCREEN_HEIGHT)
         self.clock = pygame.time.Clock()
         pygame.init()
 
@@ -39,7 +37,9 @@ class Joc:
         while True:
             self.reboot = False
             score[0] = 0
+            self.mainMenu()
             self.joc()
+            self.defeat()
             if self.reboot == True:
                 break
 
@@ -47,8 +47,45 @@ class Joc:
         pygame.mixer.music.stop()
         pygame.mixer.quit()
         pygame.quit()
+        
+        
+def mainMenu(self):
+    self.screen.fill(LIGHT_MODE)
+    
+    Text = self.font.render("  The f-16 at Ukraine  ", True, WHITE)
+    Text_center = (
+        SCREEN_WIDTH / 2 - Text.get_width() // 2,
+        SCREEN_HEIGHT / 2 - Text.get_height() // 2
+    )
+    
+    TextStart = self.font.render("  The f-16 at Ukraine  ", True, WHITE)
+    TextStart_center = (
+        SCREEN_WIDTH / 2 - TextStart.get_width() // 2,
+        SCREEN_HEIGHT / 2 + 30
+    )
+    
+    clouds_Added = pygame.sprite.Group()
+    clouds_Added.add(Cloud())
+    clouds_Added.add(Cloud())
+    clouds_Added.add(Cloud())
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    running = False
+            elif event.type == QUIT:
+                running = False
+            elif event.type == self.ADDCLOUD:
+                new_cloud = Cloud()
+                clouds_Added.add(new_cloud)
 
+        self.screen.blit(Text, Text_center)
+        self.screen.blit(TextStart, TextStart_center)
 
+        pygame.display.update()
+        self.clock.tick(60)
+    
 def joc(self):
     global score
     clouds = pygame.sprite.Group()
@@ -93,7 +130,7 @@ def joc(self):
             sound_manager.play_collision_sound()
             # Aplicamos un retraso para escuchar el sonido de colisión
             pygame.time.delay(1500)
-            player.kill()
+            self.player.kill()
             pygame.display.flip()
 
         running = False
@@ -102,4 +139,10 @@ def joc(self):
     Text = self.font.render(Text, True, DARK_MODE)
     self.screen.blit(Text, (10, 10))
     pygame.display.flip()
-    clock.tick(30)
+    self.clock.tick(30)
+    
+# def defeat(self):
+
+
+if __name__ == "__main__":
+    joc = Joc()
