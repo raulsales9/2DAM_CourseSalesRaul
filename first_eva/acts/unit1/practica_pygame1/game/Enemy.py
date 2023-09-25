@@ -1,11 +1,10 @@
 import pygame
 import random
 
-
-# enemy part
-class enemy(pygame.sprite.Sprite):
+# Enemy part
+class Enemy(pygame.sprite.Sprite):
     def __init__(self, SCREEN_WIDTH, SCREEN_HEIGHT):
-        super(enemy, self).__init__()
+        super(Enemy, self).__init__()
         self.surf = pygame.image.load("src/missile.png").convert()
         self.surf.set_colorkey((255, 255, 255), pygame.RLEACCEL)
         self.rect = self.surf.get_rect(

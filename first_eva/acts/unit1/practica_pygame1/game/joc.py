@@ -1,6 +1,4 @@
-# Import the pygame module
 import pygame
-
 from pygame.locals import (
     K_UP,
     K_DOWN,
@@ -10,50 +8,56 @@ from pygame.locals import (
     KEYDOWN,
     QUIT,
 )
+from Cloud import Cloud
+from Player import Player
+from Enemy import Enemy
+from Sound import Sound
 
-from cloud import cloud
-from player import player
-from enemy import enemy
-
+# Tamaño de la pantalla
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
-pygame.mixer.init()            
+# Inicializamos pygame y el mixer de sonido
 pygame.init()
+pygame.mixer.init()
 
-# The sounds
-pygame.mixer.music.load("src/Apoxode_-_Electric_1.mp3")
-move_up_sound = pygame.mixer.Sound("src/Rising_putter.ogg")
-move_down_sound = pygame.mixer.Sound("src/Falling_putter.ogg")
-collision_sound = pygame.mixer.Sound("src/Collision.ogg")
+# Creamos una instancia de la clase Sound
+sound_manager = Sound()
 
-# the screen
+# Configuramos la pantalla
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-pygame.mixer.music.set_volume(0.5)  # Ajusta el volumen si es necesario
-pygame.mixer.music.play(-1)  # Reproduce la música en bucle infinito
+# Reproducimos la música en bucle infinito
+sound_manager.play_music(-1)
 
-# new enemy
-ADDENEMY = pygame.USEREVENT + 1
-pygame.time.set_timer(ADDENEMY, 250)
+# Creamos una instancia del jugador después de inicializar Pygame
+player = Player(SCREEN_WIDTH, SCREEN_HEIGHT)
 
-player = player(SCREEN_WIDTH, SCREEN_HEIGHT)
-
+# Creamos un grupo de enemigos
 enemies = pygame.sprite.Group()
+
+# Creamos un grupo de sprites que incluye al jugador
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 
-# Agrega nubes como imágenes de fondo
+# Creamos un grupo de nubes como imágenes de fondo
 clouds = pygame.sprite.Group()
-cloud_instance = cloud(SCREEN_WIDTH, SCREEN_HEIGHT)  # Usa el nombre de la clase (Cloud) al crear una instancia
+cloud_instance = Cloud(SCREEN_WIDTH, SCREEN_HEIGHT)
 all_sprites.add(cloud_instance)
 clouds.add(cloud_instance)
 
+# Configuramos el reloj para controlar la velocidad de actualización
 clock = pygame.time.Clock()
+
+# Creamos eventos personalizados para agregar enemigos y nubes
+ADDENEMY = pygame.USEREVENT + 1
+ADDCLOUD = pygame.USEREVENT + 2
+pygame.time.set_timer(ADDENEMY, 250)
+pygame.time.set_timer(ADDCLOUD, 1000)  # Agregar una nube cada 1000 ms (1 segundo)
 
 running = True
 
-# main loop
+# Bucle principal del juego
 while running:
     for event in pygame.event.get():
         if event.type == KEYDOWN:
@@ -63,30 +67,39 @@ while running:
             running = False
 
         elif event.type == ADDENEMY:
-            new_enemy = enemy(SCREEN_WIDTH, SCREEN_HEIGHT)
+            new_enemy = Enemy(SCREEN_WIDTH, SCREEN_HEIGHT)
             enemies.add(new_enemy)
             all_sprites.add(new_enemy)
+
+        elif event.type == ADDCLOUD:
+            new_cloud = Cloud(SCREEN_WIDTH, SCREEN_HEIGHT)
+            clouds.add(new_cloud)
+            all_sprites.add(new_cloud)
 
     keys = pygame.key.get_pressed()
     player.update(keys)
     enemies.update()
-    
-    
-    screen.fill((0, 0, 0))
-    
+    clouds.update(SCREEN_WIDTH, SCREEN_HEIGHT)
+
+    screen.fill((135, 206, 250))  # Establecemos el color de fondo a azul claro
+
+    for cloud in clouds:
+        screen.blit(cloud.surf, cloud.rect)
+
     for entity in all_sprites:
         screen.blit(entity.surf, entity.rect)
-        
+
     if pygame.sprite.spritecollideany(player, enemies):
         player.kill()
-        pygame.mixer.music.stop()
-        collision_sound.play()
-        # aplciamos retraso para escuchar el sonido de colision
+        sound_manager.stop_music()
+        sound_manager.play_collision_sound()
+        # Aplicamos un retraso para escuchar el sonido de colisión
         pygame.time.delay(1500)
         running = False
 
     pygame.display.flip()
     clock.tick(30)
-    
-pygame.mixer.quit()
+
+# Salimos del juego
+sound_manager.quit()
 pygame.quit()
