@@ -1,7 +1,7 @@
 import pygame
 import random
 
-class Enemy(pygame.sprite.Sprite):
+class enemy(pygame.sprite.Sprite):
     def __init__(self):
         super(Enemy, self).__init__()
         self.surf = pygame.Surface((20, 10))
