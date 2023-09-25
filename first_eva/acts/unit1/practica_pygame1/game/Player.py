@@ -1,4 +1,5 @@
 import pygame
+import os.path
 from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT
 
 from Sound import Sound
@@ -8,7 +9,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, SCREEN_WIDTH, SCREEN_HEIGHT):
         super(Player, self).__init__()
         # ubicacion de la imagen usada para el jugador
-        self.surf = pygame.image.load("src/jet.png").convert()
+        self.surf = pygame.image.load(os.path.join("src","jet.png")).convert()
         self.surf.set_colorkey((255, 255, 255), pygame.RLEACCEL)
         self.rect = self.surf.get_rect()
         self.SCREEN_WIDTH = SCREEN_WIDTH
