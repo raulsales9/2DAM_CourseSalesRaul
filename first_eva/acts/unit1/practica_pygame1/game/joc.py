@@ -1,12 +1,6 @@
 # Import the pygame module
 import pygame
-import random
-# import enemy
-# import player
 
-
-# Import pygame.locals for easier access to key coordinates
-# Updated to conform to flake8 and black standards
 from pygame.locals import (
     K_UP,
     K_DOWN,
@@ -17,62 +11,29 @@ from pygame.locals import (
     QUIT,
 )
 
+from cloud import cloud
+from player import player
+from enemy import enemy
+
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
-# player part
-class player(pygame.sprite.Sprite):
-    def __init__(self, SCREEN_WIDTH, SCREEN_HEIGHT):
-        super(player, self).__init__()
-        # ubicacion de la imagen usada para el jugador
-        self.surf = pygame.image.load("src/jet.png").convert()
-        self.surf.set_colorkey((255, 255, 255), pygame.RLEACCEL)
-        self.rect = self.surf.get_rect()
-        self.SCREEN_WIDTH = SCREEN_WIDTH
-        self.SCREEN_HEIGHT = SCREEN_HEIGHT
-
-    def update(self, keys):
-        if keys[K_UP]:
-            self.rect.move_ip(0, -5)
-        if keys[K_DOWN]:
-            self.rect.move_ip(0, 5)
-        if keys[K_LEFT]:
-            self.rect.move_ip(-5, 0)
-        if keys[K_RIGHT]:
-            self.rect.move_ip(5, 0)
-
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.right > self.SCREEN_WIDTH:
-            self.rect.right = self.SCREEN_WIDTH
-        if self.rect.top <= 0:
-            self.rect.top = 0
-        if self.rect.bottom > self.SCREEN_HEIGHT:
-            self.rect.bottom = self.SCREEN_HEIGHT
-
-# enemy part
-class Enemy(pygame.sprite.Sprite):
-    def __init__(self):
-        super(Enemy, self).__init__()
-        self.surf = pygame.image.load("src/missile.png").convert()
-        self.surf.set_colorkey((255, 255, 255), pygame.RLEACCEL)
-        self.rect = self.surf.get_rect(
-            center=(
-                random.randint(SCREEN_WIDTH + 20, SCREEN_WIDTH + 100),
-                random.randint(0, SCREEN_HEIGHT),
-            )
-        )
-        self.speed = random.randint(5, 20)
-
-    def update(self):
-        self.rect.move_ip(-self.speed, 0)
-        if self.rect.right < 0:
-            self.kill()
-            
+pygame.mixer.init()            
 pygame.init()
 
+# The sounds
+pygame.mixer.music.load("src/Apoxode_-_Electric_1.mp3")
+move_up_sound = pygame.mixer.Sound("src/Rising_putter.ogg")
+move_down_sound = pygame.mixer.Sound("src/Falling_putter.ogg")
+collision_sound = pygame.mixer.Sound("src/Collision.ogg")
+
+# the screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
+pygame.mixer.music.set_volume(0.5)  # Ajusta el volumen si es necesario
+pygame.mixer.music.play(-1)  # Reproduce la música en bucle infinito
+
+# new enemy
 ADDENEMY = pygame.USEREVENT + 1
 pygame.time.set_timer(ADDENEMY, 250)
 
@@ -81,6 +42,12 @@ player = player(SCREEN_WIDTH, SCREEN_HEIGHT)
 enemies = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
+
+# Agrega nubes como imágenes de fondo
+clouds = pygame.sprite.Group()
+cloud_instance = cloud(SCREEN_WIDTH, SCREEN_HEIGHT)  # Usa el nombre de la clase (Cloud) al crear una instancia
+all_sprites.add(cloud_instance)
+clouds.add(cloud_instance)
 
 clock = pygame.time.Clock()
 
@@ -96,7 +63,7 @@ while running:
             running = False
 
         elif event.type == ADDENEMY:
-            new_enemy = Enemy()
+            new_enemy = enemy(SCREEN_WIDTH, SCREEN_HEIGHT)
             enemies.add(new_enemy)
             all_sprites.add(new_enemy)
 
@@ -112,7 +79,14 @@ while running:
         
     if pygame.sprite.spritecollideany(player, enemies):
         player.kill()
+        pygame.mixer.music.stop()
+        collision_sound.play()
+        # aplciamos retraso para escuchar el sonido de colision
+        pygame.time.delay(1500)
         running = False
 
     pygame.display.flip()
     clock.tick(30)
+    
+pygame.mixer.quit()
+pygame.quit()
