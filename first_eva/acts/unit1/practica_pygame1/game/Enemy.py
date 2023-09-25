@@ -1,11 +1,13 @@
 import pygame
 import random
+import os.path
+from Tamany import *
 
 # Enemy part
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, SCREEN_WIDTH, SCREEN_HEIGHT):
+    def __init__(self):
         super(Enemy, self).__init__()
-        self.surf = pygame.image.load("src/missile.png").convert()
+        self.surf = pygame.image.load(os.path.join("src","missile.png")).convert()
         self.surf.set_colorkey((255, 255, 255), pygame.RLEACCEL)
         self.rect = self.surf.get_rect(
             center=(
@@ -13,10 +15,13 @@ class Enemy(pygame.sprite.Sprite):
                 random.randint(0, SCREEN_HEIGHT),
             )
         )
-        self.speed = random.randint(5, 20)
+        self.speed = random.randint(EVIL_PLAYER_SPEED_MIN, EVIL_PLAYER_SPEED_MAX)
 
     def update(self):
+        # to points
+        global score
         self.rect.move_ip(-self.speed, 0)
         if self.rect.right < 0:
+            score[0] += 1
             self.kill()
 

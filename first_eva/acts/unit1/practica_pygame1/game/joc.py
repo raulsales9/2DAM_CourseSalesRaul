@@ -1,4 +1,5 @@
 import pygame
+import os.path
 from pygame.locals import (
     K_UP,
     K_DOWN,
@@ -14,32 +15,38 @@ from Enemy import Enemy
 from Sound import Sound
 from Tamany import *
 
-pygame.init()
-pygame.mixer.init()
 
-sound_manager = Sound()
+class Joc:
+    def __init__(self):
+        pygame.mixer.init()
+        self.sound_manager = Sound()
+        self.player = Player(SCREEN_WIDTH, SCREEN_HEIGHT)
+        self.cloud_instance = Cloud(SCREEN_WIDTH, SCREEN_HEIGHT)
+        self.clock = pygame.time.Clock()
+        pygame.init()
 
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        # utils
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-player = Player(SCREEN_WIDTH, SCREEN_HEIGHT)
+        # add sprites
+        self.ADDENEMY = pygame.USEREVENT + 1
+        pygame.time.set_timer(self.ADDENEMY, 250)
 
+        self.ADDCLOUD = pygame.USEREVENT + 2
+        pygame.time.set_timer(self.ADDCLOUD, 1200)
 
+        global score
+        while True:
+            self.reboot = False
+            score[0] = 0
+            self.joc()
+            if self.reboot == True:
+                break
 
-
-cloud_instance = Cloud(SCREEN_WIDTH, SCREEN_HEIGHT)
-
-
-clock = pygame.time.Clock()
-
-# add sprites
-ADDENEMY = pygame.USEREVENT + 1
-pygame.time.set_timer(ADDENEMY, 250)
-
-ADDCLOUD = pygame.USEREVENT + 2
-pygame.time.set_timer(ADDCLOUD, 1200)
-
-
-global score
+        # Salimos del juego
+        pygame.mixer.music.stop()
+        pygame.mixer.quit()
+        pygame.quit()
 
 
 def joc(self):
@@ -88,13 +95,11 @@ def joc(self):
             pygame.time.delay(1500)
             player.kill()
             pygame.display.flip()
-            clock.tick(30)
-        
+
         running = False
 
-       
-        
-
-# Salimos del juego
-sound_manager.quit()
-pygame.quit()
+    Text = "SCORE: [" + str(score[0]) + "]"
+    Text = self.font.render(Text, True, DARK_MODE)
+    self.screen.blit(Text, (10, 10))
+    pygame.display.flip()
+    clock.tick(30)
