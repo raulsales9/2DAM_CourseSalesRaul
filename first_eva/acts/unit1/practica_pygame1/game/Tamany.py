@@ -1,0 +1,23 @@
+# import pygame
+from pygame.locals import (
+    K_UP,
+    RLEACCEL,
+    K_DOWN,
+    K_LEFT,
+    K_RIGHT,
+    K_ESCAPE,
+    KEYDOWN,
+    QUIT,
+)
+
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+FPS = 30
+LIGHT_MODE = (135, 206, 250)
+DARK_MODE = (0, 0, 0)
+PLAYER_SPEED_MIN = 5
+PLAYER_SPEED_MAX = 20
+EVIL_PLAYER_SPEED_MIN = 5
+EVIL_PLAYER_SPEED_MAX = 20
+CLOUD_SPEED = 4
+SCORE = 0

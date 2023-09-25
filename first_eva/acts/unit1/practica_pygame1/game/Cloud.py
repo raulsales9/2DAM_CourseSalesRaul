@@ -1,6 +1,7 @@
 import pygame
 import random
 
+# Cloud part
 class Cloud(pygame.sprite.Sprite):
     def __init__(self, SCREEN_WIDTH, SCREEN_HEIGHT):
         super(Cloud, self).__init__()
