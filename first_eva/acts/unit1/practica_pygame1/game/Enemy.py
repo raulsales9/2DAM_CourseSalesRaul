@@ -19,9 +19,9 @@ class Enemy(pygame.sprite.Sprite):
 
     def update(self):
         # to points
-        global score
+        global SCORE
         self.rect.move_ip(-self.speed, 0)
         if self.rect.right < 0:
-            score[0] += 1
+            SCORE[0] += 1
             self.kill()
 
