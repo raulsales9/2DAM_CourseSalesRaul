@@ -56,7 +56,7 @@ public class moduls2{
         }
 
         // Defining the class
-        moduls moduls=new moduls();
+        moduls2 moduls=new moduls2();
 
         // Depending the args, we will proceed
         if (args[0].equals("read")) 
