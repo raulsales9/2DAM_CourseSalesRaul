@@ -27,8 +27,13 @@ class Joc:
         self.font = pygame.font.SysFont("monospace", 20)
         self.font2 = pygame.font.SysFont("monospace", 50)
         self.background_time = 0
-        self.background_duration = 2000
+        self.background_duration = 20 * 1000  # Cambié 60 a 20 para que sean 20 segundos
         self.background_color = LIGHT_MODE
+        
+        # Configura el temporizador para cambiar el fondo cada 20 segundos
+        self.CHANGEBG = pygame.USEREVENT + 3
+        pygame.time.set_timer(self.CHANGEBG, 20000)  # Cambié 2000 a 20000 (20 segundos)
+
         self.ADDENEMY = pygame.USEREVENT + 1
         pygame.time.set_timer(self.ADDENEMY, 250)
 
@@ -108,11 +113,6 @@ class Joc:
 
         running = True
         while running:
-            current_time = pygame.time.get_ticks()
-            if current_time - self.background_time >= self.background_duration:
-                self.change_background()
-                self.background_time = current_time
-            
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
@@ -133,12 +133,16 @@ class Joc:
                     clouds.add(new_cloud)
                     all_sprites.add(new_cloud)
 
+                # Maneja el evento del temporizador para cambiar el fondo
+                elif event.type == self.CHANGEBG:
+                    self.change_background()
+
             keys = pygame.key.get_pressed()
             player.update(keys)
             enemies.update()
             clouds.update()
 
-            self.screen.fill(LIGHT_MODE )
+            self.screen.fill(self.background_color)  # Cambié LIGHT_MODE por self.background_color
 
             for cloud in clouds:
                 self.screen.blit(cloud.surf, cloud.rect)
@@ -161,13 +165,12 @@ class Joc:
             pygame.display.flip()
             self.clock.tick(30)
 
-
     def show_defeat_screen(self):
         self.screen.fill(LIGHT_MODE)
 
         Text = self.font.render("  The f-16 at Ukraine  ", True, RED)
         Text_center = (
-           SCREEN_WIDTH / 2 - Text.get_width() // 2,
+            SCREEN_WIDTH / 2 - Text.get_width() // 2,
             SCREEN_HEIGHT / 2 - Text.get_height() // 2
         )
 
@@ -209,7 +212,7 @@ class Joc:
 
             pygame.display.flip()
             self.clock.tick(30)
-            
+
     def change_background(self):
         # Cambia el fondo al color opuesto
         if self.background_color == LIGHT_MODE:
@@ -222,3 +225,4 @@ class Joc:
 
 if __name__ == "__main__":
     joc = Joc()
+
