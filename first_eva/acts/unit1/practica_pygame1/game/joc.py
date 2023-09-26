@@ -47,6 +47,7 @@ class Joc:
         pygame.time.set_timer(self.CHANGE_BG_TIMER, 20000)  # Cambiar cada 20 segundos
 
         self.highest_score = self.test_score()
+        self.highest_level = self.test_level()
 
         global SCORE
         global LEVEL
@@ -58,6 +59,7 @@ class Joc:
             self.main_menu()
             self.run_game()
             self.max_highest_score()
+            self.max_highest_level()
             self.show_defeat_screen()
             if self.game_over == False:
                 break
@@ -175,18 +177,15 @@ class Joc:
             enemies.update()
             clouds.update()
             
-            
+            self.screen.fill(self.background_color)
             
             for sprite in all_sprites:
                 if type[sprite] != Player:
                     self.screen.blit(sprite.surf, sprite.rect)
             for cloud in clouds:
-                self.screen.blit(cloud.surf, cloud.rect)
-
-            self.screen.fill(self.background_color)
-                    
+                self.screen.blit(cloud.surf, cloud.rect)                  
             
-
+            
             if pygame.sprite.spritecollideany(player, enemies):
                 self.move_up_sound.stop()
                 self.move_down_sound.stop()
@@ -196,7 +195,7 @@ class Joc:
                 
                 running = False
 
-            score_text = "SCORE: {}".format(SCORE[0]) + " LEVEL: {}".format(LEVEL[0]) + " HIGHEST SCORE: {}".format(self.highest_score)
+            score_text = "SCORE: {}".format(SCORE[0]) + " LEVEL: {}".format(LEVEL[0]) + "            HIGHEST SCORE: {}".format(self.highest_score) + " HIGHEST LEVEL: {}".format(self.highest_level)
             score_render = self.font.render(score_text, True, DARK_MODE)
             self.screen.blit(score_render, (10, 10))
 
@@ -312,15 +311,23 @@ class Joc:
         global SCORE
         if SCORE[0] > self.highest_score:
             self.highest_score = SCORE[0]
-            database = open(os.path.join("src","highest_score.txt"), 'w+')
+            database = open(os.path.join("src","punt_max.txt"), 'w+')
             database.write(str(SCORE))
+            database.close()
+            
+    def max_highest_level(self):
+        global LEVEL
+        if SCORE[0] > self.highest_level:
+            self.highest_level = LEVEL[0]
+            database = open(os.path.join("src","punt_max.txt"), 'w+')
+            database.write(str(LEVEL))
             database.close()
               
     def test_score(self):
         try:
-            database = open(os.path.join("src","highest_score.txt"), 'r')
+            database = open(os.path.join("src","punt_max.txt"), 'r')
         except:
-            database = open(os.path.join("src","highest_score.txt"), 'w+')
+            database = open(os.path.join("src","punt_max.txt"), 'w+')
             database.write(str(0))
                 
         try:
@@ -329,7 +336,22 @@ class Joc:
             highest_score = 0
                 
         database.close()
-        return highest_score            
+        return highest_score   
+    
+    def test_level(self):
+        try:
+            database = open(os.path.join("src","punt_max.txt"), 'r')
+        except:
+            database = open(os.path.join("src","punt_max.txt"), 'w+')
+            database.write(str(0))
+                
+        try:
+            highest_score = int(database.readline())
+        except ValueError:
+            highest_score = 0
+                
+        database.close()
+        return highest_score         
         
 if __name__ == "__main__":
     joc = Joc()
