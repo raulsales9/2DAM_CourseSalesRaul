@@ -1,5 +1,6 @@
 import pygame
 import os.path
+import time
 from pygame.locals import (
     K_UP,
     K_DOWN,
@@ -25,7 +26,9 @@ class Joc:
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.font = pygame.font.SysFont("monospace", 20)
         self.font2 = pygame.font.SysFont("monospace", 50)
-        
+        self.background_time = 0
+        self.background_duration = 2000
+        self.background_color = LIGHT_MODE
         self.ADDENEMY = pygame.USEREVENT + 1
         pygame.time.set_timer(self.ADDENEMY, 250)
 
@@ -105,6 +108,11 @@ class Joc:
 
         running = True
         while running:
+            current_time = pygame.time.get_ticks()
+            if current_time - self.background_time >= self.background_duration:
+                self.change_background()
+                self.background_time = current_time
+            
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
@@ -117,6 +125,8 @@ class Joc:
                     new_enemy = Enemy()
                     enemies.add(new_enemy)
                     all_sprites.add(new_enemy)
+                    # Cambia el fondo cuando se agrega un enemigo
+                    self.change_background()
 
                 elif event.type == self.ADDCLOUD:
                     new_cloud = Cloud()
@@ -128,7 +138,7 @@ class Joc:
             enemies.update()
             clouds.update()
 
-            self.screen.fill(DARK_MODE)
+            self.screen.fill(LIGHT_MODE )
 
             for cloud in clouds:
                 self.screen.blit(cloud.surf, cloud.rect)
@@ -143,11 +153,14 @@ class Joc:
                 pygame.time.delay(1500)
                 running = False
 
-            Text = "SCORE: [" + str(SCORE[0]) + "]"
-            Text = self.font.render(Text, True, DARK_MODE)
-            self.screen.blit(Text, (10, 10))
+            # Muestra la puntuación en la pantalla
+            score_text = "SCORE: {}".format(SCORE[0])
+            score_render = self.font.render(score_text, True, DARK_MODE)
+            self.screen.blit(score_render, (10, 10))
+
             pygame.display.flip()
             self.clock.tick(30)
+
 
     def show_defeat_screen(self):
         self.screen.fill(LIGHT_MODE)
@@ -196,6 +209,16 @@ class Joc:
 
             pygame.display.flip()
             self.clock.tick(30)
+            
+    def change_background(self):
+        # Cambia el fondo al color opuesto
+        if self.background_color == LIGHT_MODE:
+            self.background_color = DARK_MODE
+        else:
+            self.background_color = LIGHT_MODE
+
+        # Rellena la pantalla con el nuevo color de fondo
+        self.screen.fill(self.background_color)
 
 if __name__ == "__main__":
     joc = Joc()
