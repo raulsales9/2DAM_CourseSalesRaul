@@ -3,7 +3,6 @@ import random
 import os.path
 from Tamany import *
 
-# Enemy part
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super(Enemy, self).__init__()

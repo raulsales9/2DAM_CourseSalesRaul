@@ -5,11 +5,9 @@ from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT
 
 from Sound import Sound
 
-# Player part
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super(Player, self).__init__()
-        # ubicacion de la imagen usada para el jugador
         self.surf = pygame.image.load(os.path.join("src","jet.png")).convert()
         self.surf.set_colorkey((255, 255, 255), RLEACCEL)
         self.rect = self.surf.get_rect()

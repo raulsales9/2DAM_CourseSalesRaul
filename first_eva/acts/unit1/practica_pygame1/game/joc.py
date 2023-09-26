@@ -7,6 +7,7 @@ from pygame.locals import (
     K_LEFT,
     K_RIGHT,
     K_ESCAPE,
+    K_p,
     K_SPACE,
     KEYDOWN,
     QUIT,
@@ -27,12 +28,11 @@ class Joc:
         self.font = pygame.font.SysFont("monospace", 20)
         self.font2 = pygame.font.SysFont("monospace", 50)
         self.background_time = 0
-        self.background_duration = 20 * 1000  # Cambié 60 a 20 para que sean 20 segundos
+        self.background_duration = 20 * 1000 
         self.background_color = LIGHT_MODE
         
-        # Configura el temporizador para cambiar el fondo cada 20 segundos
         self.CHANGEBG = pygame.USEREVENT + 3
-        pygame.time.set_timer(self.CHANGEBG, 20000)  # Cambié 2000 a 20000 (20 segundos)
+        pygame.time.set_timer(self.CHANGEBG, 20000)  
 
         self.ADDENEMY = pygame.USEREVENT + 1
         pygame.time.set_timer(self.ADDENEMY, 250)
@@ -78,9 +78,9 @@ class Joc:
         while running:
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
-                    if event.key == K_ESCAPE:
+                    if event.key == K_p:
                         running = False
-                    elif event.key == K_SPACE:
+                    elif event.key == K_p:
                         running = False
 
                 elif event.type == QUIT:
@@ -125,7 +125,6 @@ class Joc:
                     new_enemy = Enemy()
                     enemies.add(new_enemy)
                     all_sprites.add(new_enemy)
-                    # Cambia el fondo cuando se agrega un enemigo
                     self.change_background()
 
                 elif event.type == self.ADDCLOUD:
@@ -133,7 +132,6 @@ class Joc:
                     clouds.add(new_cloud)
                     all_sprites.add(new_cloud)
 
-                # Maneja el evento del temporizador para cambiar el fondo
                 elif event.type == self.CHANGEBG:
                     self.change_background()
 
@@ -142,7 +140,7 @@ class Joc:
             enemies.update()
             clouds.update()
 
-            self.screen.fill(self.background_color)  # Cambié LIGHT_MODE por self.background_color
+            self.screen.fill(self.background_color)  
 
             for cloud in clouds:
                 self.screen.blit(cloud.surf, cloud.rect)
@@ -157,7 +155,6 @@ class Joc:
                 pygame.time.delay(1500)
                 running = False
 
-            # Muestra la puntuación en la pantalla
             score_text = "SCORE: {}".format(SCORE[0])
             score_render = self.font.render(score_text, True, DARK_MODE)
             self.screen.blit(score_render, (10, 10))
@@ -214,15 +211,15 @@ class Joc:
             self.clock.tick(30)
 
     def change_background(self):
-        # Cambia el fondo al color opuesto
         if self.background_color == LIGHT_MODE:
             self.background_color = DARK_MODE
         else:
             self.background_color = LIGHT_MODE
 
-        # Rellena la pantalla con el nuevo color de fondo
         self.screen.fill(self.background_color)
-
+        
+    # def record(self):
+        
 if __name__ == "__main__":
     joc = Joc()
 
