@@ -37,7 +37,6 @@ class Joc:
         self.move_down_sound = pygame.mixer.Sound(os.path.join("src", "Falling_putter.ogg"))
         self.colission_sound = pygame.mixer.Sound(os.path.join("src", "Collision.ogg"))
         
-        
         self.ADDENEMY = pygame.USEREVENT + 1
         pygame.time.set_timer(self.ADDENEMY, 500)  # Inicialmente cada 500 ms
 
@@ -175,17 +174,18 @@ class Joc:
             player.update(keys)
             enemies.update()
             clouds.update()
-
-            self.screen.fill(LIGHT_MODE)
-
-            for cloud in clouds:
-                self.screen.blit(cloud.surf, cloud.rect)
-
+            
+            
+            
             for sprite in all_sprites:
                 if type[sprite] != Player:
                     self.screen.blit(sprite.surf, sprite.rect)
+            for cloud in clouds:
+                self.screen.blit(cloud.surf, cloud.rect)
+
+            self.screen.fill(self.background_color)
                     
-            self.screen.blit(player.surf, player.rect)
+            
 
             if pygame.sprite.spritecollideany(player, enemies):
                 self.move_up_sound.stop()
@@ -213,19 +213,22 @@ class Joc:
             self.clock.tick(30)
 
     def show_defeat_screen(self):
-        self.screen.fill(LIGHT_MODE)
-
-        Text = self.font.render("  The f-16 at Ukraine  has been derribed", True, RED)
-        Text_center = (
-            SCREEN_WIDTH / 2 - Text.get_width() // 2,
-            SCREEN_HEIGHT / 2 - Text.get_height() // 2
+        defeat_text = self.font.render("The f-16 at Ukraine has been shot down", True, RED)
+        defeat_text_center = (
+            SCREEN_WIDTH / 2 - defeat_text.get_width() // 2,
+            SCREEN_HEIGHT / 2 - defeat_text.get_height() // 2
         )
 
-       
-        clouds_Added = pygame.sprite.Group()
-        clouds_Added.add(Cloud())
-        clouds_Added.add(Cloud())
-        clouds_Added.add(Cloud())
+        retry_text = self.font.render("Press SPACE to Retry", True, RED)
+        retry_text_center = (
+            SCREEN_WIDTH / 2 - retry_text.get_width() // 2,
+            SCREEN_HEIGHT / 2 + 30
+        )
+
+        clouds_added = pygame.sprite.Group()
+        clouds_added.add(Cloud())
+        clouds_added.add(Cloud())
+        clouds_added.add(Cloud())
 
         running = True
         while running:
@@ -241,14 +244,15 @@ class Joc:
                     running = False
                 elif event.type == self.ADDCLOUD:
                     new_cloud = Cloud()
-                    clouds_Added.add(new_cloud)
+                    clouds_added.add(new_cloud)
 
-            clouds_Added.update()
-            self.screen.fill(LIGHT_MODE)
+            clouds_added.update()
+            self.screen.fill(self.background_color)
 
-            self.screen.blit(Text, Text_center)
+            self.screen.blit(defeat_text, defeat_text_center)
+            self.screen.blit(retry_text, retry_text_center)
 
-            for entity in clouds_Added:
+            for entity in clouds_added:
                 self.screen.blit(entity.surf, entity.rect)
 
             pygame.display.flip()
