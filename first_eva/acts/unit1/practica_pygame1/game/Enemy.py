@@ -27,7 +27,7 @@ class Enemy(pygame.sprite.Sprite):
                 SCORE[0] += 10
             self.kill()
             if SCORE[0] >= 500:
-                LEVEL += 1
+                LEVEL[0] += 1
                 SCORE[0] = 0
                 
 

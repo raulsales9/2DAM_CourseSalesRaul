@@ -27,9 +27,9 @@ class Joc:
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.font = pygame.font.SysFont("monospace", 20)
         self.font2 = pygame.font.SysFont("monospace", 50)
-        self.background_time = 0
-        self.background_duration = 20 * 1000 
         self.background_color = LIGHT_MODE
+        self.last_bg = pygame.time.get_ticks()
+        
         
         self.CHANGEBG = pygame.USEREVENT + 3
         pygame.time.set_timer(self.CHANGEBG, 20000)  
@@ -44,6 +44,7 @@ class Joc:
 
         while not self.game_over:
             SCORE[0] = 0
+            LEVEL[0] = 0
             self.main_menu()
             if not self.game_over:
                 self.run_game()
@@ -114,6 +115,8 @@ class Joc:
 
         running = True
         while running:
+            bg_time = pygame.time.get_ticks()
+            
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
@@ -134,20 +137,25 @@ class Joc:
                     all_sprites.add(new_cloud)
 
                 elif event.type == self.CHANGEBG:
-                    self.change_background()
+                    if bg_time - self.last_bg >= 20000:
+                        self.change_background()
+                        self.last_bg = bg_time
 
             keys = pygame.key.get_pressed()
             player.update(keys)
             enemies.update()
             clouds.update()
 
-            self.screen.fill(self.background_color)
+            self.screen.fill(LIGHT_MODE)
 
             for cloud in clouds:
                 self.screen.blit(cloud.surf, cloud.rect)
 
-            for entity in all_sprites:
-                self.screen.blit(entity.surf, entity.rect)
+            for sprite in all_sprites:
+                if type[sprite] != Player:
+                    self.screen.blit(sprite.surf, sprite.rect)
+                    
+            self.screen.blit(player.surf, player.rect)
 
             if pygame.sprite.spritecollideany(player, enemies):
                 sound_manager.play_move_down_Sound.stop()
@@ -156,7 +164,7 @@ class Joc:
                 pygame.time.delay(1500)
                 running = False
 
-            score_text = "SCORE: {}".format(SCORE[0])
+            score_text = "SCORE: {}".format(SCORE[0]) + " LEVEL: {}".format(LEVEL[0])
             score_render = self.font.render(score_text, True, DARK_MODE)
             self.screen.blit(score_render, (10, 10))
 
