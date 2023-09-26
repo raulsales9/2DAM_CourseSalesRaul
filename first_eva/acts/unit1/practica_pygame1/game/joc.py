@@ -24,6 +24,7 @@ class Joc:
         self.clock = pygame.time.Clock()
         pygame.init()
 
+        # utils
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.font = pygame.font.SysFont("monospace", 20)
         self.font2 = pygame.font.SysFont("monospace", 50)
@@ -44,7 +45,7 @@ class Joc:
 
         while not self.game_over:
             SCORE[0] = 0
-            LEVEL[0] = 0
+            LEVEL[0] = 1
             self.main_menu()
             if not self.game_over:
                 self.run_game()
@@ -168,8 +169,10 @@ class Joc:
             score_render = self.font.render(score_text, True, DARK_MODE)
             self.screen.blit(score_render, (10, 10))
 
-            if LEVEL[0] == 0 and SCORE[0] >= 500:
+            if LEVEL[0] == 1 and SCORE[0] >= 500:
                 LEVEL[0] += 1
+            elif LEVEL[0] == 5 :
+                GamePasssed()
 
             pygame.display.flip()
             self.clock.tick(30)
@@ -231,6 +234,53 @@ class Joc:
         self.screen.fill(self.background_color)
         
     # def record(self):
+    def gamePassed(self):
+        self.screen.fill(LIGHT_MODE)
+
+        Text = self.font.render("  The f-16 at Ukraine has winned ", True, RED)
+        Text_center = (
+            SCREEN_WIDTH / 2 - Text.get_width() // 2,
+            SCREEN_HEIGHT / 2 - Text.get_height() // 2
+        )
+
+        TextStart = self.font.render("Press SPACE to Restart", True, RED)
+        TextStart_center = (
+            SCREEN_WIDTH / 2 - TextStart.get_width() // 2,
+            SCREEN_HEIGHT / 2 + 30
+        )
+
+        clouds_Added = pygame.sprite.Group()
+        clouds_Added.add(Cloud())
+        clouds_Added.add(Cloud())
+        clouds_Added.add(Cloud())
+
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == KEYDOWN:
+                    if event.key == K_p:
+                        running = False
+                    elif event.key == K_p:
+                        running = False
+
+                elif event.type == QUIT:
+                    self.game_over = True
+                    running = False
+                elif event.type == self.ADDCLOUD:
+                    new_cloud = Cloud()
+                    clouds_Added.add(new_cloud)
+
+            clouds_Added.update()
+            self.screen.fill(LIGHT_MODE)
+
+            self.screen.blit(Text, Text_center)
+            self.screen.blit(TextStart, TextStart_center)
+
+            for entity in clouds_Added:
+                self.screen.blit(entity.surf, entity.rect)
+
+            pygame.display.flip()
+            self.clock.tick(30)
         
 if __name__ == "__main__":
     joc = Joc()
