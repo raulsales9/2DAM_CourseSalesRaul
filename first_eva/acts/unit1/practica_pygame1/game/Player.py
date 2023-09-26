@@ -3,11 +3,15 @@ import os.path
 from Tamany import *
 from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT
 
-from Sound import Sound
+# from Sound import Sound
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self):
+    move_down_sound = None
+    move_up_sound = None
+    def __init__(self, move_up_sound, move_down_sound, ):
         super(Player, self).__init__()
+        self.move_up_sound = move_up_sound
+        self.move_down_sound = move_down_sound
         self.surf = pygame.image.load(os.path.join("src","jet.png")).convert()
         self.surf.set_colorkey((255, 255, 255), RLEACCEL)
         self.rect = self.surf.get_rect()
@@ -15,13 +19,12 @@ class Player(pygame.sprite.Sprite):
         self.SCREEN_HEIGHT = SCREEN_HEIGHT
     
     def update(self, keys):
-        sound = Sound()
         if keys[K_UP]:
             self.rect.move_ip(0, -5)
-            sound.play_move_up_Sound()
+            self.move_up_sound.play()
         if keys[K_DOWN]:
             self.rect.move_ip(0, 5)
-            sound.play_move_down_Sound()
+            self.move_down_sound.play()
         if keys[K_LEFT]:
             self.rect.move_ip(-5, 0)
         if keys[K_RIGHT]:
