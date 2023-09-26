@@ -15,12 +15,19 @@ class Enemy(pygame.sprite.Sprite):
             )
         )
         self.speed = random.randint(EVIL_PLAYER_SPEED_MIN, EVIL_PLAYER_SPEED_MAX)
-
+        self.score_added = False
+        
     def update(self):
         # to points
         global SCORE
+        global LEVEL
         self.rect.move_ip(-self.speed, 0)
         if self.rect.right < 0:
-            SCORE[0] += 1
+            if not self.score_added:
+                SCORE[0] += 10
             self.kill()
+            if SCORE[0] >= 500:
+                LEVEL += 1
+                SCORE[0] = 0
+                
 

@@ -104,6 +104,7 @@ class Joc:
 
     def run_game(self):
         global SCORE
+        global LEVEL
         player = Player()
         sound_manager = Sound()
         clouds = pygame.sprite.Group()
@@ -140,7 +141,7 @@ class Joc:
             enemies.update()
             clouds.update()
 
-            self.screen.fill(self.background_color)  
+            self.screen.fill(self.background_color)
 
             for cloud in clouds:
                 self.screen.blit(cloud.surf, cloud.rect)
@@ -158,6 +159,9 @@ class Joc:
             score_text = "SCORE: {}".format(SCORE[0])
             score_render = self.font.render(score_text, True, DARK_MODE)
             self.screen.blit(score_render, (10, 10))
+
+            if LEVEL[0] == 0 and SCORE[0] >= 500:
+                LEVEL[0] += 1
 
             pygame.display.flip()
             self.clock.tick(30)
