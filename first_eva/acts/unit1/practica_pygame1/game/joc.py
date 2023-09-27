@@ -1,5 +1,6 @@
 import pygame
 import os.path
+import os
 import time
 import random
 from pygame.locals import (
@@ -124,12 +125,16 @@ class Joc:
         enemies = pygame.sprite.Group()
         all_sprites = pygame.sprite.Group()
         all_sprites.add(player)
+        bg_timer = 0
+        bg_change_interval = 20000
+        light_mode = LIGHT_MODE
+        new_enemy = None
         
-        change_bg_time = pygame.time.get_ticks()
         running = True
         while running:
-            bg_time = pygame.time.get_ticks()
-            
+            dt = self.clock.get_time()
+            bg_timer += dt
+             
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
@@ -142,18 +147,13 @@ class Joc:
                     new_enemy = Enemy()
                     enemies.add(new_enemy)
                     all_sprites.add(new_enemy)
-                    self.change_background()
                 
                 elif event.type == self.ADDCLOUD:
                     new_cloud = Cloud()
                     clouds.add(new_cloud)
                     all_sprites.add(new_cloud)
-
-                elif event.type == self.CHANGE_BG_TIMER:
-                    if bg_time - self.last_bg >= 20000:
-                        self.change_background()
-                        self.last_bg = bg_time
                     
+                if new_enemy is not None:    
                     if LEVEL[0] == 1:
                         pygame.time.set_timer(self.ADDENEMY, 500)
                         new_enemy.speed = random.randint(1, 10)
@@ -170,7 +170,14 @@ class Joc:
                         pygame.time.set_timer(self.ADDENEMY, 5)
                         new_enemy.speed = random.randint(12, 18)
 
-                
+            if bg_timer >= bg_change_interval:
+                # Cambiar entre light_mode y dark_mode
+                light_mode = not light_mode
+                if light_mode:
+                    self.background_color = LIGHT_MODE
+                else:
+                    self.background_color = DARK_MODE
+                bg_timer = 0
 
             keys = pygame.key.get_pressed()
             player.update(keys)
@@ -182,8 +189,9 @@ class Joc:
             for sprite in all_sprites:
                 if type[sprite] != Player:
                     self.screen.blit(sprite.surf, sprite.rect)
+                    
             for cloud in clouds:
-                self.screen.blit(cloud.surf, cloud.rect)                  
+                self.screen.blit(cloud.surf, cloud.rect)
             
             
             if pygame.sprite.spritecollideany(player, enemies):
@@ -194,14 +202,11 @@ class Joc:
                 pygame.time.delay(1500)
                 
                 running = False
-
+                
             score_text = "SCORE: {}".format(SCORE[0]) + " LEVEL: {}".format(LEVEL[0]) + "            HIGHEST SCORE: {}".format(self.highest_score) + " HIGHEST LEVEL: {}".format(self.highest_level)
-            score_render = self.font.render(score_text, True, DARK_MODE)
+            score_render = self.font.render(score_text, True, TEXT_COLOR)
             self.screen.blit(score_render, (10, 10))
 
-            if pygame.time.get_ticks() - change_bg_time >= 20000:
-                self.change_background()
-                change_bg_time = pygame.time.get_ticks()
                 
             if LEVEL[0] == 1 and SCORE[0] >= 500:
                 LEVEL[0] += 1
@@ -257,15 +262,6 @@ class Joc:
             pygame.display.flip()
             self.clock.tick(30)
 
-    def change_background(self):
-    # Cambia entre fondo de día y fondo de noche.
-        if self.is_day:
-            self.background_color = DARK_MODE  
-        else:
-            self.background_color = LIGHT_MODE 
-        self.is_day = not self.is_day
-        self.screen.fill(self.background_color)
-        
     def gamePassed(self):
         self.screen.fill(LIGHT_MODE)
 
@@ -319,7 +315,7 @@ class Joc:
         global LEVEL
         if SCORE[0] > self.highest_level:
             self.highest_level = LEVEL[0]
-            database = open(os.path.join("src","punt_max.txt"), 'w+')
+            database = open(os.path.join("src","level_max.txt"), 'w+')
             database.write(str(LEVEL))
             database.close()
               
@@ -340,9 +336,9 @@ class Joc:
     
     def test_level(self):
         try:
-            database = open(os.path.join("src","punt_max.txt"), 'r')
+            database = open(os.path.join("src","level_max.txt"), 'r')
         except:
-            database = open(os.path.join("src","punt_max.txt"), 'w+')
+            database = open(os.path.join("src","level_max.txt"), 'w+')
             database.write(str(0))
                 
         try:
