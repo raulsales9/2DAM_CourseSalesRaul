@@ -184,7 +184,7 @@ class Joc:
             enemies.update()
             clouds.update()
             
-            self.screen.fill(self.background_color)
+            
             
             for sprite in all_sprites:
                 if type[sprite] != Player:
@@ -192,7 +192,7 @@ class Joc:
                     
             for cloud in clouds:
                 self.screen.blit(cloud.surf, cloud.rect)
-            
+            self.screen.fill(self.background_color)
             
             if pygame.sprite.spritecollideany(player, enemies):
                 self.move_up_sound.stop()
