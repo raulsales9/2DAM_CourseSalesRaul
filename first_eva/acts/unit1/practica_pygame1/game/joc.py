@@ -38,6 +38,7 @@ class Joc:
         self.Impacte_sound = pygame.mixer.Sound(os.path.join("src", "hq-explosion-6288.mp3"))
         # self.clouds_group = pygame.sprite.Group()
         # self.player_group = pygame.sprite.Group()
+        # self.lives = 3
         
         pygame.init()
         self.clock = pygame.time.Clock()
@@ -205,12 +206,6 @@ class Joc:
 
             self.screen.fill(self.background_color)
 
-            for entity in self.clouds_group:
-                self.screen.blit(entity.surf, entity.rect)
-
-            for entity in self.player_group:
-                self.screen.blit(entity.surf, entity.rect)
-
             for entity in all_sprites:
                 self.screen.blit(entity.surf, entity.rect)
 
@@ -241,15 +236,34 @@ class Joc:
                 all_sprites.add(exploció)
                 player.kill()
                 running = False
+                
+                # self.lives -= 1
 
+                # if self.lives <= 0:
+                #    running = False
+                # else:
+                    # Si quedan vidas, reinicia la posición del jugador y espera un momento
+                    # antes de reanudar el juego
+                #    player.reset_position()
+                #    pygame.display.flip()
+                #    pygame.time.delay(1000)
+                
             score_text = "SCORE: {} LEVEL: {}            HIGHEST SCORE: {} HIGHEST LEVEL: {}".format(
-                SCORE[0], LEVEL[0], self.highest_score, self.highest_level)
+            SCORE[0], LEVEL[0], self.highest_score, self.highest_level)
             score_render = self.font.render(score_text, True, TEXT_COLOR)
             self.screen.blit(score_render, (10, 10))
             pygame.display.flip()
             self.clock.tick(30)  
 
     def show_defeat_screen(self):
+        
+        #if self.lives > 0:
+        #    defeat_text = self.font.render("The f-16 at Ukraine has been shot down", True, RED)
+        #else:
+        #    defeat_text = self.font.render("Out of lives. Game over!", True, RED)
+
+        self.background_color = LIGHT_MODE
+
         defeat_text = self.font.render("The f-16 at Ukraine has been shot down", True, RED)
         defeat_text_center = (
             SCREEN_WIDTH / 2 - defeat_text.get_width() // 2,

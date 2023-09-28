@@ -38,6 +38,10 @@ class Player(pygame.sprite.Sprite):
             self.rect.top = 0
         if self.rect.bottom > self.SCREEN_HEIGHT:
             self.rect.bottom = self.SCREEN_HEIGHT
+            
+    # def reset_position(self):
+    #    self.rect.left = SCREEN_WIDTH // 4
+    #    self.rect.centery = SCREEN_HEIGHT // 2
 
 
 
