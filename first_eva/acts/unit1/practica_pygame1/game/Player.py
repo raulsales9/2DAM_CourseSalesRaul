@@ -1,33 +1,24 @@
 import pygame
-import os.path
+from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, KEYDOWN
 from Tamany import *
-from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT
-from cohet_defensa import mi
-# from Sound import Sound
-
+from cohet_defensa import cohet_defensa
 class Player(pygame.sprite.Sprite):
-    move_down_sound = None
-    move_up_sound = None
-    def __init__(self, move_up_sound, move_down_sound, ):
+    def __init__(self, move_up_sound, move_down_sound, missiles_group):
         super(Player, self).__init__()
         self.move_up_sound = move_up_sound
         self.move_down_sound = move_down_sound
-        self.surf = pygame.image.load(os.path.join("src","jet.png")).convert()
-        self.surf.set_colorkey((255, 255, 255), RLEACCEL)
+        self.missiles_group = missiles_group  # Agregamos el grupo de misiles
+        self.surf = pygame.image.load(os.path.join("src", "jet.png")).convert()
+        self.surf.set_colorkey((255, 255, 255), pygame.RLEACCEL)
         self.rect = self.surf.get_rect(
-            center = (
+            center=(
                 100,
-                SCREEN_HEIGHT/2
+                SCREEN_HEIGHT / 2
             )
         )
         self.SCREEN_WIDTH = SCREEN_WIDTH
         self.SCREEN_HEIGHT = SCREEN_HEIGHT
-        
-    def shoot_missile(self):
-        new_missile = Missile(self.rect.right, self.rect.centery)  # Crea un nuevo misil
-        self.missiles.add(new_missile)  # Agrega el misil al grupo de misiles
-        all_sprites.add(new_missile)
-        
+
     def update(self, keys):
         if keys[K_UP]:
             self.rect.move_ip(0, -5)
@@ -48,3 +39,12 @@ class Player(pygame.sprite.Sprite):
             self.rect.top = 0
         if self.rect.bottom > self.SCREEN_HEIGHT:
             self.rect.bottom = self.SCREEN_HEIGHT
+
+        # Disparar un misil cuando se presiona la barra espaciadora
+        if keys[KEYDOWN]:
+            if keys[pygame.K_SPACE]:
+                self.shoot()
+
+    def shoot(self):
+        new_missile = cohet_defensa(self.rect.right, self.rect.centery)  # Creamos un nuevo misil
+        self.missiles_group.add(new_missile)  # Lo agregamos al grupo de misiles
