@@ -23,3 +23,4 @@ SCORE = [0]
 LEVEL = [0]
 RED = (255, 0, 0)
 TEXT_COLOR = (255, 0, 0)
+S400_SPEED = 20

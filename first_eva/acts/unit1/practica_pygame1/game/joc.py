@@ -17,26 +17,30 @@ from pygame.locals import (
 from Cloud import Cloud
 from Player import Player
 from Enemy import Enemy
+from impacte import Impacte
+from cohet_defensa import cohet_defensa
 # from Sound import Sound
 from Tamany import *
 
 class Joc:
     def __init__(self):
         pygame.mixer.init()
-        self.clock = pygame.time.Clock()
         pygame.mixer.music.load(os.path.join("src", "Apoxode_-_Electric_1.mp3"))
         pygame.mixer.music.play(loops=-1)
-        pygame.init()
+        
         # Utils
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        self.font = pygame.font.SysFont("monospace", 20)
-        self.font2 = pygame.font.SysFont("monospace", 50)
         self.background_color = LIGHT_MODE
         self.last_bg = pygame.time.get_ticks()
         self.is_day = True 
         self.move_up_sound = pygame.mixer.Sound(os.path.join("src", "Rising_putter.ogg"))
         self.move_down_sound = pygame.mixer.Sound(os.path.join("src", "Falling_putter.ogg"))
-        self.colission_sound = pygame.mixer.Sound(os.path.join("src", "Collision.ogg"))
+        self.Collision = pygame.mixer.Sound(os.path.join("src", "Collision.ogg"))
+        
+        pygame.init()
+        self.clock = pygame.time.Clock()
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.font = pygame.font.SysFont("monospace", 20)
+        self.font2 = pygame.font.SysFont("monospace", 50)
         
         self.ADDENEMY = pygame.USEREVENT + 1
         pygame.time.set_timer(self.ADDENEMY, 500)  # Inicialmente cada 500 ms
@@ -94,13 +98,12 @@ class Joc:
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
                     if event.key == K_p:
-                        running = False
-                    elif event.key == K_p:
-                        running = False
+                        running = False  # Exit the main menu loop and start the game
 
                 elif event.type == QUIT:
                     self.game_over = True
                     running = False
+
                 elif event.type == self.ADDCLOUD:
                     new_cloud = Cloud()
                     clouds_Added.add(new_cloud)
@@ -123,37 +126,34 @@ class Joc:
         player = Player(self.move_up_sound, self.move_down_sound)  
         clouds = pygame.sprite.Group()
         enemies = pygame.sprite.Group()
+        Impacte = pygame.sprite.Group()
+        cohet_defensa = pygame.sprite.Group()
         all_sprites = pygame.sprite.Group()
         all_sprites.add(player)
+
+        # control of the background
         bg_timer = 0
         bg_change_interval = 20000
         light_mode = LIGHT_MODE
-        new_enemy = None
-        
+    
         running = True
         while running:
             dt = self.clock.get_time()
             bg_timer += dt
-             
+
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
-                    if event.key == K_ESCAPE:
+                    if event.key == K_p:
                         running = False
+                    elif event.key == K_ESCAPE:
+                        player.shoot()  
                 elif event.type == QUIT:
-                    self.game_over = True
                     running = False
 
                 elif event.type == self.ADDENEMY:
                     new_enemy = Enemy()
                     enemies.add(new_enemy)
                     all_sprites.add(new_enemy)
-                
-                elif event.type == self.ADDCLOUD:
-                    new_cloud = Cloud()
-                    clouds.add(new_cloud)
-                    all_sprites.add(new_cloud)
-                    
-                if new_enemy is not None:    
                     if LEVEL[0] == 1:
                         pygame.time.set_timer(self.ADDENEMY, 500)
                         new_enemy.speed = random.randint(1, 10)
@@ -170,6 +170,11 @@ class Joc:
                         pygame.time.set_timer(self.ADDENEMY, 5)
                         new_enemy.speed = random.randint(12, 18)
 
+                elif event.type == self.ADDCLOUD:
+                    new_cloud = Cloud()
+                    clouds.add(new_cloud)
+                    all_sprites.add(new_cloud)
+                    
             if bg_timer >= bg_change_interval:
                 # Cambiar entre light_mode y dark_mode
                 light_mode = not light_mode
@@ -180,53 +185,52 @@ class Joc:
                 bg_timer = 0
 
             keys = pygame.key.get_pressed()
+            
             player.update(keys)
             enemies.update()
             clouds.update()
+            cohet_defensa.update()
+            Impacte.update()
             
-            
-            
-            for sprite in all_sprites:
-                if type[sprite] != Player:
-                    self.screen.blit(sprite.surf, sprite.rect)
-                    
-            for cloud in clouds:
-                self.screen.blit(cloud.surf, cloud.rect)
+
             self.screen.fill(self.background_color)
+
+            for entity in all_sprites:
+                self.screen.blit(entity.surf, entity.rect)
             
+            for entity in missiles:
+                self.screen.blit(entity.surf, entity.rect)    
+            
+            if LEVEL[0] == 1 and SCORE[0] >= 500:
+                LEVEL[0] += 1
+            elif LEVEL[0] == 5:
+                self.gamePassed()
+
             if pygame.sprite.spritecollideany(player, enemies):
                 self.move_up_sound.stop()
                 self.move_down_sound.stop()
-                self.colission_sound.play()
+                pygame.mixer.music.set_volume(0.9)
+                self.Collision.play()
+                pygame.display.flip()
                 player.kill()
-                pygame.time.delay(1500)
-                
+                # time.sleep(2)
+
                 running = False
-                
+
+            
+
             score_text = "SCORE: {}".format(SCORE[0]) + " LEVEL: {}".format(LEVEL[0]) + "            HIGHEST SCORE: {}".format(self.highest_score) + " HIGHEST LEVEL: {}".format(self.highest_level)
             score_render = self.font.render(score_text, True, TEXT_COLOR)
             self.screen.blit(score_render, (10, 10))
-
-                
-            if LEVEL[0] == 1 and SCORE[0] >= 500:
-                LEVEL[0] += 1
-            elif LEVEL[0] == 5 :
-                self.gamePassed()
-
             pygame.display.flip()
             self.clock.tick(30)
+
 
     def show_defeat_screen(self):
         defeat_text = self.font.render("The f-16 at Ukraine has been shot down", True, RED)
         defeat_text_center = (
             SCREEN_WIDTH / 2 - defeat_text.get_width() // 2,
             SCREEN_HEIGHT / 2 - defeat_text.get_height() // 2
-        )
-
-        retry_text = self.font.render("Press SPACE to Retry", True, RED)
-        retry_text_center = (
-            SCREEN_WIDTH / 2 - retry_text.get_width() // 2,
-            SCREEN_HEIGHT / 2 + 30
         )
 
         clouds_added = pygame.sprite.Group()
@@ -238,13 +242,14 @@ class Joc:
         while running:
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
-                    if event.key == K_ESCAPE:
-                        running = False
-                    elif event.key == K_SPACE:
+                    if event.key == K_p:
+                        SCORE[0] = 0
+                        LEVEL[0] = 1
                         self.game_over = False
                         running = False
+                    elif event.key == K_ESCAPE:
+                        running = False
                 elif event.type == QUIT:
-                    self.game_over = True
                     running = False
                 elif event.type == self.ADDCLOUD:
                     new_cloud = Cloud()
@@ -254,13 +259,15 @@ class Joc:
             self.screen.fill(self.background_color)
 
             self.screen.blit(defeat_text, defeat_text_center)
-            self.screen.blit(retry_text, retry_text_center)
 
             for entity in clouds_added:
                 self.screen.blit(entity.surf, entity.rect)
 
             pygame.display.flip()
             self.clock.tick(30)
+            
+        if not self.game_over:
+            self.run_game()   
 
     def gamePassed(self):
         self.screen.fill(LIGHT_MODE)
@@ -282,11 +289,11 @@ class Joc:
                 if event.type == KEYDOWN:
                     if event.key == K_p:
                         running = False
-                    elif event.key == K_p:
-                        running = False
-
+                    elif event.key == K_ESCAPE:
+                        running = True
+                        self.game_over = True
+                        
                 elif event.type == QUIT:
-                    self.game_over = True
                     running = False
                 elif event.type == self.ADDCLOUD:
                     new_cloud = Cloud()

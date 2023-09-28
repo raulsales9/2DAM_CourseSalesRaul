@@ -2,7 +2,7 @@ import pygame
 import os.path
 from Tamany import *
 from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT
-
+from cohet_defensa import mi
 # from Sound import Sound
 
 class Player(pygame.sprite.Sprite):
@@ -14,10 +14,20 @@ class Player(pygame.sprite.Sprite):
         self.move_down_sound = move_down_sound
         self.surf = pygame.image.load(os.path.join("src","jet.png")).convert()
         self.surf.set_colorkey((255, 255, 255), RLEACCEL)
-        self.rect = self.surf.get_rect()
+        self.rect = self.surf.get_rect(
+            center = (
+                100,
+                SCREEN_HEIGHT/2
+            )
+        )
         self.SCREEN_WIDTH = SCREEN_WIDTH
         self.SCREEN_HEIGHT = SCREEN_HEIGHT
-    
+        
+    def shoot_missile(self):
+        new_missile = Missile(self.rect.right, self.rect.centery)  # Crea un nuevo misil
+        self.missiles.add(new_missile)  # Agrega el misil al grupo de misiles
+        all_sprites.add(new_missile)
+        
     def update(self, keys):
         if keys[K_UP]:
             self.rect.move_ip(0, -5)
