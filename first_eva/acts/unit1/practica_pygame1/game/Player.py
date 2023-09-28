@@ -1,13 +1,12 @@
 import pygame
+import os.path
 from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, KEYDOWN
 from Tamany import *
-from cohet_defensa import cohet_defensa
 class Player(pygame.sprite.Sprite):
-    def __init__(self, move_up_sound, move_down_sound, missiles_group):
+    def __init__(self, move_up_sound, move_down_sound):
         super(Player, self).__init__()
         self.move_up_sound = move_up_sound
         self.move_down_sound = move_down_sound
-        self.missiles_group = missiles_group  # Agregamos el grupo de misiles
         self.surf = pygame.image.load(os.path.join("src", "jet.png")).convert()
         self.surf.set_colorkey((255, 255, 255), pygame.RLEACCEL)
         self.rect = self.surf.get_rect(
@@ -40,11 +39,6 @@ class Player(pygame.sprite.Sprite):
         if self.rect.bottom > self.SCREEN_HEIGHT:
             self.rect.bottom = self.SCREEN_HEIGHT
 
-        # Disparar un misil cuando se presiona la barra espaciadora
-        if keys[KEYDOWN]:
-            if keys[pygame.K_SPACE]:
-                self.shoot()
 
-    def shoot(self):
-        new_missile = cohet_defensa(self.rect.right, self.rect.centery)  # Creamos un nuevo misil
-        self.missiles_group.add(new_missile)  # Lo agregamos al grupo de misiles
+
+    

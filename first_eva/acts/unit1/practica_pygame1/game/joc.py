@@ -35,6 +35,9 @@ class Joc:
         self.move_up_sound = pygame.mixer.Sound(os.path.join("src", "Rising_putter.ogg"))
         self.move_down_sound = pygame.mixer.Sound(os.path.join("src", "Falling_putter.ogg"))
         self.Collision = pygame.mixer.Sound(os.path.join("src", "Collision.ogg"))
+        self.Impacte_sound = pygame.mixer.Sound(os.path.join("src", "hq-explosion-6288.mp3"))
+        # self.clouds_group = pygame.sprite.Group()
+        # self.player_group = pygame.sprite.Group()
         
         pygame.init()
         self.clock = pygame.time.Clock()
@@ -43,13 +46,13 @@ class Joc:
         self.font2 = pygame.font.SysFont("monospace", 50)
         
         self.ADDENEMY = pygame.USEREVENT + 1
-        pygame.time.set_timer(self.ADDENEMY, 500)  # Inicialmente cada 500 ms
+        pygame.time.set_timer(self.ADDENEMY, 500)  
 
         self.ADDCLOUD = pygame.USEREVENT + 2
         pygame.time.set_timer(self.ADDCLOUD, 1200)
 
         self.CHANGE_BG_TIMER = pygame.USEREVENT + 4
-        pygame.time.set_timer(self.CHANGE_BG_TIMER, 20000)  # Cambiar cada 20 segundos
+        pygame.time.set_timer(self.CHANGE_BG_TIMER, 20000)  
 
         self.highest_score = self.test_score()
         self.highest_level = self.test_level()
@@ -98,7 +101,7 @@ class Joc:
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
                     if event.key == K_p:
-                        running = False  # Exit the main menu loop and start the game
+                        running = False  
 
                 elif event.type == QUIT:
                     self.game_over = True
@@ -123,19 +126,20 @@ class Joc:
     def run_game(self):
         global SCORE
         global LEVEL
-        player = Player(self.move_up_sound, self.move_down_sound)  
+        player = Player(self.move_up_sound, self.move_down_sound)
         clouds = pygame.sprite.Group()
         enemies = pygame.sprite.Group()
-        Impacte = pygame.sprite.Group()
-        cohet_defensa = pygame.sprite.Group()
+        cohet_defensa_group = pygame.sprite.Group()
+        Impacte_group = pygame.sprite.Group()
         all_sprites = pygame.sprite.Group()
         all_sprites.add(player)
 
-        # control of the background
+        # control de el fons
         bg_timer = 0
+        # interval en milisegons
         bg_change_interval = 20000
         light_mode = LIGHT_MODE
-    
+
         running = True
         while running:
             dt = self.clock.get_time()
@@ -145,8 +149,10 @@ class Joc:
                 if event.type == KEYDOWN:
                     if event.key == K_p:
                         running = False
-                    elif event.key == K_ESCAPE:
-                        player.shoot()  
+                    elif event.key == K_SPACE:
+                        cohet = cohet_defensa(player.rect.copy())
+                        cohet_defensa_group.add(cohet)
+                        all_sprites.add(cohet)
                 elif event.type == QUIT:
                     running = False
 
@@ -154,6 +160,7 @@ class Joc:
                     new_enemy = Enemy()
                     enemies.add(new_enemy)
                     all_sprites.add(new_enemy)
+
                     if LEVEL[0] == 1:
                         pygame.time.set_timer(self.ADDENEMY, 500)
                         new_enemy.speed = random.randint(1, 10)
@@ -174,7 +181,7 @@ class Joc:
                     new_cloud = Cloud()
                     clouds.add(new_cloud)
                     all_sprites.add(new_cloud)
-                    
+
             if bg_timer >= bg_change_interval:
                 # Cambiar entre light_mode y dark_mode
                 light_mode = not light_mode
@@ -185,46 +192,62 @@ class Joc:
                 bg_timer = 0
 
             keys = pygame.key.get_pressed()
-            
+
             player.update(keys)
             enemies.update()
             clouds.update()
-            cohet_defensa.update()
-            Impacte.update()
-            
+            cohet_defensa_group.update()
+            Impacte_group.update()
+
+            for e in Impacte_group:
+                e.update_timer()
+                e.process()
 
             self.screen.fill(self.background_color)
 
+            for entity in self.clouds_group:
+                self.screen.blit(entity.surf, entity.rect)
+
+            for entity in self.player_group:
+                self.screen.blit(entity.surf, entity.rect)
+
             for entity in all_sprites:
                 self.screen.blit(entity.surf, entity.rect)
-            
-            for entity in missiles:
-                self.screen.blit(entity.surf, entity.rect)    
-            
+
             if LEVEL[0] == 1 and SCORE[0] >= 500:
                 LEVEL[0] += 1
             elif LEVEL[0] == 5:
                 self.gamePassed()
 
+            # Impactes entre cohets y enemies
+            for cohet in cohet_defensa_group:
+                enemy_hit_list = pygame.sprite.spritecollide(cohet, enemies, True)
+                for enemy in enemy_hit_list:
+                    self.Impacte_sound.play()
+                    exploció = Impacte(enemy.rect.copy())
+                    Impacte_group.add(exploció)
+                    all_sprites.add(exploció)
+                    cohet_defensa_group.remove(cohet)
+                    all_sprites.remove(cohet)
+
+            # Impactes entre jugador i enemies
             if pygame.sprite.spritecollideany(player, enemies):
                 self.move_up_sound.stop()
                 self.move_down_sound.stop()
                 pygame.mixer.music.set_volume(0.9)
                 self.Collision.play()
-                pygame.display.flip()
+                exploció = Impacte(player.rect.copy())
+                Impacte_group.add(exploció)
+                all_sprites.add(exploció)
                 player.kill()
-                # time.sleep(2)
-
                 running = False
 
-            
-
-            score_text = "SCORE: {}".format(SCORE[0]) + " LEVEL: {}".format(LEVEL[0]) + "            HIGHEST SCORE: {}".format(self.highest_score) + " HIGHEST LEVEL: {}".format(self.highest_level)
+            score_text = "SCORE: {} LEVEL: {}            HIGHEST SCORE: {} HIGHEST LEVEL: {}".format(
+                SCORE[0], LEVEL[0], self.highest_score, self.highest_level)
             score_render = self.font.render(score_text, True, TEXT_COLOR)
             self.screen.blit(score_render, (10, 10))
             pygame.display.flip()
-            self.clock.tick(30)
-
+            self.clock.tick(30)  
 
     def show_defeat_screen(self):
         defeat_text = self.font.render("The f-16 at Ukraine has been shot down", True, RED)
