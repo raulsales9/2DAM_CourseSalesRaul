@@ -207,7 +207,8 @@ class Joc:
             self.screen.fill(self.background_color)
 
             for entity in all_sprites:
-                self.screen.blit(entity.surf, entity.rect)
+                # Per a que no se superpose el nuvol a la nau    if type(entity) != Player:
+                    self.screen.blit(entity.surf, entity.rect)
 
             if LEVEL[0] == 1 and SCORE[0] >= 500:
                 LEVEL[0] += 1
