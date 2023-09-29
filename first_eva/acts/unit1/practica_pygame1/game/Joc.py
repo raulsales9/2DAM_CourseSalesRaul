@@ -92,7 +92,11 @@ class Joc:
             SCREEN_WIDTH / 2 - Text.get_width() // 2,
             SCREEN_HEIGHT / 2 - Text.get_height() // 2
         )
-
+        punts = self.font2.render("Punts: " + str(SCORE[0]), True, RED)
+        puntscenter = (
+            SCREEN_WIDTH / 2 - punts.get_width() // 2,
+            SCREEN_HEIGHT / 2 + 80
+        )    
         # segón missatge
         TextStart = self.font.render("Press p to Start", True, RED)
         TextStart_center = (
@@ -127,7 +131,9 @@ class Joc:
             self.screen.fill(LIGHT_MODE)
 
             self.screen.blit(Text, Text_center)
+            self.screen.blit(punts, puntscenter)
             self.screen.blit(TextStart, TextStart_center)
+            
 
             for entity in clouds_Added:
                 self.screen.blit(entity.surf, entity.rect)
@@ -148,7 +154,12 @@ class Joc:
         clouds = pygame.sprite.Group()
         all_sprites = pygame.sprite.Group()
         all_sprites.add(player)
-
+        
+        # formula
+        # Vc = 100 + (450 - 50 * LEVEL[0])
+        # Vd = random.randint(2 * LEVEL[0], 10 + 3 * LEVEL[0])
+        
+        # pygame.time.set_timer(self.ADDENEMY, Vc)
         # control de el fons
         bg_timer = 0
         # interval en milisegons
@@ -176,6 +187,7 @@ class Joc:
 
                 elif event.type == self.ADDENEMY:
                     new_enemy = Enemy()
+                    # new_enemy.speed = Vd
                     enemies.add(new_enemy)
                     all_sprites.add(new_enemy)
 
@@ -395,7 +407,7 @@ class Joc:
             
     def max_highest_level(self):
         global LEVEL
-        if SCORE[0] > self.highest_level:
+        if LEVEL[0] > self.highest_level:
             self.highest_level = LEVEL[0]
             # inciquem la ruta relativa i el permis
             database = open(os.path.join("src","level_max.txt"), 'w+')
@@ -438,4 +450,3 @@ class Joc:
 # Intancia de Joc 
 if __name__ == "__main__":
     joc = Joc()
-
