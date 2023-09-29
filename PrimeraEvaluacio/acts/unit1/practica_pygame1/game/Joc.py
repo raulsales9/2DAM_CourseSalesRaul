@@ -25,17 +25,19 @@ from Tamany import *
 class Joc:
     def __init__(self):
         pygame.mixer.init()
-        pygame.mixer.music.load(os.path.join("src", "Apoxode_-_Electric_1.mp3"))
+        # pygame.mixer.music.load(os.path.join("src", "Apoxode_-_Electric_1.mp3"))
+        music_path = os.path.join(os.path.dirname(__file__), "src", "Apoxode_-_Electric_1.mp3")
+        pygame.mixer.music.load(music_path)
         pygame.mixer.music.play(loops=-1)
         
         # Utils
         self.background_color = LIGHT_MODE
         self.last_bg = pygame.time.get_ticks()
         self.is_day = True 
-        self.move_up_sound = pygame.mixer.Sound(os.path.join("src", "Rising_putter.ogg"))
-        self.move_down_sound = pygame.mixer.Sound(os.path.join("src", "Falling_putter.ogg"))
-        self.Collision = pygame.mixer.Sound(os.path.join("src", "Collision.ogg"))
-        self.Impacte_sound = pygame.mixer.Sound(os.path.join("src", "hq-explosion-6288.mp3"))
+        self.move_up_sound = pygame.mixer.Sound(os.path.join(os.path.dirname(__file__),"src", "Rising_putter.ogg"))
+        self.move_down_sound = pygame.mixer.Sound(os.path.join(os.path.dirname(__file__),"src", "Falling_putter.ogg"))
+        self.Collision = pygame.mixer.Sound(os.path.join(os.path.dirname(__file__),"src", "Collision.ogg"))
+        self.Impacte_sound = pygame.mixer.Sound(os.path.join(os.path.dirname(__file__),"src", "hq-explosion-6288.mp3"))
         # self.clouds_group = pygame.sprite.Group()
         # self.player_group = pygame.sprite.Group()
         # self.lives = 3
@@ -400,7 +402,7 @@ class Joc:
         if SCORE[0] > self.highest_score:
             self.highest_score = SCORE[0]
             # inciquem la ruta relativa i el permis
-            database = open(os.path.join("src","punt_max.txt"), 'w+')
+            database = open(os.path.join(os.path.dirname(__file__),"src","punt_max.txt"), 'w+')
             # que s'escriu al fitxer
             database.write(str(SCORE) + " puntuatge máxim")
             database.close()
@@ -410,7 +412,7 @@ class Joc:
         if LEVEL[0] > self.highest_level:
             self.highest_level = LEVEL[0]
             # inciquem la ruta relativa i el permis
-            database = open(os.path.join("src","level_max.txt"), 'w+')
+            database = open(os.path.join(os.path.dirname(__file__),"src","level_max.txt"), 'w+')
             # que s'escriu al fitxer
             database.write(str(LEVEL) + " nivell máxim")
             database.close()
@@ -418,9 +420,9 @@ class Joc:
     def test_score(self):
         # permisos de escritura o lectura depenent de si arriba puntuatge o no
         try:
-            database = open(os.path.join("src","punt_max.txt"), 'r')
+            database = open(os.path.join(os.path.dirname(__file__),"src","punt_max.txt"), 'r')
         except:
-            database = open(os.path.join("src","punt_max.txt"), 'w+')
+            database = open(os.path.join(os.path.dirname(__file__),"src","punt_max.txt"), 'w+')
             database.write(str(SCORE) + " puntuatge máxim")
         
         # llegim el fitxer, si no hi han dades el puntuatge es 0        
@@ -434,9 +436,9 @@ class Joc:
     
     def test_level(self):
         try:
-            database = open(os.path.join("src","level_max.txt"), 'r')
+            database = open(os.path.join(os.path.dirname(__file__),"src","level_max.txt"), 'r')
         except:
-            database = open(os.path.join("src","level_max.txt"), 'w+')
+            database = open(os.path.join(os.path.dirname(__file__),"src","level_max.txt"), 'w+')
             database.write(str(1))
                 
         try:

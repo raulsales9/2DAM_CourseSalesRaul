@@ -7,7 +7,8 @@ class Player(pygame.sprite.Sprite):
         super(Player, self).__init__()
         self.move_up_sound = move_up_sound
         self.move_down_sound = move_down_sound
-        self.surf = pygame.image.load(os.path.join("src", "jet.png")).convert()
+        image_path = os.path.join(os.path.dirname(__file__), "src", "jet.png")
+        self.surf = pygame.image.load(image_path).convert()
         self.surf.set_colorkey((255, 255, 255), pygame.RLEACCEL)
         self.rect = self.surf.get_rect(
             center=(
