@@ -409,13 +409,13 @@ class Joc:
             database = open(os.path.join("src","punt_max.txt"), 'r')
         except:
             database = open(os.path.join("src","punt_max.txt"), 'w+')
-            database.write(str(0))
+            database.write(str(SCORE) + " puntuatge máxim")
         
         # llegim el fitxer, si no hi han dades el puntuatge es 0        
         try:
             highest_score = int(database.readline())
         except ValueError:
-            highest_score = 0
+            highest_score = SCORE[0]
                 
         database.close()
         return highest_score   
@@ -425,15 +425,15 @@ class Joc:
             database = open(os.path.join("src","level_max.txt"), 'r')
         except:
             database = open(os.path.join("src","level_max.txt"), 'w+')
-            database.write(str(0))
+            database.write(str(1))
                 
         try:
-            highest_score = int(database.readline())
+            highest_level = int(database.readline())
         except ValueError:
-            highest_score = 0
+            highest_level = LEVEL[0]
                 
         database.close()
-        return highest_score         
+        return highest_level         
 
 # Intancia de Joc 
 if __name__ == "__main__":

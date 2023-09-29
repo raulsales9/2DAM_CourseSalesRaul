@@ -22,11 +22,11 @@ class cohet_defensa(pygame.sprite.Sprite):
         self.rect.move_ip(self.speed, 0)
         if self.rect.left > SCREEN_WIDTH:
             if not self.score_added:
-                if SCORE[0] >= 10:
+                if SCORE[0] >= 30:
                     # mini nerf per a no abusar de cohets
                     SCORE[0] -= 30
                 else:
                     # no abaixe de 0
-                    SCORE[0] = 0
+                    SCORE[0] == 0
                 self.score_added = True
             self.kill()
