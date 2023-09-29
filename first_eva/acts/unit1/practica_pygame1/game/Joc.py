@@ -17,8 +17,8 @@ from pygame.locals import (
 from Cloud import Cloud
 from Player import Player
 from Enemy import Enemy
-from impacte import Impacte
-from cohet_defensa import cohet_defensa
+from Impacte import Impacte
+from Cohet_defensa import cohet_defensa
 # from Sound import Sound
 from Tamany import *
 
@@ -162,6 +162,7 @@ class Joc:
                     enemies.add(new_enemy)
                     all_sprites.add(new_enemy)
 
+                    # nivells i personatges que apareixen
                     if LEVEL[0] == 1:
                         pygame.time.set_timer(self.ADDENEMY, 500)
                         new_enemy.speed = random.randint(1, 10)
@@ -207,9 +208,14 @@ class Joc:
             self.screen.fill(self.background_color)
 
             for entity in all_sprites:
-                # Per a que no se superpose el nuvol a la nau    if type(entity) != Player:
+                # Per a que no se superpose el nuvol a la nau    
+                if type(entity) != Player:
                     self.screen.blit(entity.surf, entity.rect)
-
+                    
+            # quedaba pintar la nau        
+            self.screen.blit(player.surf, player.rect)
+            
+            # logica per als nivels, i determinar cuan acaba
             if LEVEL[0] == 1 and SCORE[0] >= 500:
                 LEVEL[0] += 1
             elif LEVEL[0] == 5:
@@ -263,8 +269,10 @@ class Joc:
         #else:
         #    defeat_text = self.font.render("Out of lives. Game over!", True, RED)
 
+        #mode clar per a mostrar la pantalla de derrota
         self.background_color = LIGHT_MODE
-
+        
+        # missatge
         defeat_text = self.font.render("The f-16 at Ukraine has been shot down", True, RED)
         defeat_text_center = (
             SCREEN_WIDTH / 2 - defeat_text.get_width() // 2,
@@ -282,7 +290,7 @@ class Joc:
                 if event.type == KEYDOWN:
                     if event.key == K_p:
                         SCORE[0] = 0
-                        LEVEL[0] = 1
+                        LEVEL[1] = 1
                         self.game_over = False
                         running = False
                     elif event.key == K_ESCAPE:
@@ -352,16 +360,20 @@ class Joc:
         global SCORE
         if SCORE[0] > self.highest_score:
             self.highest_score = SCORE[0]
+            # inciquem la ruta relativa i el permis
             database = open(os.path.join("src","punt_max.txt"), 'w+')
-            database.write(str(SCORE))
+            # que s'escriu al fitxer
+            database.write(str(SCORE) + " puntuatge máxim")
             database.close()
             
     def max_highest_level(self):
         global LEVEL
         if SCORE[0] > self.highest_level:
             self.highest_level = LEVEL[0]
+            # inciquem la ruta relativa i el permis
             database = open(os.path.join("src","level_max.txt"), 'w+')
-            database.write(str(LEVEL))
+            # que s'escriu al fitxer
+            database.write(str(LEVEL) + " nivell máxim")
             database.close()
               
     def test_score(self):
@@ -393,7 +405,8 @@ class Joc:
                 
         database.close()
         return highest_score         
-        
+
+# Intancia de Joc 
 if __name__ == "__main__":
     joc = Joc()
 
