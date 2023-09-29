@@ -64,15 +64,18 @@ class Joc:
 
         self.highest_score = self.test_score()
         self.highest_level = self.test_level()
+        
+        
 
         global SCORE
         global LEVEL
+        
+        SCORE[0] = self.test_score()
+        LEVEL[0] = self.test_level()
 
         # crida de les funcions
         while True:
             self.game_over = False
-            SCORE[0] = 0
-            LEVEL[0] = 1
             self.main_menu()
             self.run_game()
             self.max_highest_score()
@@ -84,6 +87,19 @@ class Joc:
         pygame.mixer.music.stop()
         pygame.mixer.quit()
         pygame.quit()
+    
+    def get_score(self):
+        return SCORE[0]
+    
+    def update_enemy(self):
+        vc = 100 + (450 - 50 * LEVEL[0])
+        vd_min = 2 * LEVEL[0]
+        vd_max = 10 + 3 * LEVEL[0]
+
+        pygame.time.set_timer(self.ADDENEMY, vc)
+
+        for enemy in self.enemies:
+            enemy.speed = random.randint(vd_min, vd_max)
 
     def main_menu(self):
         self.screen.fill(LIGHT_MODE)
@@ -94,6 +110,8 @@ class Joc:
             SCREEN_WIDTH / 2 - Text.get_width() // 2,
             SCREEN_HEIGHT / 2 - Text.get_height() // 2
         )
+
+        
         punts = self.font2.render("Punts: " + str(SCORE[0]), True, RED)
         puntscenter = (
             SCREEN_WIDTH / 2 - punts.get_width() // 2,
@@ -156,10 +174,6 @@ class Joc:
         clouds = pygame.sprite.Group()
         all_sprites = pygame.sprite.Group()
         all_sprites.add(player)
-        
-        # formula
-        # Vc = 100 + (450 - 50 * LEVEL[0])
-        # Vd = random.randint(2 * LEVEL[0], 10 + 3 * LEVEL[0])
         
         # pygame.time.set_timer(self.ADDENEMY, Vc)
         # control de el fons
@@ -303,8 +317,10 @@ class Joc:
         #    defeat_text = self.font.render("Out of lives. Game over!", True, RED)
 
         #mode clar per a mostrar la pantalla de derrota
-        self.background_color = LIGHT_MODE
         
+        self.background_color = LIGHT_MODE
+        highestscore = self.get_score()
+
         # missatge
         defeat_text = self.font.render("The f-16  has been shot down", True, RED)
         defeat_text_center = (
@@ -375,9 +391,10 @@ class Joc:
                 if event.type == KEYDOWN:
                     if event.key == K_p:
                         running = False
+                        self.game_over = True
                     elif event.key == K_ESCAPE:
                         running = True
-                        self.game_over = True
+                        
                         
                 elif event.type == QUIT:
                     running = False
@@ -396,6 +413,8 @@ class Joc:
 
             pygame.display.flip()
             self.clock.tick(30)
+        if not self.game_over:
+            self.run_game()
             
     def max_highest_score(self):
         global SCORE
@@ -404,7 +423,7 @@ class Joc:
             # inciquem la ruta relativa i el permis
             database = open(os.path.join(os.path.dirname(__file__),"src","punt_max.txt"), 'w+')
             # que s'escriu al fitxer
-            database.write(str(SCORE) + " puntuatge máxim")
+            database.write(str(SCORE[0]) + " puntuatge máxim")
             database.close()
             
     def max_highest_level(self):
@@ -414,7 +433,7 @@ class Joc:
             # inciquem la ruta relativa i el permis
             database = open(os.path.join(os.path.dirname(__file__),"src","level_max.txt"), 'w+')
             # que s'escriu al fitxer
-            database.write(str(LEVEL) + " nivell máxim")
+            database.write(str(LEVEL[0]) + " nivell máxim")
             database.close()
               
     def test_score(self):
