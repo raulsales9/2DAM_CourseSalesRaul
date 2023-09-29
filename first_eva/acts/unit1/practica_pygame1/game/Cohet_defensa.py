@@ -6,7 +6,8 @@ from Tamany import *
 class cohet_defensa(pygame.sprite.Sprite):
     def __init__(self, rect) -> None:
         super().__init__()
-        self.surf = pygame.image.load(os.path.join("src","pngwing.png")).convert()
+        image_path = os.path.join(os.path.dirname(__file__), "src", "pngwing.png")
+        self.surf = pygame.image.load(image_path).convert()
         self.surf.set_colorkey((255,255,255), RLEACCEL)
         self.surf = pygame.transform.scale(self.surf, (20, 20)).convert()
         # temps d'efecte

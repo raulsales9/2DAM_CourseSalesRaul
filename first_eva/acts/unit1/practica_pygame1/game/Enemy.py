@@ -6,7 +6,8 @@ from Tamany import *
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super(Enemy, self).__init__()
-        self.surf = pygame.image.load(os.path.join("src","missile.png")).convert()
+        image_path = os.path.join(os.path.dirname(__file__), "src", "missile.png")
+        self.surf = pygame.image.load(image_path).convert()
         self.surf = pygame.transform.scale(self.surf, (20, 20)).convert()
         self.surf.set_colorkey((255, 255, 255), RLEACCEL)
         self.rect = self.surf.get_rect(

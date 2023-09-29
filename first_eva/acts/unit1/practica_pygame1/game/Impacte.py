@@ -6,7 +6,8 @@ from Tamany import *
 class Impacte(pygame.sprite.Sprite):
     def __init__(self, rect):
         super(Impacte, self).__init__()
-        self.surf = pygame.image.load(os.path.join("src", "explosion2.jpg"))
+        image_path = os.path.join(os.path.dirname(__file__), "src", "explosion2.jpg")
+        self.surf = pygame.image.load(image_path).convert()
         self.surf = pygame.transform.scale(self.surf, (64, 64))
         self.rect = rect
         self.timer = 5 

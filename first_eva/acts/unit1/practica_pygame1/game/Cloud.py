@@ -7,7 +7,8 @@ class Cloud(pygame.sprite.Sprite):
     def __init__(self):
         super(Cloud, self).__init__()
         # accedim a la imatge per os.path.jpin com a ruta relativa
-        self.surf = pygame.image.load(os.path.join("src","cloud.png")).convert()
+        image_path = os.path.join(os.path.dirname(__file__), "src", "cloud.png")
+        self.surf = pygame.image.load(image_path).convert()
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)
         self.rect = self.surf.get_rect(
             center = (
