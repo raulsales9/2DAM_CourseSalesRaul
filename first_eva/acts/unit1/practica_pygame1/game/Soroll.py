@@ -1,6 +1,7 @@
 import pygame
 import os.path
 
+# no va la musica, per aixo coment
 # class Sound:
 #    def __init__(self):
 #        pygame.mixer.init()

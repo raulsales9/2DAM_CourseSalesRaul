@@ -9,8 +9,10 @@ class cohet_defensa(pygame.sprite.Sprite):
         self.surf = pygame.image.load(os.path.join("src","pngwing.png")).convert()
         self.surf.set_colorkey((255,255,255), RLEACCEL)
         self.surf = pygame.transform.scale(self.surf, (20, 20)).convert()
+        # temps d'efecte
         self.timer = 5
         self.rect = rect
+        # global de velocitat de cohet
         self.speed = S400_SPEED
         self.score_added = False
         
@@ -21,8 +23,10 @@ class cohet_defensa(pygame.sprite.Sprite):
         if self.rect.left > SCREEN_WIDTH:
             if not self.score_added:
                 if SCORE[0] >= 10:
-                    SCORE[0] -= 10
+                    # mini nerf per a no abusar de cohets
+                    SCORE[0] -= 30
                 else:
+                    # no abaixe de 0
                     SCORE[0] = 0
                 self.score_added = True
             self.kill()

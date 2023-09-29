@@ -46,6 +46,7 @@ class Joc:
         self.font = pygame.font.SysFont("monospace", 20)
         self.font2 = pygame.font.SysFont("monospace", 50)
         
+        # afegim sprites (el numero es un id cuidaet) amb el temps de generació en ms
         self.ADDENEMY = pygame.USEREVENT + 1
         pygame.time.set_timer(self.ADDENEMY, 500)  
 
@@ -54,6 +55,10 @@ class Joc:
 
         self.CHANGE_BG_TIMER = pygame.USEREVENT + 4
         pygame.time.set_timer(self.CHANGE_BG_TIMER, 20000)  
+        
+        #self.ADDBOSS = pygame.USEREVENT + 5
+        #if(LEVEL[0] > 5):
+        #    pygame.time.set_timer(self.ADDBOSS, 100000)
 
         self.highest_score = self.test_score()
         self.highest_level = self.test_level()
@@ -61,6 +66,7 @@ class Joc:
         global SCORE
         global LEVEL
 
+        # crida de les funcions
         while True:
             self.game_over = False
             SCORE[0] = 0
@@ -80,30 +86,34 @@ class Joc:
     def main_menu(self):
         self.screen.fill(LIGHT_MODE)
 
+        # missatge d'inici en roig, que es una global a tamany
         Text = self.font.render("  The f-16 at Ukraine  ", True, RED)
         Text_center = (
             SCREEN_WIDTH / 2 - Text.get_width() // 2,
             SCREEN_HEIGHT / 2 - Text.get_height() // 2
         )
 
-        TextStart = self.font.render("Press SPACE to Start", True, RED)
+        # segón missatge
+        TextStart = self.font.render("Press p to Start", True, RED)
         TextStart_center = (
             SCREEN_WIDTH / 2 - TextStart.get_width() // 2,
             SCREEN_HEIGHT / 2 + 30
         )
 
+
+        # decoració de la pantalla d'inici
         clouds_Added = pygame.sprite.Group()
         clouds_Added.add(Cloud())
         clouds_Added.add(Cloud())
         clouds_Added.add(Cloud())
 
+        #bucle principal de la pantalla d'inici
         running = True
         while running:
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
                     if event.key == K_p:
                         running = False  
-
                 elif event.type == QUIT:
                     self.game_over = True
                     running = False
@@ -111,7 +121,8 @@ class Joc:
                 elif event.type == self.ADDCLOUD:
                     new_cloud = Cloud()
                     clouds_Added.add(new_cloud)
-
+                    
+            # decoracio 
             clouds_Added.update()
             self.screen.fill(LIGHT_MODE)
 
@@ -127,11 +138,14 @@ class Joc:
     def run_game(self):
         global SCORE
         global LEVEL
+        # pasem el soroll
         player = Player(self.move_up_sound, self.move_down_sound)
-        clouds = pygame.sprite.Group()
+        # afegim a els grups de sprites
+        # tot dalt de nuvols per a evitar superposicions
         enemies = pygame.sprite.Group()
         cohet_defensa_group = pygame.sprite.Group()
         Impacte_group = pygame.sprite.Group()
+        clouds = pygame.sprite.Group()
         all_sprites = pygame.sprite.Group()
         all_sprites.add(player)
 
@@ -143,13 +157,16 @@ class Joc:
 
         running = True
         while running:
+            # guardem el temps
             dt = self.clock.get_time()
             bg_timer += dt
 
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
+                    # inici amb p
                     if event.key == K_p:
                         running = False
+                    # logica per disparar
                     elif event.key == K_SPACE:
                         cohet = cohet_defensa(player.rect.copy())
                         cohet_defensa_group.add(cohet)
@@ -195,11 +212,13 @@ class Joc:
 
             keys = pygame.key.get_pressed()
 
+            # actualitzem les activitats de player, i els altres sprites 
             player.update(keys)
             enemies.update()
             clouds.update()
             cohet_defensa_group.update()
             Impacte_group.update()
+
 
             for e in Impacte_group:
                 e.update_timer()
@@ -255,7 +274,7 @@ class Joc:
                 #    pygame.display.flip()
                 #    pygame.time.delay(1000)
                 
-            score_text = "SCORE: {} LEVEL: {}            HIGHEST SCORE: {} HIGHEST LEVEL: {}".format(
+            score_text = "SCORE: {} LEVEL: {}       HIGHEST SCORE: {} HIGHEST LEVEL: {}".format(
             SCORE[0], LEVEL[0], self.highest_score, self.highest_level)
             score_render = self.font.render(score_text, True, TEXT_COLOR)
             self.screen.blit(score_render, (10, 10))
@@ -273,7 +292,7 @@ class Joc:
         self.background_color = LIGHT_MODE
         
         # missatge
-        defeat_text = self.font.render("The f-16 at Ukraine has been shot down", True, RED)
+        defeat_text = self.font.render("The f-16  has been shot down", True, RED)
         defeat_text_center = (
             SCREEN_WIDTH / 2 - defeat_text.get_width() // 2,
             SCREEN_HEIGHT / 2 - defeat_text.get_height() // 2
@@ -290,7 +309,7 @@ class Joc:
                 if event.type == KEYDOWN:
                     if event.key == K_p:
                         SCORE[0] = 0
-                        LEVEL[1] = 1
+                        LEVEL[0] = 1
                         self.game_over = False
                         running = False
                     elif event.key == K_ESCAPE:
@@ -318,12 +337,19 @@ class Joc:
     def gamePassed(self):
         self.screen.fill(LIGHT_MODE)
 
-        Text = self.font.render("  The f-16 at Ukraine has winned ", True, RED)
+        # missatge de joc superat 
+        Text = self.font.render("  The f-16  has winned ", True, RED)
         Text_center = (
             SCREEN_WIDTH / 2 - Text.get_width() // 2,
             SCREEN_HEIGHT / 2 - Text.get_height() // 2
         )
+        Text2 = self.font.render("  Press p to retry", True, RED)
+        Text_center2 = (
+            SCREEN_WIDTH / 2 - Text.get_width() // 2,
+            SCREEN_HEIGHT / 2 - Text.get_height() // 2
+        )
 
+        # afegim decoracio per sprites
         clouds_Added = pygame.sprite.Group()
         clouds_Added.add(Cloud())
         clouds_Added.add(Cloud())
@@ -349,6 +375,7 @@ class Joc:
             self.screen.fill(LIGHT_MODE)
 
             self.screen.blit(Text, Text_center)
+            self.screen.blit(Text2, Text_center2)
 
             for entity in clouds_Added:
                 self.screen.blit(entity.surf, entity.rect)
@@ -377,12 +404,14 @@ class Joc:
             database.close()
               
     def test_score(self):
+        # permisos de escritura o lectura depenent de si arriba puntuatge o no
         try:
             database = open(os.path.join("src","punt_max.txt"), 'r')
         except:
             database = open(os.path.join("src","punt_max.txt"), 'w+')
             database.write(str(0))
-                
+        
+        # llegim el fitxer, si no hi han dades el puntuatge es 0        
         try:
             highest_score = int(database.readline())
         except ValueError:
