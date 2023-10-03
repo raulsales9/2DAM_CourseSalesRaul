@@ -1,0 +1,11 @@
+Redissenya el següent formulari de manera que siga més usable per als usuaris. Indica quins controls utilitzaries en cada cas.
+
+Formulari de registre
+nombre -> input text
+dirección -> input text
+Provincia -> desplegable
+
+Dades d'accés
+Usuari -> input text
+contraseña -> input text
+Termes i condicions -> casella de seleccio

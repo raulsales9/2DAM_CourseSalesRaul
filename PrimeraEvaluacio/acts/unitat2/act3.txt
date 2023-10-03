@@ -1,0 +1,8 @@
+Activitat 3
+Durant el disseny d'una aplicació per a la compra de peces de roba es planteja la qüestió de quin tipus de controls utilitzar per als camps següents:
+
+Quantitat de peces (el màxim és de 10). desplegable
+Talla (les possibles opcions són S, M i L). botó radi
+Si l'usuari vol que s'embolique la peça per a regal. casilla de seleccio/ boto radi
+En cas que siga per a regal, el missatge que es posarà a la targeta. entrada de text
+Quin tipus de control dels comentats en la teoria seria més adequat per a cada cas?
