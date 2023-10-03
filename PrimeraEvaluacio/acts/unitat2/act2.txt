@@ -1,0 +1,10 @@
+Activitat 2
+No tots els components de la usabilitat vistos en aquest apartat (aprenentatge, record, eficàcia, errors i satisfacció) tenen la mateixa importància a totes les aplicacions. Segurament, els components de la usabilitat amb més pes en un joc no seran els mateixos que els d'una aplicació de retoc fotogràfic.
+
+En aquest cas pràctic hauràs d'ordenar de més a menys importància els cinc components de la usabilitat en una aplicació d'àmbit empresarial (per exemple, un programari de gestió de la comptabilitat).
+
+1-eficàcia
+2-errors
+3-record
+4-aprenentatge
+5-satisfacció
