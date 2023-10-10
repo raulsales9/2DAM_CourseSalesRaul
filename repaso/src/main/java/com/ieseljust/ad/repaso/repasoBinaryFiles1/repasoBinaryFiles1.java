@@ -13,37 +13,47 @@ import java.io.IOException;
  *
  * @author pc-raul
  */
+
 public class repasoBinaryFiles1 {
-    public static void main (String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         int bytes;
-        // Contador de bytes
-        int BytesCopied=0;
-        
+        int BytesCopied = 0;
+
         FileInputStream fis = null;
         FileOutputStream fos = null;
-        
+
         File file;
-        
-        if(args.length != 2){
+
+        if (args.length != 2) {
             System.out.println("Nombre d'arguments, Sintaxi:\n FileCopy ");
             return;
         }
-        
-        try{
+
+        try {
             file = new File(args[0]);
-            System.out.println("Total:" + file.length() + "bytes");
-            do{
-                bytes=fis.read()
-                if(bytes!=-1){
+            fis = new FileInputStream(file);
+            fos = new FileOutputStream(args[1]);
+
+            System.out.println("Total:" + file.length() + " bytes");
+
+            do {
+                bytes = fis.read();
+                if (bytes != -1) {
                     fos.write(bytes);
+                    BytesCopied++;
                 }
-            }while(bytes !=-1){
-                System.out.println("ok");
+            } while (bytes != -1);
+
+            System.out.println("Copied " + BytesCopied + " bytes successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null) {
+                fis.close();
             }
-        }catch(IOException e){
-            System.out.println(e);
+            if (fos != null) {
+                fos.close();
+            }
         }
-        
-    
     }
 }

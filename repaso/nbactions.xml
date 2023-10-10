@@ -12,8 +12,8 @@
             <properties>
                 <exec.vmArgs></exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.appArgs></exec.appArgs>
-                <exec.mainClass>com.ieseljust.ad.repaso.repasoXML1.repasoXML1</exec.mainClass>
+                <exec.appArgs>home/pc-raul/NetBeansProjects/repaso/</exec.appArgs>
+                <exec.mainClass>readWriteFilesWithBuffer.readWriteWithBuffer</exec.mainClass>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
@@ -29,8 +29,8 @@
             <properties>
                 <exec.vmArgs>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.appArgs></exec.appArgs>
-                <exec.mainClass>com.ieseljust.ad.repaso.repasoXML1.repasoXML1</exec.mainClass>
+                <exec.appArgs>home/pc-raul/NetBeansProjects/repaso/</exec.appArgs>
+                <exec.mainClass>readWriteFilesWithBuffer.readWriteWithBuffer</exec.mainClass>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
             </properties>
@@ -47,9 +47,9 @@
             <properties>
                 <exec.vmArgs></exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.mainClass>com.ieseljust.ad.repaso.repasoXML1.repasoXML1</exec.mainClass>
+                <exec.mainClass>readWriteFilesWithBuffer.readWriteWithBuffer</exec.mainClass>
                 <exec.executable>java</exec.executable>
-                <exec.appArgs></exec.appArgs>
+                <exec.appArgs>home/pc-raul/NetBeansProjects/repaso/</exec.appArgs>
             </properties>
         </action>
     </actions>
