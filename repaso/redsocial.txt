@@ -1,0 +1,10 @@
+ID: 1
+Nombre: Juan Pérez
+Edad: 28
+Ciudad: San Francisco
+
+ID: 2
+Nombre: Maria Rodríguez
+Edad: 24
+Ciudad: Los Angeles
+

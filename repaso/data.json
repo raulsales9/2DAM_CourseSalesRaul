@@ -1,0 +1,21 @@
+{
+  "nombre": "Ejemplo de JSON anidado",
+  "numeros": [1, 2, 3, 4, 5],
+  "informacion": {
+    "ciudad": "Nueva York",
+    "pais": "Estados Unidos",
+    "poblacion": 8419600
+  },
+  "personas": [
+    {
+      "nombre": "Juan",
+      "edad": 30,
+      "profesion": "Ingeniero"
+    },
+    {
+      "nombre": "María",
+      "edad": 28,
+      "profesion": "Doctor"
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<RedSocial>
+      
+  <Usuarios>
+            
+    <Usuario>
+                  
+      <ID>1</ID>
+                  
+      <Nombre>Juan Pérez</Nombre>
+                  
+      <Edad>28</Edad>
+                  
+      <Ciudad>San Francisco</Ciudad>
+                  
+      <Intereses>
+                        
+        <Interes>Deportes</Interes>
+                        
+        <Interes>Música</Interes>
+                        
+        <Interes>Viajes</Interes>
+                    
+      </Intereses>
+                  
+      <Amigos>
+                        
+        <AmigoID>2</AmigoID>
+                        
+        <AmigoID>3</AmigoID>
+                    
+      </Amigos>
+                  
+      <Publicaciones>
+                        
+        <Publicacion>
+                              
+          <ID>101</ID>
+                              
+          <Texto>Hola, ¡estoy emocionado de unirme a esta red social!</Texto>
+                              
+          <Fecha>2023-10-10</Fecha>
+                          
+        </Publicacion>
+                    
+      </Publicaciones>
+              
+    </Usuario>
+            
+    <Usuario>
+                  
+      <ID>2</ID>
+                  
+      <Nombre>Maria Rodríguez</Nombre>
+                  
+      <Edad>24</Edad>
+                  
+      <Ciudad>Los Angeles</Ciudad>
+                  
+      <Intereses>
+                        
+        <Interes>Literatura</Interes>
+                        
+        <Interes>Cine</Interes>
+                    
+      </Intereses>
+                  
+      <Amigos>
+                        
+        <AmigoID>1</AmigoID>
+                    
+      </Amigos>
+                  
+      <Publicaciones>
+                        
+        <Publicacion>
+                              
+          <ID>102</ID>
+                              
+          <Texto>¡Hola a todos! Soy nueva aquí.</Texto>
+                              
+          <Fecha>2023-10-10</Fecha>
+                          
+        </Publicacion>
+                    
+      </Publicaciones>
+              
+    </Usuario>
+        
+  </Usuarios>
+  
+  <Usuario>
+    <Nombre>Paco</Nombre>
+    <Edad>23</Edad>
+    <Ciudad>Cullera</Ciudad>
+    <Intereses>
+      <Interes>Estudiar Polonia</Interes>
+    </Intereses>
+    <Amigos>
+      <AmigoID>1</AmigoID>
+    </Amigos>
+    <Publicaciones>
+      <Publicacion>
+        <Texto>nada</Texto>
+      </Publicacion>
+    </Publicaciones>
+  </Usuario>
+</RedSocial>

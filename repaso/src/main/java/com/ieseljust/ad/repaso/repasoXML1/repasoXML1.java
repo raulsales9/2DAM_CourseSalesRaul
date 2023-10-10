@@ -25,7 +25,7 @@ import org.w3c.dom.Text;
  * @author pc-raul
  */
 public class repasoXML1 {
-    // Crear HTML con datos de concesionario
+    // Crear XML con datos de concesionario
     public static void main(String[] args){
         try{
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
