@@ -1,0 +1,8 @@
+com/ieseljust/ad/myDBMS/ConsoleColors.java
+ com.ieseljust.ad.myDBMS.ConsoleColors
+com/ieseljust/ad/myDBMS/databaseManager.java
+ com.ieseljust.ad.myDBMS.databaseManager
+com/ieseljust/ad/myDBMS/DBMan.java
+ com.ieseljust.ad.myDBMS.DBMan
+com/ieseljust/ad/myDBMS/connectionManager.java
+ com.ieseljust.ad.myDBMS.connectionManager
