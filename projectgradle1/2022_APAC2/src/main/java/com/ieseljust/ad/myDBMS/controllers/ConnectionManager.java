@@ -108,6 +108,9 @@ class ConnectionManager{
                             // TO-DO:
                                 // Creem un objecte de tipus databaseManager per connectar-nos a
                                 // la base de dades i iniciar una shell de manipulació de BD..
+                                if(subcomand.length == 2){
+                                    DatabaseManager dbManager = new DatabaseManager(server, port, user, pass);
+                                }
                         default:
                             System.out.println(ConsoleColors.RED+"Unknown option"+ConsoleColors.RESET);
                             break;
