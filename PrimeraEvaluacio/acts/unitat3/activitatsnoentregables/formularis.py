@@ -7,6 +7,8 @@ def main(page):
     textDir = ft.Text("Direccion: ", expand=1)
     dir = ft.TextField(label="direccio", expand=3)
     fieldset2 = ft.Text(value="Datos de acceso", expand=1)
+    textuser = ft.Text(value="Usuario: ", expand=1)
+    user = ft.TextField(label="nombre de usuario", expand=3)
     passwd = ft.TextField(label="Contraseña ", password=True,expand=3, can_reveal_password=True)
     passwd2 = ft.TextField(label="Repite la contraseña", password=True,expand=3, can_reveal_password=True)
     color_dropdown = ft.Dropdown(
@@ -21,16 +23,36 @@ def main(page):
         expand=3
     )
 
-    def checkbox_changed():
-        return True
-    
-    def onclicked():
-        if(passwd == passwd2):
-            return True
-        else:
+  
+    def validate_fields():
+        if not (name.value[0].isalpha() and name.value.replace(" ", "").isalnum()):
+            print("El nombre debe comenzar con una letra y no contener espacios ni caracteres extraños.")
             return False
         
-    
+        if passwd.value != passwd2.value:
+            return False
+
+        if not (name.value and dir.value and passwd.value and passwd2.value and color_dropdown.selected_option):
+            print("Todos los campos deben estar rellenados.")
+            return False
+        
+        return True
+
+
+    def onclicked():
+        if validate_fields():
+            btn_submit.disabled = False
+            return True
+        else:
+            btn_submit.disabled = True
+            return False
+        
+    btn_submit = ft.FilledButton(
+                    "Enviar", on_click=onclicked,disabled=True,
+                    style=ft.ButtonStyle(
+                        shape=ft.RoundedRectangleBorder(radius=10),
+                    )
+                )
 
     page.add(
         ft.ResponsiveRow([
@@ -42,25 +64,22 @@ def main(page):
         ),    
         ft.ResponsiveRow([
             fieldset2,
+            ft.Row(controls=(textuser, user)),
             ft.Row(controls=(ft.Text(value="contraseña", col={"md": 4}),passwd)),
             ft.Row(controls=(ft.Text(value="Repite la contraseña", col={"md": 4}),passwd2)),
         ]
         ),   
         ft.ResponsiveRow([
-            ft.Checkbox(label="ToDo: Learn how to use ski",col={"md": 4}, value=False, on_change=checkbox_changed) ,
+            ft.Checkbox(label="ToDo: Learn how to use ski",col={"md": 4}, value=False) ,
             ft.Row(
-            controls=(
-                ft.FilledButton(
-                    "Rounded rectangle", on_click=onclicked,disabled=True,
-                    style=ft.ButtonStyle(
-                    shape=ft.RoundedRectangleBorder(radius=10),
+                controls=(
+                    [btn_submit]
                 ),
-            ),
-        )
-        )
+            )
         ])
         
     )
+
 
 
 ft.app(target=main)
