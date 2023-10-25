@@ -1,8 +1,9 @@
 package com.ieseljust.ad.myDBMS;
 
 // Imports per a entrada de dades
+import com.ieseljust.ad.myDBMS.ConnectionManager;
+import com.ieseljust.ad.myDBMS.*;
 import java.util.Scanner;
-
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class ServerManager {
     gestionar les connexions
     */
     
-    public static void main(String[] args){
+    public static void main(String[] args) throws SQLException{
             
         ConnectionManager cm;
 

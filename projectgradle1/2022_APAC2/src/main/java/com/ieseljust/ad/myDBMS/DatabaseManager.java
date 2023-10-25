@@ -1,6 +1,6 @@
-package com.ieseljust.ad.myDBMS.controllers;
+package com.ieseljust.ad.myDBMS;
 
-import com.ieseljust.AccessBeans.JocBean;
+import com.ieseljust.ad.myDBMS.*;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -21,29 +21,36 @@ class DatabaseManager{
     String user;
     String pass;
     String dbname;
+    Connection dbConnection;
 
     DatabaseManager(){
         // TO-DO: Default initialization
+        this.server = "";
+        this.port = "";
+        this.user = "";
+        this.pass = "";
+        this.dbname = "";
     }
 
     // se comenta con java doc como /** + intro y se crean getters setters y constructores con click derecho insert code getters y settes
     DatabaseManager(String server, String port, String user, String pass, String dbname){
-        String database = "proba";
-         int port = 3308;
-         
-         server *= ":" + port;
-         server *= "/" + database;
-         server *= "?useUnicode=true&dharacterEncoding=UTF-8";
-        try{
-            conn = 
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-        return null;
+       this.server = server;
+       this.port = port;
+       this.user = user;
+       this.pass = pass;
+       this.dbname = dbname;
     }
 
-    public Connection connectDatabase(String server, String user, String pass) throws SQLException{
-         
+    public Connection connectDatabase(){
+         try{
+            String dbUrl = "jdbc:mysql://" + server + ":" + port + "/" + dbname;
+            dbConnection = DriverManager.getConnection(dbUrl, user, pass);
+            System.out.println("Conexión a la base de datos exitosa.");
+            return dbConnection;
+        }catch(SQLException e){
+            System.err.println("Connection to DMBS failed" + e.getMessage());
+            return null;
+        }
     }
 
     public void showTables(){

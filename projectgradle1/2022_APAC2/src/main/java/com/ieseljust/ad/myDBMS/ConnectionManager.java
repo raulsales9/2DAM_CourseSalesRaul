@@ -1,6 +1,6 @@
-package com.ieseljust.ad.myDBMS.controllers;
+package com.ieseljust.ad.myDBMS;
 
-import com.ieseljust.ad.myDBMS.ConsoleColors;
+import com.ieseljust.ad.myDBMS.*;
 import java.sql.*;
 import java.util.Scanner;
 
@@ -14,8 +14,10 @@ class ConnectionManager{
     String server;
     /**
      * @variable port he considerado que debe ser entero, a diferencia de lo que nos proporciona el fichero inicial
-     */
-    int port;
+     *RE: i consider to convert the int to string to test first
+     **/
+    //int port;
+    String port;
     String user;
     String pass;
     Connection dbConnection;
@@ -23,12 +25,12 @@ class ConnectionManager{
     //No se como diferenciar un constructor en java es muy raro
     ConnectionManager(){
         this.server = "default_server";
-        this.port = 3308;
+        this.port = "3308";
         this.user = "default_user";
         this.pass = "default_password";
     }
 
-    ConnectionManager(String server, int port, String user, String pass){
+    ConnectionManager(String server, String port, String user, String pass){
         this.server = server;
         this.port = port;
         this.user = user;
@@ -74,12 +76,12 @@ class ConnectionManager{
          ResultSet resultset = statement.executeQuery(comand);
             System.out.println("The list of the databases");
             while(resultset.next()){
-                
+                System.out.println(resultset.getString(1));
             }
             resultset.close();
     }
 
-    public void startShell(){
+    public void startShell() throws SQLException{
         Scanner keyboard = new Scanner(System.in);
         String command;
         do {
@@ -108,9 +110,9 @@ class ConnectionManager{
                             // TO-DO:
                                 // Creem un objecte de tipus databaseManager per connectar-nos a
                                 // la base de dades i iniciar una shell de manipulació de BD..
-                                if(subcomand.length == 2){
-                                    DatabaseManager dbManager = new DatabaseManager(server, port, user, pass);
-                                }
+                                //if(subcomand.length == 2){
+                                //    DatabaseManager dbManager = new DatabaseManager(server, port, user, pass);
+                                //}
                         default:
                             System.out.println(ConsoleColors.RED+"Unknown option"+ConsoleColors.RESET);
                             break;
