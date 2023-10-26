@@ -80,6 +80,10 @@ class ConnectionManager{
             }
             resultset.close();
     }
+    
+    public void importScript(String script){
+        
+    }
 
     public void startShell() throws SQLException{
         Scanner keyboard = new Scanner(System.in);

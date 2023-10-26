@@ -52,6 +52,7 @@ class DatabaseManager{
             return null;
         }
     }
+    
 
     public void showTables(){
         // TO-DO: Show the tables in this database
