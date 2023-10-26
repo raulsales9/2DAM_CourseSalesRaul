@@ -1,6 +1,9 @@
 package com.ieseljust.ad.myDBMS;
 
 import com.ieseljust.ad.myDBMS.*;
+
+import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 import java.util.Scanner;
 
@@ -81,8 +84,13 @@ class ConnectionManager{
             resultset.close();
     }
     
-    public void importScript(String script){
-        
+    public void importScript(String script) throws SQLException{
+        try{
+            File file = new File(script);
+            StringBuilder scriptbl = new StringBuilder();
+        }catch(IOException e){
+            System.err.println("Error importing script");
+        }
     }
 
     public void startShell() throws SQLException{
