@@ -17,18 +17,12 @@ import java.util.Scanner;
 class ConnectionManager {
 
     String server;
-    /**
-     * @variable port he considerado que debe ser entero, a diferencia de lo que nos
-     *           proporciona el fichero inicial
-     *           RE: i consider to convert the int to string to test first
-     **/
-    // int port;
     String port;
     String user;
     String pass;
     Connection dbConnection;
 
-    // No se como diferenciar un constructor en java es muy raro
+    // Default constructor with default connection parameters
     ConnectionManager() {
         this.server = "default_server";
         this.port = "3308";
@@ -36,6 +30,7 @@ class ConnectionManager {
         this.pass = "default_password";
     }
 
+    // Constructor with custom connection parameters
     ConnectionManager(String server, String port, String user, String pass) {
         this.server = server;
         this.port = port;
@@ -43,43 +38,24 @@ class ConnectionManager {
         this.pass = pass;
     }
 
-    /***
-     * 
-     * Try/catch para manejar excepciones con la conexion.
-     * with the jdbc driver we create a connection to the database
-     * 
+    /**
+     * Establish a connection to the DBMS using the provided parameters.
+     * @return The established database connection.
      */
     public Connection connectDBMS() {
         try {
             String dbUrl = "jdbc:mysql://" + server + ":" + port + "/";
             dbConnection = DriverManager.getConnection(dbUrl, user, pass);
-            System.out.println("Connection to the DMBS.");
+            System.out.println("Connection to the DBMS.");
             return dbConnection;
         } catch (SQLException e) {
-            System.err.println("Connection to DMBS failed" + e.getMessage());
+            System.err.println("Connection to the DBMS failed: " + e.getMessage());
             return null;
         }
     }
 
-    /*
-     * if we want to use another db, we can change the driver to use another db.
-     */
-    // public Connection connectDBMSqlite() {
-    //    Class.forname= "org.sqlite.JDBC";
-    //    try {
-    //        String dbUrl = "jdbc:sqlite://" + server + ":" + port + "/";
-    //        dbConnection = DriverManager.getConnection(dbUrl, user, pass);
-    //        System.out.println("Connection to the DMBS.");
-    //        return dbConnection;
-    //    } catch (SQLException e) {
-    //        System.err.println("Connection to DMBS failed" + e.getMessage());
-    //        return null;
-    //    }
-    //}
-
-    /***
-     * We display the connection information by means of the connection information
-     * to show the server, port and user stats we just use a println with the values, and the final client will type a info to call this function (startShell)
+    /**
+     * Display the connection information (server, port, user).
      */
     public void showInfo() {
         System.out.println("DBMS Server: " + server);
@@ -87,43 +63,43 @@ class ConnectionManager {
         System.out.println("User: " + user);
     }
 
-    /***
-     * // TO-DO: Show databases in your server
-     * Using statements we can execute anything.
-     * the next will be execute the query to keep it in a resultset
+    /**
+     * Retrieve and display the list of databases on the connected DBMS.
+     * @throws SQLException if there is an issue executing the SQL command.
      */
     public void showDatabases() throws SQLException {
         Statement statement = dbConnection.createStatement();
-        String comand = "SHOW DATABASES";
+        String command = "SHOW DATABASES";
 
-        ResultSet resultset = statement.executeQuery(comand);
-        System.out.println("The list of the databases");
-        while (resultset.next()) {
-            System.out.println(resultset.getString(1));
+        ResultSet resultSet = statement.executeQuery(command);
+        System.out.println("The list of databases:");
+        while (resultSet.next()) {
+            System.out.println(resultSet.getString(1));
         }
-        resultset.close();
+        resultSet.close();
     }
 
-    /*
-     * Import scripts from a file. 
-     * i was put a two catch to manage the exception, because before put the for with condition, the import was broken.
+    /**
+     * Import SQL scripts from a file and execute them.
+     * @param script The path to the SQL script file.
+     * @throws SQLException if there is an issue executing the SQL commands.
      */
     public void importScript(String script) throws SQLException {
         try {
             File file = new File(script);
-            StringBuilder scriptbl = new StringBuilder();
+            StringBuilder scriptBuilder = new StringBuilder();
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
 
             while ((line = reader.readLine()) != null) {
-                scriptbl.append(line).append("\n");
+                scriptBuilder.append(line).append("\n");
             }
             reader.close();
 
             Statement statement = dbConnection.createStatement();
 
-            // Dividir el script en instrucciones individuales usando ";" como delimitador
-            String[] sqlCommands = scriptbl.toString().split(";");
+            // Split the script into individual SQL commands using ";" as the delimiter
+            String[] sqlCommands = scriptBuilder.toString().split(";");
 
             for (String sqlCommand : sqlCommands) {
                 String trimmedCommand = sqlCommand.trim();
@@ -132,18 +108,21 @@ class ConnectionManager {
                 }
             }
 
-            
             System.out.println("Script imported successfully");
         } catch (IOException e) {
-            System.err.println("Error importing script");
+            System.err.println("Error importing script: " + e.getMessage());
         } catch (SQLException e) {
             System.err.println("Error executing SQL script: " + e.getMessage());
         }
     }
+
     /**
-     * Meanwhile we don't type quit, we will execute some sql commands. For example sh db or show databse with the same condition.
-     * 
-     *  */
+     * Start a shell interface for interacting with the DBMS.
+     * Supports commands like "sh db" (show databases), "info" (show connection info),
+     * "import <script_name>" (import an SQL script), "use <database_name>" (switch to a database),
+     * and "quit" (exit the shell).
+     * @throws SQLException if there is an issue executing SQL commands.
+     */
     public void startShell() throws SQLException {
         Scanner keyboard = new Scanner(System.in);
         String command;
@@ -151,14 +130,17 @@ class ConnectionManager {
         do {
             System.out.print(ConsoleColors.GREEN_BOLD_BRIGHT + "# (" + this.user + ") on " + this.server + ":" + this.port + "> " + ConsoleColors.RESET);
             command = keyboard.nextLine();
-            System.out.println("sh db o show databases to see the list of the databases \n");
-            System.out.println("info to check the credentials of your conexion \n");
-            System.out.println("import +nameScript sql for importar-him \n");
-            System.out.println("use the database of what you want \n");
-            System.out.println("quit to exit\n");
+            System.out.println("Available commands:");
+            System.out.println("sh db or show databases - Show the list of databases");
+            System.out.println("info - Check connection credentials");
+            System.out.println("import <script_name> - Import and execute an SQL script");
+            System.out.println("use <database_name> - Switch to a specific database");
+            System.out.println("quit - Exit the shell\n");
 
-            //Switch to make a callcenter with the commands introduced
-            switch (command) {
+            String[] parts = command.split(" ");
+            String action = parts[0];
+
+            switch (action) {
                 case "sh db":
                 case "show databases":
                     this.showDatabases();
@@ -169,50 +151,57 @@ class ConnectionManager {
                     break;
 
                 case "quit":
-                    System.out.println("closing the shell");
+                    System.out.println("Closing the shell");
+                    break;
+
+                case "use":
+                    if (parts.length > 1) {
+                        String databaseName = parts[1];
+                        useDatabase(databaseName);
+                    } else {
+                        System.out.println(ConsoleColors.RED + "Usage: use <database_name>" + ConsoleColors.RESET);
+                    }
+                    break;
+
+                case "import":
+                    if (parts.length > 1) {
+                        String scriptName = "scripts/" + parts[1];
+                        this.importScript(scriptName);
+                    } else {
+                        System.out.println(ConsoleColors.RED + "Usage: import <script_name>" + ConsoleColors.RESET);
+                    }
                     break;
 
                 default:
-                    // Buscar si el comando empieza con "use"
-                    if (command.startsWith("use ")) {
-                        String databaseName = command.substring(4).trim();
-                        useDatabase(databaseName);
-                    } else if (command.startsWith("import ")) {
-                        String scriptName = "scripts/" + command.substring(7).trim();
-                        this.importScript(scriptName);
-                    } else {
-                        System.out.println(ConsoleColors.RED + "Unknown option" + ConsoleColors.RESET);
-                    }
+                    System.out.println(ConsoleColors.RED + "Unknown option" + ConsoleColors.RESET);
                     break;
             }
         } while (!command.equals("quit"));
 
-        // Call the method to close connection
-        disconnectDBMS();
-    }
-
-    public void useDatabase(String databaseName) {
-        // TO-DO: Implementar la lógica para cambiar a modo de base de datos
-        // Puedes crear una instancia de DatabaseManager y llamar a su método startShell
-        DatabaseManager dbManager = new DatabaseManager(this.server, this.port, this.user, this.pass, databaseName);
-        dbManager.connectDatabase();
-        dbManager.startShell();
+        disconnectDBMS(); // Call the method to close the connection
     }
 
     /**
-     * to make a good practice we should disconect the conexion to the database
+     * Switch to a specific database by creating a DatabaseManager instance.
+     * @param databaseName The name of the database to switch to.
+     * @return The DatabaseManager instance for the selected database.
+     */
+    public DatabaseManager useDatabase(String databaseName) {
+        DatabaseManager dbManager = new DatabaseManager(this.server, this.port, this.user, this.pass, databaseName);
+        dbManager.connectDatabase();
+        return dbManager;
+    }
+
+    /**
+     * Close the connection to the DBMS.
      */
     public void disconnectDBMS() {
-        // TO-DO: Implementar la lógica para desconectar de la base de datos
-        // if don't have connection
         if (dbConnection != null) {
             try {
-                //Close the connection
                 dbConnection.close();
             } catch (SQLException e) {
-                System.err.println("Error al desconectar: " + e.getMessage());
+                System.err.println("Error disconnecting: " + e.getMessage());
             }
         }
     }
-
 }

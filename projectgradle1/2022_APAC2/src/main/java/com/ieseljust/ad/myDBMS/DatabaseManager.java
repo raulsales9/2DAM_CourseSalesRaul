@@ -14,7 +14,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-class DatabaseManager{
+
+/**
+ * A class that manages a specific database and provides a shell interface for interacting with it.
+ */
+class DatabaseManager {
     
     String server;
     String port;
@@ -24,73 +28,91 @@ class DatabaseManager{
     Scanner scanner;
     Connection dbConnection;
 
-    DatabaseManager(){
-        // TO-DO: Default initialization
-        String server;
-        String port;
-        String user;
-        String pass;
-        String dbname;
+    /**
+     * Default constructor with default values.
+     */
+    DatabaseManager() {
+        server = null;
+        port = null;
+        user = null;
+        pass = null;
+        dbname = null;
         scanner = new Scanner(System.in);
-        Connection dbConnection;
+        dbConnection = null;
     }
 
-    // se comenta con java doc como /** + intro y se crean getters setters y constructores con click derecho insert code getters y settes
-    DatabaseManager(String server, String port, String user, String pass, String dbname){
-       this.server = server;
-       this.port = port;
-       this.user = user;
-       this.pass = pass;
-       this.dbname = dbname;
+    /**
+     * Constructor with custom database connection parameters.
+     * @param server The server hostname.
+     * @param port The port number.
+     * @param user The username.
+     * @param pass The password.
+     * @param dbname The database name.
+     */
+    DatabaseManager(String server, String port, String user, String pass, String dbname) {
+        this.server = server;
+        this.port = port;
+        this.user = user;
+        this.pass = pass;
+        this.dbname = dbname;
     }
 
-    public Connection connectDatabase(){
-         try{
+    /**
+     * Establish a connection to the database using the provided parameters.
+     * @return The established database connection.
+     */
+    public Connection connectDatabase() {
+        try {
             String dbUrl = "jdbc:mysql://" + server + ":" + port + "/" + dbname;
             dbConnection = DriverManager.getConnection(dbUrl, user, pass);
-            System.out.println("Conexión a la base de datos exitosa.");
+            System.out.println("Connection to the database successful.");
             return dbConnection;
-        }catch(SQLException e){
-            System.err.println("Connection to DMBS failed" + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Connection to the database failed: " + e.getMessage());
             return null;
         }
     }
-    
 
-    public void showTables(){
-        // TO-DO: Show the tables in this database
-        try{
-            DatabaseMetaData metaDatas = dbConnection.getMetaData();
-            ResultSet tables = metaDatas.getTables(null, null, null, new String[] {"TABLE"});
-            while(tables.next()){
-                String columnName = tables.getString("TABLE_NAME");
-                System.out.println(columnName);
+    /**
+     * Show the tables in the connected database.
+     */
+    public void showTables() {
+        try {
+            DatabaseMetaData metaData = dbConnection.getMetaData();
+            ResultSet tables = metaData.getTables(null, null, null, new String[] {"TABLE"});
+            while (tables.next()) {
+                String tableName = tables.getString("TABLE_NAME");
+                System.out.println(tableName);
             }
-        }catch(SQLException e){
-            System.err.println("Error: "+e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Error: " + e.getMessage());
         }
     }
 
+    /**
+     * Execute a SELECT query and display the results.
+     * @param query The SQL SELECT query to execute.
+     */
     public void executeSelect(String query) {
         try {
             Statement statement = dbConnection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
-    
+
             ResultSetMetaData metaData = resultSet.getMetaData();
             int columnCount = metaData.getColumnCount();
-    
+
             for (int i = 1; i <= columnCount; i++) {
                 System.out.print(metaData.getColumnName(i) + "\t");
             }
             System.out.println();
-    
+
             while (resultSet.next()) {
                 for (int i = 1; i <= columnCount; i++) {
                     System.out.print(resultSet.getString(i) + "\t");
                 }
                 System.out.println();
             }
-    
+
             resultSet.close();
             statement.close();
         } catch (SQLException e) {
@@ -98,96 +120,83 @@ class DatabaseManager{
         }
     }
 
-
-
-    public void insertIntoTable(String table){
-        // TO-DO: add a new record
-    
-        // Steps
-        // 1. Connect to the DB (if not)
-        // 2. Get columns and data types of each column
-        // 3. Ask the user for values
-        // 4. Compose insert query 
-        
-        // Notice that
-        // - Data types of each type
-        // - Notice about default values
-        // - manage errors
-        // - Show generated id (if exists)
+    /**
+     * Insert a new record into a specified table.
+     * @param table The name of the table to insert the record into.
+     */
+    public void insertIntoTable(String table) {
         try {
-            // Obtener metadatos de la tabla para conocer los nombres de las columnas
             DatabaseMetaData metaData = dbConnection.getMetaData();
             ResultSet columns = metaData.getColumns(null, null, table, null);
-    
+
             ArrayList<String> columnNames = new ArrayList<String>();
             while (columns.next()) {
                 columnNames.add(columns.getString("COLUMN_NAME"));
             }
-    
-            // Componer la consulta SQL de inserción
+
             StringBuilder queryBuilder = new StringBuilder("INSERT INTO ");
-            queryBuilder.append(table); // Aquí usamos el nombre de la tabla que recibimos como parámetro
+            queryBuilder.append(table);
             queryBuilder.append(" (");
-    
+
             for (String columnName : columnNames) {
                 queryBuilder.append(columnName);
                 queryBuilder.append(", ");
             }
-    
-            queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length()); // Eliminar la última coma y espacio
+
+            queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length());
             queryBuilder.append(") VALUES (");
-    
+
             for (int i = 0; i < columnNames.size(); i++) {
                 queryBuilder.append("?, ");
             }
-    
-            queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length()); // Eliminar la última coma y espacio
+
+            queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length());
             queryBuilder.append(")");
-    
+
             String insertQuery = queryBuilder.toString();
-    
-            // Preparar una consulta preparada para la inserción
+
             PreparedStatement preparedStatement = dbConnection.prepareStatement(insertQuery);
-    
-            // Solicitar valores de entrada al usuario para cada columna
+
             for (int i = 1; i <= columnNames.size(); i++) {
                 System.out.print("Enter value for " + columnNames.get(i - 1) + ": ");
                 String columnValue = scanner.nextLine();
                 preparedStatement.setString(i, columnValue);
             }
-    
-            // Ejecutar la inserción
+
             int rowsInserted = preparedStatement.executeUpdate();
             System.out.println(rowsInserted + " row(s) inserted successfully.");
-    
+
             preparedStatement.close();
         } catch (SQLException e) {
             System.err.println("Error inserting into the table: " + e.getMessage());
         }
     }
-    
 
+    /**
+     * Show information about tables, keys, and foreign keys.
+     * @param table The name of the table to describe.
+     */
+    public void showDescTable(String table) {
+        // TO-DO: Implement this method to show table descriptions
+        try {
+            DatabaseMetaData metaData = dbConnection.getMetaData();
+            ResultSet columns = metaData.getColumns(null, null, table, null);
 
-
-    public void showDescTable(String table){
-        // TO-DO: Show info about tables, keys and foreign keys
-        try{
-            DatabaseMetaData metaDatas = dbConnection.getMetaData();
-            ResultSet colums = metaDatas.getTables(null, null, table, new String[] {"TABLE"});
-            System.out.println("Descripcion" + table);
-            while(colums.next()){
-                
+            System.out.println("Description of table " + table + ":");
+            while (columns.next()) {
+                String columnName = columns.getString("COLUMN_NAME");
+                String dataType = columns.getString("TYPE_NAME");
+                System.out.println("Column: " + columnName + ", Type: " + dataType);
             }
-        }catch(SQLException e){
-            System.err.println("Error: "+e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Error: " + e.getMessage());
         }
     }
 
-    /*
-     * I was initialize de scanner to get the inputs of the user, and control the instruccions with a do-while, when if the user type quit, the startshell finish his act.
-     * The method and his funcionalities, is working as a callcenter to execute the instruccions
+    /**
+     * Start a shell interface for interacting with the connected database.
      */
-    public void startShell(){
+    public void startShell() {
         Scanner scanner = new Scanner(System.in);
         String command;
 
@@ -195,15 +204,28 @@ class DatabaseManager{
             System.out.print("# (" + user + ") on " + server + ":" + port + "[" + dbname + "]> ");
             command = scanner.nextLine();
 
-            switch (command) {
+            String[] parts = command.split(" ");
+            String action = parts[0];
+
+            switch (action) {
                 case "sh tables":
                     showTables();
                     break;
                 case "describe":
-                    showDescTable(command);
+                    if (parts.length > 1) {
+                        String tableName = parts[1];
+                        showDescTable(tableName);
+                    } else {
+                        System.out.println("Usage: describe <table_name>");
+                    }
                     break;
                 case "insert":
-                    insertIntoTable(command);
+                    if (parts.length > 1) {
+                        String tableName = parts[1];
+                        insertIntoTable(tableName);
+                    } else {
+                        System.out.println("Usage: insert <table_name>");
+                    }
                     break;
                 case "sql":
                     System.out.print("Enter SQL query: ");
@@ -218,6 +240,4 @@ class DatabaseManager{
             }
         } while (!command.equals("quit"));
     }
-
-
 }
