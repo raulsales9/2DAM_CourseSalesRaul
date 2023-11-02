@@ -1,6 +1,7 @@
 package com.example.ad.usingorm.model;
 
-import Serializable;
-public class users {
+import java.io.Serializable;
+
+public class users implements Serializable{
     
 }
