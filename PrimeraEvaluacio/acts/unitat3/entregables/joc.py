@@ -26,6 +26,7 @@ class App:
 
     def start(self, page: ft.Page):
         self.page = page
+        self.page.title = "Troba el número"  # Afegeix el títol a la pàgina
         self.page.add(ft.ElevatedButton("Comença el joc", on_click=self.main))
 
     def main(self, args=None):
@@ -47,9 +48,10 @@ class App:
                     ft.Column(
                         [
                             ft.Text(
-                                "Canvia l'amplària de la fila per veure com els elements fills es distribueixen en diverses files:"
+                                "Numeros :"
                             ),
                             row,
+                            ft.ElevatedButton("Reiniciar", on_click=self.restart),  # Botón para reiniciar el juego
                         ]
                     )
                 ]
@@ -64,8 +66,8 @@ class App:
             button = ft.Container(
                 content=ft.Text(value=str(i)),
                 alignment=ft.alignment.center,
-                width=50,
-                height=50,
+                width=140,
+                height=150,
                 bgcolor=ft.colors.AMBER,
                 border_radius=ft.border_radius.all(5),
             )
@@ -78,11 +80,12 @@ class App:
         def on_click(args):
             if number == self.target_number:
                 button.bgcolor = ft.colors.GREEN
-                self.page.clean()
-                self.page.add(ft.Text("Has trobat el número!"))
                 for btn in self.buttons:
                     btn.enabled = False
-                
+                self.page.clean()
+                self.page.add(ft.Text("Has trobat el número!"))
+                self.page.add(ft.ElevatedButton("Reiniciar", on_click=self.restart))  # Botón para reiniciar el juego
+
                 # Afegeix una vista per a aquesta ruta
                 self.page.views.append(
                     ft.View(
@@ -94,10 +97,11 @@ class App:
                         ],
                     )
                 )
-                
+
             else:
                 button.bgcolor = ft.colors.RED
-               
+                button.enabled = False  # Deshabilita el botón si el número no es correcto
+
                 # Afegeix una vista per a aquesta ruta
                 self.page.views.append(
                     ft.View(
@@ -109,9 +113,9 @@ class App:
                         ],
                     )
                 )
-                
+
             self.page.go(f"/{number}")
-               
+
         return on_click
 
     def restart(self, args=None):
@@ -125,3 +129,4 @@ class App:
 
 if __name__ == "__main__":
     app = App(25)
+    app.main()
