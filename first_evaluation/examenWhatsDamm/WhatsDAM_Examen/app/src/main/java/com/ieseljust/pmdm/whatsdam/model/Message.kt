@@ -1,5 +1,6 @@
 package com.ieseljust.pmdm.whatsdam
 
+import android.util.Log
 import java.io.Serializable
 
 // Definim la data class Contacte
@@ -43,6 +44,19 @@ object Messages {
     // Retorna el numero de missatges
     fun getNumMessages() = _messages.size
 
+
+    fun deleteMessage(msg : Message): Int{
+        for (i in 0<..<_messages.size) {
+            if (_messages[i].username == msg.username && _messages[i].text ==msg.text){
+                _messages[i].text ="El mensaje ha sido eliminado"
+                return  i
+            }
+        }
+        Log.d("Debug", "Borre" + msg.toString())
+        //msg.text = "El mensaje ha sido eliminado"
+        Log.d("Debug", "Borre" + msg.toString())
+
+    }
 
 
 }

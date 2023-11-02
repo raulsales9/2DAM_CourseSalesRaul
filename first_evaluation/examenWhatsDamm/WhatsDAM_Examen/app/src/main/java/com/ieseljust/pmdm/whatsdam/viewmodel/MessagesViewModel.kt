@@ -14,10 +14,14 @@ class MessagesViewModel(application: Application):
     /* Propietats del ViewModel */
 
     private val _adaptador = MutableLiveData<MissatgesAdapter>().apply{
-        value= MissatgesAdapter()
+        value= MissatgesAdapter(
+            {missatge: Message, v: View -> ReplyManager(missatge, v)},
+            {missatge: Message, v: View -> RemoveMsgManager(missatge, v)}
+        )
     }
     val adaptador:MutableLiveData<MissatgesAdapter> =_adaptador
-
+    private val _resposta = MutableLiveData<String>()
+    val resposta = MutableLiveData<String>()
     val _latestInserted= MutableLiveData<Int>().apply{
         value= 0
     }
@@ -38,16 +42,16 @@ class MessagesViewModel(application: Application):
     }
 
     //Funcio oer a respondre un missatge
-    public fun respondre(msg: Message){
-        repository.respondre(msg)
-        val replyText = ""
-        _adaptador.value?.notifyDataSetChanged()
+    public fun respondre(msg: Message, v: View){
+        Log.d("Debug", msg.text)
+        _resposta.value ="usuari" + msg.username + "missatge" + msg.text
     }
 
     // Callback per a borrar
-    public fun supostBorrat(msg: Message) {
-        repository.supostBorrat(msg)
-        _adaptador.value?.notifyDataSetChanged()
+    public fun supostBorrat(msg: Message, v: View) {
+        val posicio = repository.deleteMessage(msg)
+        _adaptador.value?.notifyDataSetChanged(posicio)
+        return false
     }
 
 

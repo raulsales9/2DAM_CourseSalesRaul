@@ -1,5 +1,6 @@
 package com.ieseljust.pmdm.whatsdam.viewmodel
 
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +21,7 @@ class MissatgeAltreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
 
     // Funcio encarregada de suministrar a la vista dades que anem a treballar
     // Enllacem les dades del missatge amb la vista
-    fun bind(missatge: Message) {
+    fun bind(missatge: Message, gestorClick: (Message, View)-> Unit) {
         text.setText(missatge.text)
         user.setText(missatge.username)
         // Per a la data, posem l'hora actual
@@ -28,6 +29,11 @@ class MissatgeAltreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
         val dateFormat = SimpleDateFormat("HH:mm")
         val horaActual = Date()
         data.setText(dateFormat.format(horaActual))
+
+        respondre.setOnClickListener{
+            Log.d("DEBUG [ ViewHolder ]", missatge.text)
+            gestorClick(missatge, itemView)
+        }
     }
 
 

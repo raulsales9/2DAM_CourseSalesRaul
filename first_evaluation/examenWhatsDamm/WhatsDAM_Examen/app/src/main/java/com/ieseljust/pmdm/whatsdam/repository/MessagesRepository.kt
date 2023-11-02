@@ -33,7 +33,7 @@ class MessagesRepository private constructor() { // Constructor privat
         val resposta = Message(username = "Usuari", text = "Resposta" + msg.text)
         add(resposta)
     }
-    fun supostBorrat(msg: Message) {
+    fun deleteMessage(msg: Message) {
         msg.text = "El mensaje ha sido eliminado"
     }
 

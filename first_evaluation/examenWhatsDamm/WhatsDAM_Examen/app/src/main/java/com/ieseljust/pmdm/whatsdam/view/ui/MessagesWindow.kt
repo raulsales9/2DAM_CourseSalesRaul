@@ -82,14 +82,9 @@ class MessagesWindow : AppCompatActivity() {
         binding.MessagesRecyclerView.layoutManager= LinearLayoutManager(this)
         binding.MessagesRecyclerView.adapter = viewModel.adaptador.value
 
-        //binding.respondre.setOnClickListener {
-        //    // Este es el botón "Responder" que se agrega en tu diseño de ViewHolder
-        //    val replyText = viewModel.replyMessage.value
-        //    if (!replyText.isNullOrBlank()) {
-        //        val currentText = binding.MessageText.text.toString()
-        //        binding.MessageText.setText("$currentText\n$replyText")
-        //    }
-        //}
+        viewModel.resposta.observe(this){
+            binding.MessageText.setText(it)
+        }
 
 
 

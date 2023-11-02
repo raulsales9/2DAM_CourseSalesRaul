@@ -1,5 +1,6 @@
 package com.ieseljust.pmdm.whatsdam.viewmodel
 
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -23,10 +24,10 @@ class MissatgeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val dateFormat = SimpleDateFormat("HH:mm")
         val horaActual = Date()
         data.setText(dateFormat.format(horaActual))
-        //itemView.setOnLongClickListener {
-        //    viewModel.deleteMessage(missatge)
-        //    true
-        //}
+        itemView.setOnLongClickListener {
+            Log.d("Debug", "Mensaje")
+            gestorClick(missatge, it)
+        }
 
     }
 

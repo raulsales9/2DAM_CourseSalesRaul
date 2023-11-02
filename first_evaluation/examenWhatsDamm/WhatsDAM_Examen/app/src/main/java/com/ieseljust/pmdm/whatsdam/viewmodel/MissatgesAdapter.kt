@@ -1,12 +1,14 @@
 package com.ieseljust.pmdm.whatsdam.viewmodel
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.ieseljust.pmdm.whatsdam.Message
 import com.ieseljust.pmdm.whatsdam.R
 import com.ieseljust.pmdm.whatsdam.repository.MessagesRepository
 
-class MissatgesAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MissatgesAdapter(val listenerReply : (Message, View)-> Unit, val listenerRemove : (Message, View)-> Boolean ):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     // Constants per al tipus de missatge
     private val MISSATGE_D_USUARI = 1
@@ -56,9 +58,9 @@ class MissatgesAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         // Caldra distingir segons la vista que siga, ja que
         // cada disseny te uns components diferents.
         if (getItemViewType(position) === MISSATGE_D_USUARI) {
-            (holder as MissatgeViewHolder).bind(repository.getMessages()[position])
+            (holder as MissatgeViewHolder).bind(repository.getMessages()[position], listenerRemove)
         } else {
-            (holder as MissatgeAltreViewHolder).bind(repository.getMessages()[position])
+            (holder as MissatgeAltreViewHolder).bind(repository.getMessages()[position], listenerReply)
         }
     }
 
