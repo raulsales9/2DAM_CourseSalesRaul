@@ -1,12 +1,35 @@
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<hibernate-mapping>
-    <class name="com.example.ad.usingorm.entities.Usuario" table="usuarios">
-        <id name="id" type="int">
-            <generator class="identity" />
-        </id>
-        <property name="nombre" type="string" />
-        <property name="apellido" type="string" />
-        <property name="edad" type="int" />
-        <property name="ciudad" type="string" />
-    </class>
-</hibernate-mapping>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- Connection properties -->
+        <!-- Driver JDBC -->
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        
+        <!-- Add ?createDatabaseIfNotExist=true to create the database -->
+        <property name="connection.url">jdbc:mysql://localhost:3308/DBName</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">root</property>
+
+        <!-- Extra configuration -->
+
+        <!-- JDBC connection pool for concurrent connections -->
+        <property name="connection.pool_size">5</property>
+
+        <!-- Dialect connector. Useful for Foreign Keys -->
+        <property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+
+        <!-- One thread, one session -->
+        <property name="current_session_context_class">thread</property>
+
+        <!-- Show "real" SQL operations. Only for development -->
+        <property name="show_sql">true</property>
+
+        <!-- DB maintenance -->
+        <property name="hbm2ddl.auto">update</property>
+        
+        <!-- Reference to the mapping file -->
+        <mapping resource="users.hbm.xml" />
+    </session-factory>
+</hibernate-configuration>

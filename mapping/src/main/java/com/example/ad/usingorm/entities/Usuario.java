@@ -5,7 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "usuario")
@@ -17,7 +20,8 @@ public class Usuario {
     @Column
     private String nombre;
 
-    @Column
+   
+    @JoinColumn()
     private String apellido;
 
     @Column
@@ -26,6 +30,8 @@ public class Usuario {
     @Column
     private String ciudad;
 
+    @OneToMany(mappedBy = "usuario")
+    private List<Publicacion> publicaciones;
     // Constructor sin argumentos (necesario para JPA)
     public Usuario() {
     }
