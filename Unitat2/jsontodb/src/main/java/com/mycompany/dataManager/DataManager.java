@@ -1,5 +1,4 @@
 package com.mycompany.dataManager;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -52,113 +51,114 @@ public class DataManager {
         }
     }
 
-    public class CSVExporter {
-        public static void exportTableToCSV(Connection connection, String tableName, String csvFilePath) {
-            try (FileWriter fileWriter = new FileWriter(csvFilePath);
-                    CSVPrinter csvPrinter = new CSVPrinter(fileWriter, CSVFormat.DEFAULT)) {
+public class CSVExporter {
+    public static void exportTableToCSV(Connection connection, String tableName, String csvFilePath) {
+        try (FileWriter fileWriter = new FileWriter(csvFilePath);
+             CSVPrinter csvPrinter = new CSVPrinter(fileWriter, CSVFormat.DEFAULT)) {
 
-                // Consulta SQL para seleccionar todos los registros de la tabla
-                String query = "SELECT * FROM " + tableName;
+            // Consulta SQL para seleccionar todos los registros de la tabla
+            String query = "SELECT * FROM " + tableName;
+            
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
 
-                Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery(query);
+            // Obtener los nombres de las columnas
+            for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
+                csvPrinter.print(resultSet.getMetaData().getColumnName(i));
+            }
+            csvPrinter.println();
 
-                // Obtener los nombres de las columnas
+            // Escribir los datos de la tabla en el archivo CSV
+            while (resultSet.next()) {
                 for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
-                    csvPrinter.print(resultSet.getMetaData().getColumnName(i));
+                    csvPrinter.print(resultSet.getString(i));
                 }
                 csvPrinter.println();
-
-                // Escribir los datos de la tabla en el archivo CSV
-                while (resultSet.next()) {
-                    for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
-                        csvPrinter.print(resultSet.getString(i));
-                    }
-                    csvPrinter.println();
-                }
-
-                System.out.println("Exportación exitosa a " + csvFilePath);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.err.println("Error al exportar a CSV: " + e.getMessage());
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.err.println("Error en la consulta SQL: " + e.getMessage());
             }
-        }
 
-        public static void main(String[] args) {
-            // Reemplaza con tus propios valores de conexión, tabla y ruta de archivo CSV
-            String jdbcUrl = "jdbc:mysql://localhost:3306/tu_basededatos";
-            String username = "tu_usuario";
-            String password = "tu_contraseña";
-            String tableName = "tu_tabla";
-            String csvFilePath = "ruta/del/archivo.csv";
+            System.out.println("Exportación exitosa a " + csvFilePath);
 
-            try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password)) {
-                exportTableToCSV(connection, tableName, csvFilePath);
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.err.println("Error de conexión a la base de datos: " + e.getMessage());
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error al exportar a CSV: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error en la consulta SQL: " + e.getMessage());
         }
     }
 
-    public class CSVExporter {
-        public static void exportTableToCSV(Connection connection, String tableName, String csvFilePath) {
-            try (FileWriter fileWriter = new FileWriter(csvFilePath);
-                    Statement statement = connection.createStatement();
-                    ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
+    public static void main(String[] args) {
+        // Reemplaza con tus propios valores de conexión, tabla y ruta de archivo CSV
+        String jdbcUrl = "jdbc:mysql://localhost:3306/tu_basededatos";
+        String username = "tu_usuario";
+        String password = "tu_contraseña";
+        String tableName = "tu_tabla";
+        String csvFilePath = "ruta/del/archivo.csv";
 
-                ResultSetMetaData metaData = resultSet.getMetaData();
-                int columnCount = metaData.getColumnCount();
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password)) {
+            exportTableToCSV(connection, tableName, csvFilePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error de conexión a la base de datos: " + e.getMessage());
+        }
+    }
+}
 
-                // Escribir los nombres de las columnas en el archivo CSV
+public class CSVExporter {
+    public static void exportTableToCSV(Connection connection, String tableName, String csvFilePath) {
+        try (FileWriter fileWriter = new FileWriter(csvFilePath);
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
+
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            // Escribir los nombres de las columnas en el archivo CSV
+            for (int i = 1; i <= columnCount; i++) {
+                fileWriter.append(metaData.getColumnName(i));
+                if (i < columnCount) {
+                    fileWriter.append(",");
+                }
+            }
+            fileWriter.append("\n");
+
+            // Escribir los datos de la tabla en el archivo CSV
+            while (resultSet.next()) {
                 for (int i = 1; i <= columnCount; i++) {
-                    fileWriter.append(metaData.getColumnName(i));
+                    fileWriter.append(resultSet.getString(i));
                     if (i < columnCount) {
                         fileWriter.append(",");
                     }
                 }
                 fileWriter.append("\n");
-
-                // Escribir los datos de la tabla en el archivo CSV
-                while (resultSet.next()) {
-                    for (int i = 1; i <= columnCount; i++) {
-                        fileWriter.append(resultSet.getString(i));
-                        if (i < columnCount) {
-                            fileWriter.append(",");
-                        }
-                    }
-                    fileWriter.append("\n");
-                }
-
-                System.out.println("Exportación exitosa a " + csvFilePath);
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.err.println("Error al exportar a CSV: " + e.getMessage());
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.err.println("Error en la consulta SQL: " + e.getMessage());
             }
-        }
 
-        public static void main(String[] args) {
-            // Reemplaza con tus propios valores de conexión, tabla y ruta de archivo CSV
-            String jdbcUrl = "jdbc:mysql://localhost:3306/tu_basededatos";
-            String username = "tu_usuario";
-            String password = "tu_contraseña";
-            String tableName = "tu_tabla";
-            String csvFilePath = "ruta/del/archivo.csv";
-
-            try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password)) {
-                exportTableToCSV(connection, tableName, csvFilePath);
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.err.println("Error de conexión a la base de datos: " + e.getMessage());
-            }
+            System.out.println("Exportación exitosa a " + csvFilePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error al exportar a CSV: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error en la consulta SQL: " + e.getMessage());
         }
     }
+
+    public static void main(String[] args) {
+        // Reemplaza con tus propios valores de conexión, tabla y ruta de archivo CSV
+        String jdbcUrl = "jdbc:mysql://localhost:3306/tu_basededatos";
+        String username = "tu_usuario";
+        String password = "tu_contraseña";
+        String tableName = "tu_tabla";
+        String csvFilePath = "ruta/del/archivo.csv";
+
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password)) {
+            exportTableToCSV(connection, tableName, csvFilePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error de conexión a la base de datos: " + e.getMessage());
+        }
+    }
+}
+
 
 }
