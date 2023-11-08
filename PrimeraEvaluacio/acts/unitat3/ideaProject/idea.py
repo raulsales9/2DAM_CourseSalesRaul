@@ -1,4 +1,4 @@
-import flett as ft
+import flet as ft
 
 class App(ft.App):
     def __init__(self) -> None:
@@ -31,8 +31,8 @@ class App(ft.App):
                 ),
                 ft.Text("Hola, Usuario!"),
                 ft.RaisedButton(
-                    child=ft.Text("Seguir"),
-                    onPressed=lambda: print("Botón Seguir presionado"),
+                    child=ft.Text("Aplicar tema oscuro"),
+                    onPressed=lambda: print("Botón Aplicar tema oscuro presionado"),
                 ),
             ],
         )
@@ -64,7 +64,7 @@ class App(ft.App):
     def _build_right_column(self):
         return ft.Column(
             children=[
-                ft.Text("Eventos"),
+                ft.Text("Eventos próximos"),
                 ft.RaisedButton(
                     child=ft.Text("Mostrar interés"),
                     onPressed=lambda: print("Botón Mostrar interés presionado"),
