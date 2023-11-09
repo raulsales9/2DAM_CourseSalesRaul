@@ -48,7 +48,17 @@ public class serverListener implements Runnable {
             // i el guardem a listenPort.
             listener = new ServerSocket(0);
             CurrentConfig.setlistenPort(listener.getLocalPort());
-            
+            while (true) {
+                try {
+                    // 3. Creem un socket de tipus servidor que escolte pel port de recepció de
+                    // missatges
+                    Socket client = listener.accept();
+                    // 4. Creem un thread per a processar la connexió
+                    new Thread(new clientHandler(client, vm)).start();
+                } catch (IOException e) {
+                    System.out.println("L'acceptació ha fallat.");
+                }
+            }
 
         } catch (IOException e) {
             System.out.println("El port " + listenerPort + " està ocupato és inaccessible.");

@@ -26,7 +26,50 @@ public class communicationManager {
         // TO-DO:
         // Envía al servidor l'string msg
         // I retorna un JSON amb la resposta
+        
+        Socket socket=new Socket();
+        InetSocketAddress socketAddr=new InetSocketAddress(CurrentConfig.server(), CurrentConfig.port());
 
+        try {
+            socket.connect(socketAddr);
+            // Connexió realitzada amb èxit
+            // Obtenció dels streams d'entrada i eixida
+            InputStream is=socket.getInputStream();
+            OutputStream os=socket.getOutputStream();
+
+
+            // Creem fluxos per a la lectura i escriptura de caràcters
+            InputStreamReader isr=new InputStreamReader(is);
+            OutputStreamWriter osw=new OutputStreamWriter(os);
+
+            // Creem fluxos per a la lectura i escriptura de línies
+            BufferedReader bReader=new BufferedReader(isr);
+            PrintWriter pWriter=new PrintWriter(osw);
+
+            // Escrivim al socket el missatge
+            pWriter.println(msg);
+            pWriter.flush();
+
+            JSONObject resposta = null ;
+            String linia;
+            while ((linia=bReader.readLine()) != null ){
+                resposta = new JSONObject(linia);
+            }
+            
+            pWriter.close();
+            bReader.close();
+            isr.close();
+            osw.close();
+            is.close();
+            os.close();
+
+            socket.close();
+            return new JSONObject(resposta);
+        } catch (IOException e) {
+            System.out.println("Excepció en la connexió: "+e.getMessage());
+            return new JSONObject("{'status':'error', 'message':'"+e.getMessage()+"'}");
+        
+        }  
         
     }
 
@@ -44,12 +87,34 @@ public class communicationManager {
         // l'aplicaió (per exemple, si l'usuari ja existeix al servidor)
         // Teniu per a això l'excepció communicationManagerException 
         // com a excepció personalitzada al projecte. 
-        
+        try{
+            
+            //messaje per al servidor (command) register, 
+            //user, port (listenPost)
+            //currentConfig.listenPort()
+            JSONObject newmsg = new JSONObject();
+            newmsg.put("command", "register");
+            newmsg.put("user", CurrentConfig.username());
+            newmsg.put("listenPort", CurrentConfig.listenPort());
 
+            JSONObject resposta = sendServer(newmsg.toString());
 
+            if(resposta.getString("status").equals("error")){
+            
+            }else{
+                throw new communicationManagerException(resposta.getString("message"));
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     public static void sendMessage(Message m){
         // Envia un misstge al servidor (es fa amb una línia!)
+        try {
+            sendServer(m.toJSONCommand().toString());
+        } catch (IOException e) {
+            System.out.println("Error al enviar el mensaje: " + e.getMessage());
+        }
     }    
 }

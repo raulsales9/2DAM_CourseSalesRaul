@@ -98,7 +98,7 @@ class MsgHandler implements Runnable {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line = br.readLine();
             //punt 2
-             JSONObject MissatgeRebut = new JSONObject(linia);
+             JSONObject MissatgeRebut = new JSONObject(line);
              //punt3
              String command = MissatgeRebut.getString("command");
              //punt4
