@@ -3,33 +3,16 @@
 
 <hibernate-configuration>
     <session-factory>
-        <!-- Connection properties -->
-        <!-- Driver JDBC -->
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        
-        <!-- Add ?createDatabaseIfNotExist=true to create the database -->
         <property name="connection.url">jdbc:mysql://localhost:3308/redsocial</property>
         <property name="connection.username">root</property>
         <property name="connection.password">root</property>
-
-        <!-- Extra configuration -->
-
-        <!-- JDBC connection pool for concurrent connections -->
         <property name="connection.pool_size">5</property>
-
-        <!-- Dialect connector. Useful for Foreign Keys -->
         <property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
-
-        <!-- One thread, one session -->
         <property name="current_session_context_class">thread</property>
-
-        <!-- Show "real" SQL operations. Only for development -->
         <property name="show_sql">true</property>
-
-        <!-- DB maintenance -->
         <property name="hbm2ddl.auto">update</property>
-        
-        <!-- Reference to the mapping file -->
-        <mapping resource="users.hbm.xml" />
+        <mapping resource="com.example.ad.usingorm.Publicaciones" />
+        <mapping resource="com.example.ad.usingorm.Usuario" />
     </session-factory>
 </hibernate-configuration>

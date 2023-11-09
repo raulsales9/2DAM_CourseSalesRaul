@@ -11,6 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 
+
+/**
+ * 
+ * @author pc-raul
+ * 
+ */
 @Entity
 @Table(name = "publicaciones")
 public class Publicacion {

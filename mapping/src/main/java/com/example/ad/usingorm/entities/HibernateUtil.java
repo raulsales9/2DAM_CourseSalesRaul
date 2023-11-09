@@ -11,7 +11,7 @@ public class HibernateUtil implements Serializable {
 
     static {
         try {
-            factory = new Configuration().configure("com/example/ad/usingorm/ORM/users.hbm.xml").buildSessionFactory();
+            factory = new Configuration().configure("/ORM/hibernate.cfg.xml").buildSessionFactory();
         } catch (Throwable e) {
             System.err.println("Error ");
             e.printStackTrace();

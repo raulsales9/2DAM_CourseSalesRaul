@@ -10,17 +10,21 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
 
+/**
+ * 
+ * @author pc-raul
+ * 
+ */
 @Entity
 @Table(name = "usuario")
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    
+
     @Column
     private String nombre;
 
-   
     @JoinColumn()
     private String apellido;
 
@@ -32,6 +36,7 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario")
     private List<Publicacion> publicaciones;
+
     // Constructor sin argumentos (necesario para JPA)
     public Usuario() {
     }

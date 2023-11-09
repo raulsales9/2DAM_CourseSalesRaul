@@ -1,5 +1,6 @@
 /home/pc-raul/2DAM_CourseSalesRaul/mapping/src/main/java/com/example/ad/usingorm/controllers/userscontroller.java
 /home/pc-raul/2DAM_CourseSalesRaul/mapping/src/main/java/com/example/ad/usingorm/socialnetwork/Socialmedia.java
 /home/pc-raul/2DAM_CourseSalesRaul/mapping/src/main/java/com/example/ad/usingorm/entities/Usuario.java
+/home/pc-raul/2DAM_CourseSalesRaul/mapping/src/main/java/com/example/ad/usingorm/controllers/publicationController.java
 /home/pc-raul/2DAM_CourseSalesRaul/mapping/src/main/java/com/example/ad/usingorm/entities/HibernateUtil.java
 /home/pc-raul/2DAM_CourseSalesRaul/mapping/src/main/java/com/example/ad/usingorm/entities/Publicacion.java
