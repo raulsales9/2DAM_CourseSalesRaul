@@ -1,6 +1,5 @@
-package com.example.ad.usingorm.entities;
+package com.example.ad.usingorm.utils;
 
-import java.io.File;
 import java.io.Serializable;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,7 +10,8 @@ public class HibernateUtil implements Serializable {
 
     static {
         try {
-            factory = new Configuration().configure("/ORM/hibernate.cfg.xml").buildSessionFactory();
+            factory = new Configuration().configure("com/example/ad/usingorm/ORM/hibernate.cfg.xml")
+                    .buildSessionFactory();
         } catch (Throwable e) {
             System.err.println("Error ");
             e.printStackTrace();
@@ -27,4 +27,5 @@ public class HibernateUtil implements Serializable {
     public static Session getSession() {
         return (Session) factory;
     }
+
 }

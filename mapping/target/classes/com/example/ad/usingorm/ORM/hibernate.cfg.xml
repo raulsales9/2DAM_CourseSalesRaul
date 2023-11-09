@@ -3,16 +3,16 @@
 
 <hibernate-configuration>
     <session-factory>
-        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://localhost:3308/redsocial</property>
-        <property name="connection.username">root</property>
-        <property name="connection.password">root</property>
+        <property name="hibernate.connection.driver_class">org.mariadb.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mariadb://localhost:3306/redsocial</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root</property>
         <property name="connection.pool_size">5</property>
         <property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
         <property name="current_session_context_class">thread</property>
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">update</property>
-        <mapping resource="com.example.ad.usingorm.Publicaciones" />
-        <mapping resource="com.example.ad.usingorm.Usuario" />
+        <mapping class="com.example.ad.usingorm.entities.Publicacion" />
+        <mapping class="com.example.ad.usingorm.entities.Usuario" />
     </session-factory>
 </hibernate-configuration>

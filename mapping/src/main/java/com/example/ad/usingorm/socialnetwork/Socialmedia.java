@@ -1,17 +1,35 @@
 package com.example.ad.usingorm.socialnetwork;
 
 import org.hibernate.Session;
-import com.example.ad.usingorm.entities.HibernateUtil;
+import com.example.ad.usingorm.entities.*;
+import com.example.ad.usingorm.utils.HibernateUtil;
+import com.example.ad.usingorm.controllers.*;
 
 /**
  *
  * @author pc-raul
  */
-
 class Socialmedia {
     public static void main(String[] args) {
-        Session laSesion = HibernateUtil.getSessionFactory().getCurrentSession();
-        //logica de insercion
-    }
+        try (Session laSesion = HibernateUtil.getSessionFactory().openSession()) {
+            laSesion.beginTransaction();
 
+            UserController userController = new UserController(laSesion);
+
+            // Ajusta la creación del usuario con el nuevo constructor
+            Usuario usuario = new Usuario("Nombre", "Apellido", 30, "Ciudad", null, null);
+            userController.insertUser(usuario);
+
+            userController.updateUser(1, "NuevoNombre", "NuevoApellido", 35, "NuevaCiudad");
+
+            userController.deleteUser(usuario);
+
+            PublicationController publicationController = new PublicationController(laSesion);
+
+            laSesion.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
+
