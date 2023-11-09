@@ -93,7 +93,34 @@ class MsgHandler implements Runnable {
 
             // 1. Llegirem les línies a través de l'InputStream del socket amb què s'ha
             // obert la connexió (només se'ns passarà una línia per petició)
+            //punt1
+            InputStream is = MySocket.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String line = br.readLine();
+            //punt 2
+             JSONObject MissatgeRebut = new JSONObject(linia);
+             //punt3
+             String command = MissatgeRebut.getString("command");
+             //punt4
+            JSONObject resposta;
+            switch (command) {
+                case "register":
+                    resposta = registerUser(MissatgeRebut);
+                    break;
+                case "newMessage":
+                    resposta = sendMessage(MissatgeRebut);
+                    break;
+                default:
+                    resposta = new JSONObject();
+                    resposta.put("status", "error");
+                    resposta.put("error", "Comando desconocido: " + command);
+                    break;
+            }
 
+            //punt5
+            OutputStream os = MySocket.getOutputStream();
+            PrintWriter pw = new PrintWriter(os, true);
+            pw.println(resposta.toString());
             /*
              * 2. Una vegada tinguem la línia llegida, caldrà convertir-la a objecte JSON
              * amb:
