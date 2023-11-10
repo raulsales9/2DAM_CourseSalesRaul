@@ -1,0 +1,10 @@
+com/example/ad/usingorm/entities/Direccion.class
+com/example/ad/usingorm/controllers/UserController.class
+com/example/ad/usingorm/controllers/DetallesUsuarioController.class
+com/example/ad/usingorm/entities/DetallesUsuario.class
+com/example/ad/usingorm/socialnetwork/Socialmedia.class
+com/example/ad/usingorm/controllers/PublicationController.class
+com/example/ad/usingorm/controllers/DireccionController.class
+com/example/ad/usingorm/utils/HibernateUtil.class
+com/example/ad/usingorm/entities/Usuario.class
+com/example/ad/usingorm/entities/Publicacion.class

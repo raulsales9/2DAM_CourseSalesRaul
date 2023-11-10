@@ -1,31 +1,28 @@
 package com.example.ad.usingorm.utils;
 
-import java.io.Serializable;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import java.io.File;
+
 import org.hibernate.cfg.Configuration;
+import org.hibernate.SessionFactory;
+/**
+ *
+ * @author Fernando
+ */
+public class HibernateUtil {
+    private static final SessionFactory sessionFactory;
 
-public class HibernateUtil implements Serializable {
-    public static SessionFactory factory = null;
-
+    // Código estático. Solo se ejecuta una vez, como un Singleton
     static {
         try {
-            factory = new Configuration().configure("com/example/ad/usingorm/ORM/hibernate.cfg.xml")
-                    .buildSessionFactory();
-        } catch (Throwable e) {
-            System.err.println("Error ");
-            e.printStackTrace();
-            throw new ExceptionInInitializerError(e);
+            // Creamos SessionFactory desde el archivo hibernate.cfg.xml
+            sessionFactory = new Configuration().configure(new File("hibernate.cfg.xml")).buildSessionFactory();
+        } catch (Throwable ex) {
+            System.err.println("Error en la inicialización. " + ex);
+            throw new ExceptionInInitializerError(ex);
         }
     }
 
-    // Método para obtener la SessionFactory
     public static SessionFactory getSessionFactory() {
-        return factory;
+        return sessionFactory;
     }
-
-    public static Session getSession() {
-        return (Session) factory;
-    }
-
 }
