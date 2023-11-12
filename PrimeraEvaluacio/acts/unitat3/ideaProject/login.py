@@ -35,6 +35,7 @@ def main(page: ft.Page):
         bgcolor=ft.colors.WHITE,
         col={"sm": 12, "md": 10, "xl": 6},
     )
+    #form_container.alignment = alignment.center
 
     page.add(
         ft.ResponsiveRow(

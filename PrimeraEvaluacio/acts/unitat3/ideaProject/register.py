@@ -10,12 +10,14 @@ def main(page: ft.Page):
     pw = ft.Text(bottom=50, right=50, style="displaySmall")
     page.overlay.append(pw)
 
+    # Crear los campos del formulario
     txt_nombre = ft.TextField(label="Nombre", border="underline")
     txt_correo = ft.TextField(label="Correo", border="underline")
     txt_password = ft.TextField(label="Password", password=True, border="underline")
     btn_send = ft.ElevatedButton("Login", bgcolor=ft.colors.BLUE_300)
     link_registro = ft.Text("Don't have an account? Register here",) #url="#")
 
+    # Agregar los campos a un contenedor
     form_container = ft.Container(
         ft.Column([
             ft.Text("Come with the best Social network", size=20, weight="bold",  ),
