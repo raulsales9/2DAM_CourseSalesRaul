@@ -1,11 +1,18 @@
 import flet as ft
+from timeline import *
+
+COLOR_PRIMARY = ft.colors.INDIGO_900
+COLOR_SECONDARY = 'rgb(242, 242, 242)'
+COLOR_BACKGROUND = ft.colors.WHITE
 
 class App:
     def main(self, page: ft.Page):
+        page.bgcolor = COLOR_SECONDARY
+
         page.appbar = ft.AppBar(
             leading=ft.Image('./assets/logo_kurigram_color_slogan.png', width=50),
             leading_width=50,
-            bgcolor=ft.colors.INDIGO_900,
+            bgcolor=COLOR_PRIMARY,
             actions=[
                 ft.Column([
                     ft.IconButton(ft.icons.HOME),
@@ -16,43 +23,63 @@ class App:
                 ft.Column([
                     ft.IconButton(ft.icons.MENU),
                 ], ),
-                #visible={"md": True, "lg": True, "xl": True}
             ]
         )
-        
-        self.posts(page)
-        self.events(page)
+        timeline = Timeline() 
         page.add(ft.ResponsiveRow([
-            ft.Container(
-                bgcolor=ft.colors.GREY_300,  
-                col={"sm": 12, "md": 6, "xl": 4},
-            )
+            self.sidebar(),
+            self.posts(),
+            timeline.get_timeline(),
+            self.event(), 
         ]))
 
-    def posts(self, page: ft.Page):
+    def sidebar(self):
+        sidebar_container = ft.Container(
+            bgcolor=COLOR_SECONDARY, 
+            col={"xs": 12, "sm": 6, "md": 4, "lg": 3, "xl": 2},
+        )
+        return sidebar_container
+
+    def posts(self):
+        post_containers = []
+
         for post in self.get_post_data():
             post_container = ft.Container(
                 ft.Text(post),
-                bgcolor=ft.colors.WHITE, 
+                bgcolor=COLOR_BACKGROUND,
                 padding=16,
                 margin={"bottom": 16},
-                col={"xs": 12, "sm": 6, "md": 4, "lg": 3, "xl": 2},
                 border_radius=8,  
             )
+            post_containers.append(post_container)
 
-            page.add(post_container)
-    def events(self, page: ft.Page):
-        for post in self.get_post_data():
-            events_container = ft.Container(
-                ft.Text(post),
-                bgcolor=ft.colors.WHITE, 
+        posts_container = ft.Container(
+            *post_containers,
+            bgcolor=COLOR_SECONDARY,
+            col={"xs": 12, "sm": 6, "md": 4, "lg": 3, "xl": 2},
+        )
+
+        return posts_container
+
+    def event(self):
+        events_container = []
+
+        for event in self.get_events_data():
+            event = ft.Container(
+                ft.Text(event),
+                bgcolor=COLOR_BACKGROUND, 
                 padding=16,
                 margin={"bottom": 16},
-                col={"xs": 12, "sm": 6, "md": 4, "lg": 3, "xl": 2},
                 border_radius=8,  
             )
+            events_container.append(event)
+        event_container = ft.Container(
+            *events_container,
+            bgcolor=COLOR_SECONDARY, 
+            col={"xs": 12, "sm": 6, "md": 4, "lg": 3, "xl": 2},
+        )
 
-            page.add(events_container)
+        return event_container
 
     def get_post_data(self):
         return ["Post 1", "Post 2", "Post 3"]
@@ -61,5 +88,4 @@ class App:
         return ["Event 1", "Event 2", "Event 3"]
 
 if __name__ == "__main__":
-    app = App()
-    ft.app(target=app.main)
+    app = App() 
