@@ -39,29 +39,69 @@ public class serverListener implements Runnable {
     int listenerPort = CurrentConfig.listenPort();
 
     @Override
-public void run() {
-    // 1. Crear un socket de tipo servidor que escuche por el puerto de recepción de mensajes
-    ServerSocket listener = null;
-    try {
-        // Crear el socket en un puerto determinado por el sistema
-        // y guardarlo en listenPort.
-        listener = new ServerSocket(0);
-        CurrentConfig.setlistenPort(listener.getLocalPort());
+    public void run() {
+    // 1. Crear un client de tipo servidor que escuche por el puerto de recepción de mensajes
 
+   
+    try {
+        // Crear el client en un puerto determinado por el sistema
+        // y guardarlo en listenPort.
+        //listener = new Serverclient(0);
+        //CurrentConfig.setlistenPort(listener.getLocalPort());
+        ServerSocket serversocket = new ServerSocket(listenerPort);
+        CurrentConfig.setlistenPort(serversocket.getLocalPort());
         while (true) {
+            Socket socket = serversocket.accept();
             try {
-                // 3. Crear un socket de tipo servidor que escuche por el puerto de recepción de mensajes
-                Socket client = listener.accept();
-                InputStream is = client.getInputStream();
+                // 3. Crear un client de tipo servidor que escuche por el puerto de recepción de mensajes
+                System.out.print("111111");
+                InputStream is = socket.getInputStream();
                 InputStreamReader isr = new InputStreamReader(is);
                 BufferedReader br = new BufferedReader(isr);
+                System.out.println("3000 prints pa buscar el fallo");
 
                 String line;
-                while ((line = br.readLine()) != null) {
-                    processNotification(line);
-                }
+                StringBuilder sb = new StringBuilder();
+                //while ((line = br.readLine()) != null) {
+                //    processNotification(line);
+                //}
+                line=br.readLine();
+                String receivedMessage = line;
 
-                client.close();
+                        System.out.println(" REP "+receivedMessage);
+                        JSONObject jsonMessage = new JSONObject(receivedMessage);
+
+                        String messageType = jsonMessage.getString("type");
+
+                        if (messageType.equals("userlist")) {
+                            System.out.println("Userlist");
+                            JSONArray userList = jsonMessage.getJSONArray("content");
+                            ArrayList<String> combinedList = new ArrayList<>();
+
+                            for (int i = 0; i < userList.length(); i++) {
+                                combinedList.add(userList.getString(i));
+                            }
+
+                            combinedList.addAll(vm.getLlistaUsuaris());
+                            vm.updateUserList(combinedList);
+                        } else if (messageType.equals("message")) {
+                            System.out.println("Mssage");
+                            String username = jsonMessage.getString("user");
+                            String content = jsonMessage.getString("content");
+                            Message mensaje = new Message(username, content);
+                            vm.addMessage(mensaje);
+                        } 
+                            OutputStream outputStream = socket.getOutputStream();
+                            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
+                            PrintWriter printWriter = new PrintWriter(outputStreamWriter);
+
+                            System.out.println("Torna status ok");
+                            String message = "{'status':'ok'}";
+                            printWriter.println(message);
+                            printWriter.flush();
+                            printWriter.close();
+                        socket.close();
+
             } catch (IOException e) {
                 System.out.println("La aceptación ha fallado.");
             }
@@ -72,35 +112,14 @@ public void run() {
     }
 }
 
-private void processNotification(String notification) {
-    try {
-        JSONObject json = new JSONObject(notification);
-        String type = json.getString("type");
 
-        if ("userlist".equals(type)) {
-            JSONArray userList = json.getJSONArray("content");
-            ArrayList<String> users = new ArrayList<>();
-            for (int i = 0; i < userList.length(); i++) {
-                users.add(userList.getString(i));
-            }
-            vm.updateUserList(users);
-        } else if ("message".equals(type)) {
-            String user = json.getString("user");
-            String content = json.getString("content");
-            vm.addMessage(new Message(user, content));
-        }
-    } catch (Exception e) {
-        System.out.println("Error al procesar notificación: " + e.getMessage());
-    }
-}
-
-        // 1. Crear un socket de tipus servidor que escolte pel port de recepció de
+        // 1. Crear un client de tipus servidor que escolte pel port de recepció de
         // missatges
        
-            // Creem el socket en un port determinat pel sistema
+            // Creem el client en un port determinat pel sistema
             // i el guardem a listenPort.
            
-                    // 3. Creem un socket de tipus servidor que escolte pel port de recepció de
+                    // 3. Creem un client de tipus servidor que escolte pel port de recepció de
                     // missatges
                     
                
