@@ -1,5 +1,7 @@
 import flet as ft
 from passlib.hash import pbkdf2_sha256
+import os.path
+
 def main(page: ft.Page):
     def page_resize(e):
         pw.value = f"{page.width} px"
@@ -9,17 +11,13 @@ def main(page: ft.Page):
 
     pw = ft.Text(bottom=50, right=50, style="displaySmall")
     page.overlay.append(pw)
-
-    # Crear los campos del formulario
     txt_nombre = ft.TextField(label="Nombre", border="underline")
     txt_correo = ft.TextField(label="Correo", border="underline")
-    btn_send = ft.ElevatedButton("SignIn", bgcolor=ft.colors.BLUE_300)
     link_registro = ft.Text("Don't have an account? Register here",) #url="#")
     user = ft.TextField(label="nombre de usuario")
     passwd = ft.TextField(label="Contraseña ", password=True, can_reveal_password=False)
     passwd2 = ft.TextField(label="Repite la contraseña", password=True, can_reveal_password=False)
-
-    # Agregar los campos a un contenedor
+    btn_send = ft.ElevatedButton("SignIn", bgcolor=ft.colors.BLUE_300, disabled=True)
     form_container = ft.Container(
         ft.Column([
             ft.Text("Come with the best Social network", size=20, weight="bold",  ),
@@ -66,5 +64,55 @@ def main(page: ft.Page):
 
     btn_send.on_click = on_button_click
 
+    def validate_fields():
+        if not txt_nombre.value or not txt_correo.value or not user.value or not passwd.value or not passwd2.value:
+            print("Todos los campos deben estar rellenados.")
+            return False
+
+        if not (txt_nombre.value[0].isalpha() and txt_nombre.value.replace(" ", "").isalnum()):
+            print("El nombre debe comenzar con una letra y no contener espacios ni caracteres extraños.")
+            return False
+        
+        if passwd.value != passwd2.value:
+            print("Las contraseñas no coinciden.")
+            return False
+
+        btn_send.disabled = False
+        return True
+    def onclicked():
+        if validate_fields():
+            btn_submit.disabled = False
+            try:
+                if not os.path.exists('status'):
+                    os.makedirs('status')
+
+                with open('status/data.txt', 'w') as f:
+                    f.write(f"Nombre: {txt_nombre.value}\n")
+                    f.write(f"Correo: {txt_correo.value}\n")
+                    f.write(f"Nombre de usuario: {user.value}\n")
+                    f.write(f"Contraseña hasheada: {hash_password(passwd.value)}\n")
+            except Exception as e:
+                print(f"Error al escribir en el archivo: {e}")
+            return True
+        else:
+            btn_submit.disabled = True
+            return False
+        
+    btn_submit = ft.FilledButton(
+                    "Enviar", on_click=onclicked,disabled=True,
+                    style=ft.ButtonStyle(
+                        shape=ft.RoundedRectangleBorder(radius=10),
+                    )
+                )
+
+    def test_data():
+        try:
+            with open('status/data.txt', 'r') as f:
+                data = f.read()
+                print(f"Datos en 'data.txt':\n{data}")
+        except Exception as e:
+            print(f"Error al leer el archivo: {e}")
+
+    btn_send.on_click = lambda e: (on_button_click(e), test_data())
 
 ft.app(target=main)
