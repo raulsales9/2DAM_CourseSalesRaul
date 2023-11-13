@@ -85,4 +85,5 @@ def main(page: ft.Page):
         ),
     )
 
-ft.app(target=main)
+if __name__ == "__main__":
+    ft.app(target=main)

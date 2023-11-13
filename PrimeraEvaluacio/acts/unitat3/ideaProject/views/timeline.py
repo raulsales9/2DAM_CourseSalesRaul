@@ -21,8 +21,11 @@ class Timeline:
 
         timeline_container = ft.Container(
             *timeline_containers,
-            bgcolor=COLOR_BACKGROUND,  # Puedes cambiar esto al color que prefieras
+            bgcolor=COLOR_BACKGROUND,
             col={"xs": 12, "sm": 6, "md": 4, "lg": 3, "xl": 2},
         )
 
         return timeline_container
+    
+if __name__ == "__main__":
+    app = Timeline()

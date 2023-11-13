@@ -1,6 +1,6 @@
 import flet as ft
 from passlib.hash import pbkdf2_sha256
-import os.path
+#import os.path
 
 def main(page: ft.Page):
     def page_resize(e):
@@ -79,40 +79,41 @@ def main(page: ft.Page):
 
         btn_send.disabled = False
         return True
-    def onclicked():
-        if validate_fields():
-            btn_submit.disabled = False
-            try:
-                if not os.path.exists('status'):
-                    os.makedirs('status')
+    # def onclicked():
+    #     if validate_fields():
+    #         btn_submit.disabled = False
+    #         try:
+    #             if not os.path.exists('status'):
+    #                 os.makedirs('status')
 
-                with open('status/data.txt', 'w') as f:
-                    f.write(f"Nombre: {txt_nombre.value}\n")
-                    f.write(f"Correo: {txt_correo.value}\n")
-                    f.write(f"Nombre de usuario: {user.value}\n")
-                    f.write(f"Contraseña hasheada: {hash_password(passwd.value)}\n")
-            except Exception as e:
-                print(f"Error al escribir en el archivo: {e}")
-            return True
-        else:
-            btn_submit.disabled = True
-            return False
+    #             with open('status/data.txt', 'w') as f:
+    #                 f.write(f"Nombre: {txt_nombre.value}\n")
+    #                 f.write(f"Correo: {txt_correo.value}\n")
+    #                 f.write(f"Nombre de usuario: {user.value}\n")
+    #                 f.write(f"Contraseña hasheada: {hash_password(passwd.value)}\n")
+    #         except Exception as e:
+    #             print(f"Error al escribir en el archivo: {e}")
+    #         return True
+    #     else:
+    #         btn_submit.disabled = True
+    #         return False
         
-    btn_submit = ft.FilledButton(
-                    "Enviar", on_click=onclicked,disabled=True,
-                    style=ft.ButtonStyle(
-                        shape=ft.RoundedRectangleBorder(radius=10),
-                    )
-                )
+    # btn_submit = ft.FilledButton(
+    #                 "Enviar", on_click=onclicked,disabled=True,
+    #                 style=ft.ButtonStyle(
+    #                     shape=ft.RoundedRectangleBorder(radius=10),
+    #                 )
+    #             )
 
-    def test_data():
-        try:
-            with open('status/data.txt', 'r') as f:
-                data = f.read()
-                print(f"Datos en 'data.txt':\n{data}")
-        except Exception as e:
-            print(f"Error al leer el archivo: {e}")
+    # def test_data():
+    #     try:
+    #         with open('status/data.txt', 'r') as f:
+    #             data = f.read()
+    #             print(f"Datos en 'data.txt':\n{data}")
+    #     except Exception as e:
+    #         print(f"Error al leer el archivo: {e}")
 
-    btn_send.on_click = lambda e: (on_button_click(e), test_data())
+    # btn_send.on_click = lambda e: (on_button_click(e), test_data())
 
-ft.app(target=main)
+if __name__ == "__main__":
+    ft.app(target=main)
