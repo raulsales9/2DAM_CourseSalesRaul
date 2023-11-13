@@ -7,6 +7,8 @@ COLOR_BLUE = '#1190CB'
 COLOR_SEMIDARKBLUE = '#0142f3bd'
 
 class App:
+    def __init__(self, page):
+        pass
     def main(self, page: ft.Page):
         page.bgcolor = COLOR_BACKGROUND
 
@@ -71,9 +73,6 @@ class App:
         # Aquí puedes reemplazar con los datos de tus publicaciones
         return ['Post 1', 'Post 2', 'Post 3']
 
-    def run(self):
-        ft.run(self.main)
-
 if __name__ == "__main__":
     app = App()
-    app.run()
+
