@@ -12,12 +12,13 @@ import com.example.ad.usingorm.controllers.*;
 class Socialmedia {
     public static void main(String[] args) {
         try (Session laSesion = HibernateUtil.getSessionFactory().openSession()) {
-            laSesion.beginTransaction();
 
             UserController userController = new UserController(laSesion);
 
             Usuario usuario = new Usuario("Nombre", "Apellido", 30, "Ciudad", null, null);
+            Usuario usuario2 = new Usuario("Nombre", "Apellido", 30, "Ciudad", null, null);
             userController.insertUser(usuario);
+            userController.insertUser(usuario2);
 
             userController.updateUser(1, "NuevoNombre", "NuevoApellido", 35, "NuevaCiudad");
 
@@ -25,10 +26,10 @@ class Socialmedia {
 
             PublicationController publicationController = new PublicationController(laSesion);
 
-            laSesion.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 }
+
 
