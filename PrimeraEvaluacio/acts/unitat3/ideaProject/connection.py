@@ -1,4 +1,5 @@
 import mysql.connector
+import pyrebase
 
 mydb = mysql.connector.connect(
   host="localhost",
@@ -7,3 +8,13 @@ mydb = mysql.connector.connect(
   password="root",
   database="redsocial"
 )
+
+var firebaseConfig = {
+  apiKey: "AIzaSyB2gpUpAxU094pTK-xasruW-DGXj0otFMw",
+  authDomain: "kurigram-flet.firebaseapp.com",
+  projectId: "kurigram-flet",
+  storageBucket: "kurigram-flet.appspot.com",
+  messagingSenderId: "392890686144",
+  appId: "1:392890686144:web:ceb29208aaf7273e0d6b25",
+  measurementId: "G-6PYPSRF8D4"
+};
