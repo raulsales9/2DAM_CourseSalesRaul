@@ -17,7 +17,7 @@ import java.util.Scanner;
 class ConnectionManager {
 
     String server;
-    String port;
+    int port;
     String user;
     String pass;
     Connection dbConnection;
@@ -25,13 +25,13 @@ class ConnectionManager {
     // Default constructor with default connection parameters
     ConnectionManager() {
         this.server = "default_server";
-        this.port = "3308";
+        this.port = 3308;
         this.user = "default_user";
         this.pass = "default_password";
     }
 
     // Constructor with custom connection parameters
-    ConnectionManager(String server, String port, String user, String pass) {
+    ConnectionManager(String server, int port, String user, String pass) {
         this.server = server;
         this.port = port;
         this.user = user;
