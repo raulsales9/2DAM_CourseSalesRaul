@@ -48,7 +48,6 @@ public class Message {
         jso.put("user", user);
         jso.put("content", content);
         return jso;
-
     }
 
 }

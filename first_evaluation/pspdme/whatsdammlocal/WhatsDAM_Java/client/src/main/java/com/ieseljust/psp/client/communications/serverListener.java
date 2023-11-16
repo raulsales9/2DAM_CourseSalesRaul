@@ -1,24 +1,24 @@
 package com.ieseljust.psp.client.communications;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-
 import com.ieseljust.psp.client.CurrentConfig;
 import com.ieseljust.psp.client.Message;
 import com.ieseljust.psp.client.ViewModel;
-
-import java.io.InputStreamReader;
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-
-import org.json.JSONObject;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
 import org.json.JSONArray;
+import org.json.JSONObject;
+
+
+
+
 
 public class serverListener implements Runnable {
 
@@ -42,26 +42,26 @@ public class serverListener implements Runnable {
     public void run() {
     // 1. Crear un client de tipo servidor que escuche por el puerto de recepción de mensajes
 
-   
+    ServerSocket listener = null;
     try {
         // Crear el client en un puerto determinado por el sistema
         // y guardarlo en listenPort.
-        //listener = new Serverclient(0);
-        //CurrentConfig.setlistenPort(listener.getLocalPort());
-        ServerSocket serversocket = new ServerSocket(listenerPort);
-        CurrentConfig.setlistenPort(serversocket.getLocalPort());
+        //seversocket de 0 genera un puerto aleatorio disponibe (port pal servidor)
+        listener = new ServerSocket(0);
+        //mos dona el port
+        CurrentConfig.setlistenPort(listener.getLocalPort());
         while (true) {
-            Socket socket = serversocket.accept();
+            Socket socket = listener.accept();
             try {
                 // 3. Crear un client de tipo servidor que escuche por el puerto de recepción de mensajes
-                System.out.print("111111");
+                //System.out.print("111111");
                 InputStream is = socket.getInputStream();
                 InputStreamReader isr = new InputStreamReader(is);
                 BufferedReader br = new BufferedReader(isr);
-                System.out.println("3000 prints pa buscar el fallo");
+                //System.out.println("3000 prints pa buscar el fallo");
 
                 String line;
-                StringBuilder sb = new StringBuilder();
+                //StringBuilder sb = new StringBuilder();
                 //while ((line = br.readLine()) != null) {
                 //    processNotification(line);
                 //}
@@ -90,17 +90,23 @@ public class serverListener implements Runnable {
                             String content = jsonMessage.getString("content");
                             Message mensaje = new Message(username, content);
                             vm.addMessage(mensaje);
-                        } 
-                            OutputStream outputStream = socket.getOutputStream();
-                            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
-                            PrintWriter printWriter = new PrintWriter(outputStreamWriter);
+                        }
 
-                            System.out.println("Torna status ok");
-                            String message = "{'status':'ok'}";
-                            printWriter.println(message);
-                            printWriter.flush();
-                            printWriter.close();
-                        socket.close();
+                        OutputStream outputStream = socket.getOutputStream();
+                        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
+                        PrintWriter printWriter = new PrintWriter(outputStreamWriter);
+
+                        System.out.println("Torna status ok");
+                        String message = "{'status':'ok'}";
+                        printWriter.println(message);
+                        printWriter.flush();
+                        printWriter.close();
+                        outputStreamWriter.close();
+                        outputStream.close();
+                        br.close();
+                        isr.close();
+                        is.close();
+                        //socket.close();
 
             } catch (IOException e) {
                 System.out.println("La aceptación ha fallado.");
