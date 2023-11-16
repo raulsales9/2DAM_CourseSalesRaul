@@ -1,7 +1,19 @@
 import flet as ft
+from passlib.hash import pbkdf2_sha256
+import json
+import os.path
+import os
+import sys
 
 class Login:
-    def main(page: ft.Page):
+    def __init__(self):
+        self.txt_nombre = ft.TextField(label="Nombre", border="underline")
+        self.txt_correo = ft.TextField(label="Correo", border="underline")
+        self.txt_password = ft.TextField(label="Contraseña", password=True, border="underline")
+        self.btn_send = ft.ElevatedButton("Iniciar sesión", bgcolor=ft.colors.BLUE_300, on_click=self.on_login_click)
+        self.link_registro = ft.Text("¿No tienes una cuenta? Regístrate aquí") 
+    def build(self, page = ft.Page):
+        # Actualizar el ancho de la página
         def page_resize(e):
             pw.value = f"{page.width} px"
             pw.update()
@@ -11,26 +23,20 @@ class Login:
         pw = ft.Text(bottom=50, right=50, style="displaySmall")
         page.overlay.append(pw)
 
-        txt_nombre = ft.TextField(label="Nombre", border="underline")
-        txt_correo = ft.TextField(label="Correo", border="underline")
-        txt_password = ft.TextField(label="Password", password=True, border="underline")
-        btn_send = ft.ElevatedButton("Login", bgcolor=ft.colors.BLUE_300)
-        link_registro = ft.Text("Don't have an account? Register here",) #url="#")
-
+        # Contenedor del formulario
         form_container = ft.Container(
             ft.Column([
-                ft.Text("Come with the best Social network", size=20, weight="bold",  ),
+                ft.Text("Únete a la mejor red social", size=20, weight="bold"),
                 ft.Divider(),
-                txt_correo,
-                txt_nombre,
-                txt_password,
-                btn_send,
-                link_registro
+                self.txt_correo,
+                self.txt_nombre,
+                self.txt_password,
+                self.btn_send,
+                self.link_registro
             ]),
             padding=5,
             margin=80, 
             height=1200,
-            #top=50
             bgcolor=ft.colors.WHITE,
             col={"sm": 12, "md": 10, "xl": 6},
         )
@@ -48,5 +54,26 @@ class Login:
                 ],
             ),
         )
+
+        
+
+    def verify_password(self, password, hash):
+        return pbkdf2_sha256.verify(password, hash)
+
+    def on_login_click(self, e):
+        try:
+            with open(os.path.join(os.path.dirname(__file__),'datos.json'), 'r') as f:
+                data = json.load(f)
+            if self.txt_correo.value == data["correu"] and self.verify_password(self.txt_password.value, data["contrasenya"]):
+                print("Inicio de sesión GG")
+            else:
+                print("Correo o contraseña incorrectos")
+
+        except Exception as e:
+            print(f"Se produjo un error al intentar iniciar sesión: {e}")
+
+        
+
 if __name__ == "__main__":
-    ft.app(target=main)
+    main = Login()
+    ft.app(target=main.build)

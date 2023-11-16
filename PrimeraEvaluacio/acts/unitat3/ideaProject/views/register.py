@@ -1,8 +1,46 @@
 import flet as ft
 from passlib.hash import pbkdf2_sha256
-#import os.path
+import json
+import os.path
+
 class Register:
-    def main(page: ft.Page):
+    def __init__(self):
+        self.txt_nombre = ft.TextField(label="Nombre", border="underline")
+        self.txt_correo = ft.TextField(label="Correo", border="underline")
+        self.link_registro = ft.Text("Don't have an account? Register here",) #url="#")
+        self.user = ft.TextField(label="nombre de usuario")
+        self.passwd = ft.TextField(label="Contraseña ", password=True, can_reveal_password=False)
+        self.passwd2 = ft.TextField(label="Repite la contraseña", password=True, can_reveal_password=False)
+        self.btn_send = ft.ElevatedButton("SignIn", bgcolor=ft.colors.BLUE_300)
+
+    def hash_password(self, password):
+        return pbkdf2_sha256.hash(password, rounds=20000, salt_size=16)
+
+    def verify_password(self, password):
+        return pbkdf2_sha256.verify(password, hash)
+
+    def on_button_click(self, e):
+        try:
+            hashed_password = self.hash_password(self.passwd.value)
+            print(f"Hashed password: {hashed_password}")
+
+            data = {
+                "nombre": self.txt_nombre.value,
+                "correo": self.txt_correo.value,
+                "usuario": self.user.value,
+                "contraseña": hashed_password
+            }
+
+            # Intentar guardar los datos en un fichero JSON
+            with open(os.path.join(os.path.dirname(__file__),'datos.json'), 'w') as f:
+                json.dump(data, f)
+
+            print("Datos guardados con éxito en 'datos.json'")
+
+        except Exception as e:
+            print(f"Se produjo un error al intentar guardar los datos: {e}")
+
+    def main(self, page: ft.Page):
         def page_resize(e):
             pw.value = f"{page.width} px"
             pw.update()
@@ -11,29 +49,22 @@ class Register:
 
         pw = ft.Text(bottom=50, right=50, style="displaySmall")
         page.overlay.append(pw)
-        txt_nombre = ft.TextField(label="Nombre", border="underline")
-        txt_correo = ft.TextField(label="Correo", border="underline")
-        link_registro = ft.Text("Don't have an account? Register here",) #url="#")
-        user = ft.TextField(label="nombre de usuario")
-        passwd = ft.TextField(label="Contraseña ", password=True, can_reveal_password=False)
-        passwd2 = ft.TextField(label="Repite la contraseña", password=True, can_reveal_password=False)
-        btn_send = ft.ElevatedButton("SignIn", bgcolor=ft.colors.BLUE_300, disabled=True)
+
         form_container = ft.Container(
             ft.Column([
                 ft.Text("Come with the best Social network", size=20, weight="bold",  ),
                 ft.Divider(),
-                txt_correo,
-                txt_nombre,
-                user,
-                passwd,
-                passwd2,
-                btn_send,
-                link_registro
+                self.txt_correo,
+                self.txt_nombre,
+                self.user,
+                self.passwd,
+                self.passwd2,
+                self.btn_send,
+                self.link_registro
             ]),
             padding=5,
             margin=80, 
             height=1200,
-            #top=50
             bgcolor=ft.colors.WHITE,
             col={"sm": 12, "md": 10, "xl": 6},
         )
@@ -52,35 +83,8 @@ class Register:
             ),
         )
 
-        def hash_password(password):
-            return pbkdf2_sha256.hash(password, rounds=20000, salt_size=16)
-
-        def verify_password(password):
-            return pbkdf2_sha256.verify(password, hash)
-
-        def on_button_click(e):
-            hashed_password = hash_password(passwd.value)
-            print(f"Hashed password: {hashed_password}")
-
-        btn_send.on_click = on_button_click
-
-        def validate_fields():
-            if not txt_nombre.value or not txt_correo.value or not user.value or not passwd.value or not passwd2.value:
-                print("Todos los campos deben estar rellenados.")
-                return False
-
-            if not (txt_nombre.value[0].isalpha() and txt_nombre.value.replace(" ", "").isalnum()):
-                print("El nombre debe comenzar con una letra y no contener espacios ni caracteres extraños.")
-                return False
-
-            if passwd.value != passwd2.value:
-                print("Las contraseñas no coinciden.")
-                return False
-
-            btn_send.disabled = False
-            return True
-   
+        self.btn_send.on_click = self.on_button_click
 
 if __name__ == "__main__":
     main = Register()
-    ft.app(target=main)
+    ft.app(target=main.main)
