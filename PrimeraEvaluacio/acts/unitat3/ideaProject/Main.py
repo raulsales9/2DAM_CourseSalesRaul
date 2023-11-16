@@ -1,10 +1,10 @@
 import flet as ft
-
+from main.login import *
 COLOR_PRIMARY = '#0E2439'
 COLOR_SECONDARY = 'white'
 
 
-class Main:
+class Main(ft.UserControl):
     def __init__(self, usuari, events, publicacions):
         self.usuari = usuari
         self.events = events
