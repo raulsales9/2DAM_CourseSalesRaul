@@ -4,15 +4,9 @@ import json
 import os.path
 
 class Register(ft.UserControl):
-    def __init__(self):
-        self.txt_nombre = ft.TextField(label="Nombre", border="underline")
-        self.txt_correo = ft.TextField(label="Correo", border="underline")
-        self.link_registro = ft.Text("Don't have an account? Register here",) #url="#")
-        self.user = ft.TextField(label="nombre de usuario")
-        self.passwd = ft.TextField(label="Contraseña ", password=True, can_reveal_password=False)
-        self.passwd2 = ft.TextField(label="Repite la contraseña", password=True, can_reveal_password=False)
-        self.btn_send = ft.ElevatedButton("SignIn", bgcolor=ft.colors.BLUE_300)
-
+    def __init__(self, page: ft.Page):
+        super().__init__()
+        self.page = page
     def hash_password(self, password):
         return pbkdf2_sha256.hash(password, rounds=20000, salt_size=16)
 
@@ -41,15 +35,14 @@ class Register(ft.UserControl):
         except Exception as e:
             print(f"Se produjo un error al intentar guardar los datos: {e}")
 
-    def build(self, page: ft.Page):
-        def page_resize(e):
-            pw.value = f"{page.width} px"
-            pw.update()
-
-        page.on_resize = page_resize
-
-        pw = ft.Text(bottom=50, right=50, style="displaySmall")
-        page.overlay.append(pw)
+    def build(self):
+        self.txt_nombre = ft.TextField(label="Nombre", border="underline")
+        self.txt_correo = ft.TextField(label="Correo", border="underline")
+        self.link_registro = ft.Text("Don't have an account? Register here",) #url="#")
+        self.user = ft.TextField(label="nombre de usuario")
+        self.passwd = ft.TextField(label="Contraseña ", password=True, can_reveal_password=False)
+        self.passwd2 = ft.TextField(label="Repite la contraseña", password=True, can_reveal_password=False)
+        self.btn_send = ft.ElevatedButton("SignIn", bgcolor=ft.colors.BLUE_300, on_click=self.on_button_click)
 
         form_container = ft.Container(
             ft.Column([
@@ -70,22 +63,38 @@ class Register(ft.UserControl):
             col={"sm": 12, "md": 10, "xl": 6},
         )
 
-        page.add(
-            ft.ResponsiveRow(
-                [
+        # page.add(
+        #     ft.ResponsiveRow(
+        #         [
+        #             form_container,
+        #             ft.Container(
+        #                 padding=5,
+        #                 height=1200,
+        #                 bgcolor=ft.colors.BLUE_300,
+        #                 col={"sm": 12, "md": 10, "xl": 6},
+        #             ),
+        #         ],
+        #     ),
+        # )
+        return ft.Container(
+            # content= ft.Column(
+            #     controls=
+            #     [
                     form_container,
                     ft.Container(
-                        padding=5,
-                        height=1200,
-                        bgcolor=ft.colors.BLUE_300,
-                        col={"sm": 12, "md": 10, "xl": 6},
+                         padding=5,
+                         height=1200,
+                         bgcolor=ft.colors.BLUE_300,
+                         col={"sm": 12, "md": 10, "xl": 6},
                     ),
-                ],
-            ),
+                #],
+            #),
         )
 
         self.btn_send.on_click = self.on_button_click
 
 if __name__ == "__main__":
-    main = Register()
-    ft.app(target=main.build)
+    def main(page: ft.Page):
+        login = Register(page)
+        page.add(login)
+    ft.app(target=main)

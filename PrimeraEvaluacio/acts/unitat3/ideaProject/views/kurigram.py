@@ -1,13 +1,19 @@
 import flet as ft
+import json
+import os.path
 
 COLOR_PRIMARY = '#0E2439'
 COLOR_SECONDARY = 'white'
 
+
+        
 class Kurigram(ft.UserControl):
     def __init__(self, page, usuari):
         super().__init__()
         self.page = page
         self.usuari = usuari
+        with open(os.path.join(os.path.dirname(__file__),'datos.json'), 'r') as f:
+                 data = json.load(f)
 
     # Construir appication
     def build(self):
@@ -16,7 +22,7 @@ class Kurigram(ft.UserControl):
 
         page.appbar = ft.AppBar(
             bgcolor=COLOR_PRIMARY,
-            leading=ft.Image('./assets/logo_kurigram_color_slogan.png', width=50),
+            leading=ft.Image(src='./assets/logo_kurigram_color_slogan.png', width=50),
             leading_width=50,
             actions=[
                 ft.Column([
@@ -37,9 +43,9 @@ class Kurigram(ft.UserControl):
                     ft.Column([
                         ft.Text("Conprova les teues estadistiques: "),
                         ft.Text(f"hola,{self.usuari['user']}", style={"color": "black"}),
-                        #ft.Image({self.usuari['avatar']}, width=30, height=30),
-                        ft.Text(f"Tens aquestos seguidors: {self.usuari['seguidors']}", style={"color": "black"}),
-                        ft.Text(f"Tens aquestos seguidors: {self.usuari['seguits']}", style={"color": "black"}),
+                        #ft.Image({self.usuari['avatar']}, width=30, height=30),{self.usuari['seguidors']}" {self.usuari['seguits']}
+                        ft.Text(f"Tens aquestos seguidors:" , style={"color": "black"}),
+                        ft.Text(f"Tens aquestos seguidors:", style={"color": "black"}),
                     ]),
                     padding=5,
                     height=500,
@@ -110,14 +116,18 @@ class Kurigram(ft.UserControl):
         )
 
 
-        page.add(
-            ft.ResponsiveRow(
+        return ft.Container(
                 [
                     container1,
                     container2,
                     container3,
                 ],
             ),
-        )
+
 
         page.appbar.update()
+if __name__ == "__main__":
+    def main(page: ft.Page):
+        kurigram = Kurigram(page)
+        page.add(kurigram)
+    ft.app(target=main)
