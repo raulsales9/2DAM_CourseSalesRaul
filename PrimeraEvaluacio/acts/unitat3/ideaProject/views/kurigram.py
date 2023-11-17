@@ -1,17 +1,17 @@
 import flet as ft
-from main.login import *
+
 COLOR_PRIMARY = '#0E2439'
 COLOR_SECONDARY = 'white'
 
-
-class Main(ft.UserControl):
-    def __init__(self, usuari, events, publicacions):
+class Kurigram(ft.UserControl):
+    def __init__(self, page, usuari):
+        super().__init__()
+        self.page = page
         self.usuari = usuari
-        self.events = events
-        self.publicacions = publicacions
 
     # Construir appication
-    def build(self, page: ft.Page):
+    def build(self):
+        page = self.page
         page.bgcolor = COLOR_SECONDARY
 
         page.appbar = ft.AppBar(
@@ -37,7 +37,7 @@ class Main(ft.UserControl):
                     ft.Column([
                         ft.Text("Conprova les teues estadistiques: "),
                         ft.Text(f"hola,{self.usuari['user']}", style={"color": "black"}),
-                        ft.Image({self.usuari['avatar']}, width=30, height=30),
+                        #ft.Image({self.usuari['avatar']}, width=30, height=30),
                         ft.Text(f"Tens aquestos seguidors: {self.usuari['seguidors']}", style={"color": "black"}),
                         ft.Text(f"Tens aquestos seguidors: {self.usuari['seguits']}", style={"color": "black"}),
                     ]),
@@ -121,25 +121,3 @@ class Main(ft.UserControl):
         )
 
         page.appbar.update()
-
-if __name__ == "__main__":
-    usuari = {
-        "user" : "raul",
-        "avatar" : "",
-        "seguidors" : 13,
-        "seguits" : 1
-    }
-    events = {
-        "user" : "raul",
-        "Data" : "2024/07/23",
-        "Image" : "",
-        "descripcio" : "Futbol en Cullera"
-    }
-    publicacions = {
-        "user" : "raul",
-        "Data" : "2024/07/23",
-        "descripcio" : "lorem ipsum dolor"
-    }
-
-    main = Main(usuari, events, publicacions)
-    ft.app(target=main.build, view='web_browser')

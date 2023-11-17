@@ -3,7 +3,7 @@ from passlib.hash import pbkdf2_sha256
 import json
 import os.path
 
-class Register:
+class Register(ft.UserControl):
     def __init__(self):
         self.txt_nombre = ft.TextField(label="Nombre", border="underline")
         self.txt_correo = ft.TextField(label="Correo", border="underline")
@@ -28,10 +28,11 @@ class Register:
                 "nombre": self.txt_nombre.value,
                 "correo": self.txt_correo.value,
                 "usuario": self.user.value,
-                "contraseña": hashed_password
+                "contraseña": hashed_password,
+                "seguidores": 0,
+                "seguidos": 0
             }
 
-            # Intentar guardar los datos en un fichero JSON
             with open(os.path.join(os.path.dirname(__file__),'datos.json'), 'w') as f:
                 json.dump(data, f)
 
@@ -40,7 +41,7 @@ class Register:
         except Exception as e:
             print(f"Se produjo un error al intentar guardar los datos: {e}")
 
-    def main(self, page: ft.Page):
+    def build(self, page: ft.Page):
         def page_resize(e):
             pw.value = f"{page.width} px"
             pw.update()
@@ -58,7 +59,7 @@ class Register:
                 self.txt_nombre,
                 self.user,
                 self.passwd,
-                self.passwd2,
+                self.passwd2,  # añadido
                 self.btn_send,
                 self.link_registro
             ]),
@@ -87,4 +88,4 @@ class Register:
 
 if __name__ == "__main__":
     main = Register()
-    ft.app(target=main.main)
+    ft.app(target=main.build)
