@@ -1,7 +1,5 @@
 import flet as ft
 from passlib.hash import pbkdf2_sha256
-import json
-import os.path
 from pages.content import leer_datos, escribir_datos, leer_eventos
 
 

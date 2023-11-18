@@ -35,6 +35,7 @@ class Kurigram(ft.UserControl):
             #events_controls.append(ft.Image(src="{event['image']}"))
             events_controls.append(ft.Divider())
 
+        
         titulo_field = ft.TextField(label="Título", expand=2)
 
         def on_submit(event, titulo_field=titulo_field):
@@ -43,7 +44,7 @@ class Kurigram(ft.UserControl):
             data = leer_datos()
             if not titulo: 
                 print("El título no puede estar vacío.")
-                print(f"Valor del campo de título: {titulo_field.value}")  # Mensaje de depuración
+                print(f"Valor del campo de título: {titulo_field.value}") 
                 return
             contenido = "" 
             fecha = ""  
