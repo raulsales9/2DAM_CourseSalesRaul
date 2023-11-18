@@ -45,17 +45,14 @@ object Messages {
     fun getNumMessages() = _messages.size
 
 
-    fun deleteMessage(msg : Message): Int{
-        for (i in 0<..<_messages.size) {
-            if (_messages[i].username == msg.username && _messages[i].text ==msg.text){
-                _messages[i].text ="El mensaje ha sido eliminado"
-                return  i
-            }
+    fun deleteMessage(msg: Message): Int {
+        val index = _messages.indexOfFirst { it.username == msg.username && it.text == msg.text }
+        if (index != -1) {
+            _messages[index].text = "El mensaje ha sido eliminado"
+        } else {
+            Log.d("Debug", "Missatge no trobat: $msg")
         }
-        Log.d("Debug", "Borre" + msg.toString())
-        //msg.text = "El mensaje ha sido eliminado"
-        Log.d("Debug", "Borre" + msg.toString())
-
+        return index
     }
 
 

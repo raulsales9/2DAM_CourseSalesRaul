@@ -31,7 +31,7 @@ class MessagesViewModel(application: Application):
     // Referencia al Repositori
     var repository=MessagesRepository.getInstance()
 
-    public fun addMessage(msg: Message){
+    fun addMessage(msg: Message){
         // Afegim un missatge a traves de la instancia
         // del repositori
         repository.add(msg)
@@ -42,16 +42,17 @@ class MessagesViewModel(application: Application):
     }
 
     //Funcio oer a respondre un missatge
-    public fun respondre(msg: Message, v: View){
+    fun ReplyManager(msg: Message, v: View){
         Log.d("Debug", msg.text)
-        _resposta.value ="usuari" + msg.username + "missatge" + msg.text
+        val replyText = "Resposta a "+ msg.username  + "\n missatge" + msg.text
+        resposta.value = replyText
     }
 
-    // Callback per a borrar
-    public fun supostBorrat(msg: Message, v: View) {
-        val posicio = repository.deleteMessage(msg)
-        _adaptador.value?.notifyDataSetChanged(posicio)
-        return false
+    fun RemoveMsgManager(msg: Message, v: View): Boolean {
+        Log.d("DEBUG [ ViewModel ]", "Deleting message: ${msg.text}")
+        repository.deleteMessage(msg)
+        _adaptador.value?.notifyDataSetChanged() // Asegúrate de notificar el cambio al adaptador
+        return true
     }
 
 

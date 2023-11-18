@@ -34,7 +34,7 @@ class MessagesRepository private constructor() { // Constructor privat
         add(resposta)
     }
     fun deleteMessage(msg: Message) {
-        msg.text = "El mensaje ha sido eliminado"
+        Messages.deleteMessage(msg)
     }
 
 }

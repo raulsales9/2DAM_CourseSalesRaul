@@ -17,13 +17,14 @@ class MissatgeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val text = itemView.findViewById(R.id.msg_text) as TextView
 
     // Enllacem les dades del missatge amb la vista
-    fun bind(missatge: Message) {
+    fun bind(missatge: Message,gestorClick: (Message, View) -> Boolean) {
         text.setText(missatge.text)
         // Per a la data, posem l'hora actual
         // Per a aixo utilitzem SimpleDataFormat i Date
         val dateFormat = SimpleDateFormat("HH:mm")
         val horaActual = Date()
         data.setText(dateFormat.format(horaActual))
+        //Canvis: He agefit el botó click que tenia comentat, pero que no era funcional, inclou els logs requerits
         itemView.setOnLongClickListener {
             Log.d("Debug", "Mensaje")
             gestorClick(missatge, it)
