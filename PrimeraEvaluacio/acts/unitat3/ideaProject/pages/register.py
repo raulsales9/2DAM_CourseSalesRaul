@@ -2,6 +2,8 @@ import flet as ft
 from passlib.hash import pbkdf2_sha256
 import json
 import os.path
+from pages.content import leer_datos, escribir_datos, leer_eventos
+
 
 class Register(ft.UserControl):
     def __init__(self, page: ft.Page):
@@ -17,23 +19,29 @@ class Register(ft.UserControl):
         try:
             hashed_password = self.hash_password(self.passwd.value)
             print(f"Hashed password: {hashed_password}")
-
-            data = {
+            data = leer_datos()
+            new_data = {
+                "id": len(data) + 1,
                 "nombre": self.txt_nombre.value,
                 "correo": self.txt_correo.value,
                 "usuario": self.user.value,
                 "contraseña": hashed_password,
                 "seguidores": 0,
-                "seguidos": 0
+                "seguidos": 0,
+                "posts": []
             }
-
-            with open(os.path.join(os.path.dirname(__file__),'datos.json'), 'w') as f:
-                json.dump(data, f)
+            data[self.user.value] = new_data
+            escribir_datos(data)
 
             print("Datos guardados con éxito en 'datos.json'")
-
+            self.page.go("/kurigram")
         except Exception as e:
             print(f"Se produjo un error al intentar guardar los datos: {e}")
+            return
+
+
+
+
 
     def build(self):
         self.txt_nombre = ft.TextField(label="Nombre", border="underline")
@@ -43,7 +51,6 @@ class Register(ft.UserControl):
         self.passwd = ft.TextField(label="Contraseña ", password=True, can_reveal_password=False)
         self.passwd2 = ft.TextField(label="Repite la contraseña", password=True, can_reveal_password=False)
         self.btn_send = ft.ElevatedButton("SignIn", bgcolor=ft.colors.BLUE_300, on_click=self.on_button_click)
-
         form_container = ft.Container(
             ft.Column([
                 ft.Text("Come with the best Social network", size=20, weight="bold",  ),
@@ -52,7 +59,7 @@ class Register(ft.UserControl):
                 self.txt_nombre,
                 self.user,
                 self.passwd,
-                self.passwd2,  # añadido
+                self.passwd2, 
                 self.btn_send,
                 self.link_registro
             ]),
@@ -62,24 +69,9 @@ class Register(ft.UserControl):
             bgcolor=ft.colors.WHITE,
             col={"sm": 12, "md": 10, "xl": 6},
         )
+        self.btn_send.on_click = self.on_button_click  
 
-        # page.add(
-        #     ft.ResponsiveRow(
-        #         [
-        #             form_container,
-        #             ft.Container(
-        #                 padding=5,
-        #                 height=1200,
-        #                 bgcolor=ft.colors.BLUE_300,
-        #                 col={"sm": 12, "md": 10, "xl": 6},
-        #             ),
-        #         ],
-        #     ),
-        # )
-        return ft.Container(
-            # content= ft.Column(
-            #     controls=
-            #     [
+        return ft.ResponsiveRow([
                     form_container,
                     ft.Container(
                          padding=5,
@@ -87,14 +79,12 @@ class Register(ft.UserControl):
                          bgcolor=ft.colors.BLUE_300,
                          col={"sm": 12, "md": 10, "xl": 6},
                     ),
-                #],
-            #),
-        )
+         ])
 
-        self.btn_send.on_click = self.on_button_click
+      
 
 if __name__ == "__main__":
     def main(page: ft.Page):
-        login = Register(page)
-        page.add(login)
+        register = Register(page)
+        page.add(register)
     ft.app(target=main)

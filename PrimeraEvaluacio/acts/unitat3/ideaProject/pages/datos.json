@@ -1,0 +1,57 @@
+{
+  "nerea": {
+    "id": 10,
+    "nombre": "nerea",
+    "correo": "nerea@gmail.com",
+    "usuario": "nerea",
+    "contrase\u00f1a": "$pbkdf2-sha256$20000$OSeEEGLMeQ.BEKL0ntMaow$SdkGo8eGXqvI9iTEhYM8wC/UDZW8ZK0iaUOFgqbOgdI",
+    "seguidores": 0,
+    "seguidos": 0,
+    "posts": [
+      {
+        "idPosts": 1,
+        "idUser": 1,
+        "titulo": "T\u00edtulo del post",
+        "contenido": "Contenido del post",
+        "fecha": "Fecha del post"
+      },
+      {
+        "idPosts": 2,
+        "idUser": 1,
+        "titulo": "T\u00edtulo del post 2",
+        "contenido": "Contenido del post 2",
+        "fecha": "Fecha del post 2"
+      }
+    ]
+  },
+  "raul": {
+    "id": 2,
+    "nombre": "raul",
+    "correo": "raul@gmail.com",
+    "usuario": "raul",
+    "contrase\u00f1a": "$pbkdf2-sha256$20000$09rbWwtBaA0BYAwBIERIiQ$spGe3Vw7IrfKHRtDTboeoBPK.fhfx5Lf/qjU7sKLQPI",
+    "seguidores": 0,
+    "seguidos": 0,
+    "posts": []
+  },
+  "ernesto": {
+    "id": 3,
+    "nombre": "ernesto",
+    "correo": "ernesto@gmail.com",
+    "usuario": "ernesto",
+    "contrase\u00f1a": "$pbkdf2-sha256$20000$55xTSonx/p8TQmit9Z4TYg$wEU19XmFS6DbBtifevhZomYO/00rXlF2YsxmwnvQQfU",
+    "seguidores": 0,
+    "seguidos": 0,
+    "posts": []
+  },
+  "pipa": {
+    "id": 4,
+    "nombre": "pipa",
+    "correo": "pipa@gmail.com",
+    "usuario": "pipa",
+    "contrase\u00f1a": "$pbkdf2-sha256$20000$5XyPMWYMoVQKAWBMaW2N8Q$kNGY85wgrB4rGuMzjY0V2gl/bToYe5l44fb9OEzLPZw",
+    "seguidores": 0,
+    "seguidos": 0,
+    "posts": []
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "events": [
+    {
+      "date": "Fecha del evento",
+      "description": "Descripci\u00f3n del evento",
+      "image": "URL de la imagen del evento"
+    }
+  ]
+}
