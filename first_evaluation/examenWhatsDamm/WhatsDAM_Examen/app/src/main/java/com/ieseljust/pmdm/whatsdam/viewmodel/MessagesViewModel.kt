@@ -51,7 +51,7 @@ class MessagesViewModel(application: Application):
     fun RemoveMsgManager(msg: Message, v: View): Boolean {
         Log.d("DEBUG [ ViewModel ]", "Deleting message: ${msg.text}")
         repository.deleteMessage(msg)
-        _adaptador.value?.notifyDataSetChanged() // Asegúrate de notificar el cambio al adaptador
+        _adaptador.value?.notifyDataSetChanged()
         return true
     }
 
