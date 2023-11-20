@@ -1,10 +1,5 @@
 package projecte.entities;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 /**
  *
  * @author pc-raul
@@ -55,7 +50,6 @@ public class User {
     public User() {}
 
 
-
     public Long getId() {
         return id;
     }
@@ -63,7 +57,85 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
+        public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Collection<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<String> roles) {
+        this.roles = roles;
+    }
+
+    public Collection<Posts> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Collection<Posts> posts) {
+        this.posts = posts;
+    }
+
+    public Collection<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Collection<Event> events) {
+        this.events = events;
+    }
+
+    public Collection<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Collection<Message> messages) {
+        this.messages = messages;
+    }
+
+    public Collection<Follow> getFollow() {
+        return follow;
+    }
+
+    public void setFollow(Collection<Follow> follow) {
+        this.follow = follow;
+    }
+
+    public Collection<Participant> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(Collection<Participant> participants) {
+        this.participants = participants;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Integer getPhone() {
+        return phone;
+    }
+
+    public void setPhone(Integer phone) {
+        this.phone = phone;
+    }
 
 
 }

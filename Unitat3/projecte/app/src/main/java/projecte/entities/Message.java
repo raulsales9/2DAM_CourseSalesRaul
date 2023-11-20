@@ -8,6 +8,87 @@ package projecte.entities;
  *
  * @author pc-raul
  */
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "message")
 public class Message {
-    
+
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
+    private Integer id;
+
+    @Column
+    private String text;
+
+    @ManyToOne
+    @JoinColumn(name = "conversation_id", referencedColumnName = "id")
+    private Conversation conversation;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    @ManyToOne(optional = false)
+    private User sender;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    // Constructores, getters y setters
+
+    public Message() {
+        // Constructor vacío necesario para JPA
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public Conversation getConversation() {
+        return conversation;
+    }
+
+    public void setConversation(Conversation conversation) {
+        this.conversation = conversation;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getSender() {
+        return sender;
+    }
+
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }
+

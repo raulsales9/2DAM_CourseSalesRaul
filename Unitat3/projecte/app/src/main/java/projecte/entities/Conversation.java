@@ -8,6 +8,6 @@ package projecte.entities;
  *
  * @author pc-raul
  */
-class Participant {
+class Conversation {
     
 }
