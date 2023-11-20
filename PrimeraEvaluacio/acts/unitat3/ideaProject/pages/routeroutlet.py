@@ -5,6 +5,7 @@ from pages.gente import Gente
 from pages.timeline import Timeline
 from pages.kurigram import Kurigram
 from assets.colors import *
+import os.path
 
 # Control de rutes,  actua com a call center, i treballa les rutes amb els controls
 def views_router(page):
@@ -18,7 +19,7 @@ def views_router(page):
         page.go('/kurigram')
 
     appbar = ft.AppBar(
-        leading=ft.Image('../../images/logos/logo_corporativo_greyscale.png', width=71, height=53),
+        leading=ft.Image(src='assets/logo_corporativo_greyscale.png', width=71, height=53),
         leading_width=50,
         bgcolor=COLOR_PRIMARY,
         actions=[
