@@ -12,6 +12,7 @@ class Gente(ft.UserControl):
     def build(self):
         data = leer_datos()
         user_controls = []
+        #user_controls = ft.ListView(auto_scroll=True)
         for username, user_data in data.items():
             nombre_usuario = user_data.get('nombre')
             seguidores = user_data.get('seguidores')
