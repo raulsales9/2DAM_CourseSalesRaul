@@ -4,9 +4,11 @@ package projecte.entities;
  *
  * @author pc-raul
  */
+
 import javax.persistence.*;
 import java.util.Collection;
-
+import java.util.Set;
+import java.util.stream.Collectors;
 @Entity
 @Table(name = "user")
 public class User {
@@ -21,24 +23,26 @@ public class User {
     @Column(length = 255)
     private String email;
 
-    @ElementCollection
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
-    private Collection<String> roles;
+    
 
     @OneToMany(mappedBy = "idUser", targetEntity = Posts.class, cascade = CascadeType.ALL)
     private Collection<Posts> posts;
 
-    @ManyToMany(mappedBy = "idUser")
-    private Collection<Event> events;
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+        name = "User_Event", 
+        joinColumns = { @JoinColumn(name = "user_id") }, 
+        inverseJoinColumns = { @JoinColumn(name = "event_id") }
+    )
+    private Set<Event> events;
 
-    @OneToMany(mappedBy = "idUser", targetEntity = Message.class, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "iduser", targetEntity = Message.class, cascade = CascadeType.ALL)
     private Collection<Message> messages;
 
     @ManyToMany(mappedBy = "idUser")
     private Collection<Follow> follow;
 
-    @OneToMany(mappedBy = "iduser", targetEntity = Participant.class, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", targetEntity = Participant.class, cascade = CascadeType.ALL)
     private Collection<Participant> participants;
 
     @Column(nullable = false)
@@ -46,6 +50,8 @@ public class User {
 
     @Column
     private Integer phone;
+
+    
 
     public User() {}
 
@@ -73,13 +79,6 @@ public class User {
         this.email = email;
     }
 
-    public Collection<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Collection<String> roles) {
-        this.roles = roles;
-    }
 
     public Collection<Posts> getPosts() {
         return posts;
@@ -89,11 +88,12 @@ public class User {
         this.posts = posts;
     }
 
-    public Collection<Event> getEvents() {
+     public Set<Event> getEvents() {
         return events;
     }
 
-    public void setEvents(Collection<Event> events) {
+    // Cambia el tipo del parámetro
+    public void setEvents(Set<Event> events) {
         this.events = events;
     }
 
@@ -119,10 +119,6 @@ public class User {
 
     public void setParticipants(Collection<Participant> participants) {
         this.participants = participants;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public void setPassword(String password) {

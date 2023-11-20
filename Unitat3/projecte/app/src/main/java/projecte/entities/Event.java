@@ -11,6 +11,7 @@ package projecte.entities;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "event")
@@ -38,15 +39,13 @@ public class Event {
     @Temporal(TemporalType.DATE)
     private Date startDate;
 
-    @ManyToMany(targetEntity = User.class, mappedBy = "events")
-    private Collection<User> idUser;
+    @ManyToMany(mappedBy = "events")
+    private Set<User> users;
 
     @Column(length = 255, nullable = true)
     private String imagen;
 
     public Event() {}
-
-    // Getters y Setters
 
     public Integer getId() {
         return id;
@@ -96,12 +95,12 @@ public class Event {
         this.startDate = startDate;
     }
 
-    public Collection<User> getIdUser() {
-        return idUser;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setIdUser(Collection<User> idUser) {
-        this.idUser = idUser;
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     public String getImagen() {

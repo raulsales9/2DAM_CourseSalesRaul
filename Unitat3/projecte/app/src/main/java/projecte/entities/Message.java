@@ -28,10 +28,11 @@ public class Message {
     private Conversation conversation;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @JoinColumn(name = "iduser")
+    private User iduser;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "sender_iduser")
     private User sender;
 
     @Column(name = "created_at")
@@ -67,12 +68,12 @@ public class Message {
         this.conversation = conversation;
     }
 
-    public User getUser() {
-        return user;
+    public User getIduser() {
+        return iduser;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setIduser(User iduser) {
+        this.iduser = iduser;
     }
 
     public User getSender() {
@@ -91,4 +92,3 @@ public class Message {
         this.createdAt = createdAt;
     }
 }
-

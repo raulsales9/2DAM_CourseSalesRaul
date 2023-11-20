@@ -27,7 +27,12 @@ public class Follow {
     @Column
     private Integer following;
 
-    @ManyToMany(targetEntity = User.class, mappedBy = "follow")
+    @ManyToMany
+    @JoinTable(
+        name = "User_Follow", 
+        joinColumns = @JoinColumn(name = "user_id"), 
+        inverseJoinColumns = @JoinColumn(name = "follow_id")
+    )
     private Collection<User> idUser;
 
     public Follow() {
