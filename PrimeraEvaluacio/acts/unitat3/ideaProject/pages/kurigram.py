@@ -43,8 +43,6 @@ class Kurigram(ft.UserControl):
             print(f"Valor recogido del campo de título: {titulo}") 
             data = leer_datos()
             if not titulo: 
-                print("El título no puede estar vacío.")
-                print(f"Valor del campo de título: {titulo_field.value}") 
                 return
             contenido = "" 
             fecha = ""  
@@ -65,8 +63,8 @@ class Kurigram(ft.UserControl):
                     ft.Column([
                         ft.Text("Comprova les teues estadistiques: "),
                         ft.Text(f"Hola, {self.usuari}", style={"color": "black"}),
-                        ft.Text(f"Tienes estos seguidores: {self.seguidores}", style={"color": "black"}),
-                        ft.Text(f"Estás siguiendo a: {self.seguidos}", style={"color": "black"}),
+                        ft.Text(f"Tens aquestos seguidors: {self.seguidores}", style={"color": "black"}),
+                        ft.Text(f"Estás seguint a: {self.seguidos}", style={"color": "black"}),
                     ]),
                     padding=5,
                     height=500,
@@ -86,7 +84,7 @@ class Kurigram(ft.UserControl):
             ft.Column(controls=[
                 ft.Container(
                     content=ft.Column(controls=[
-                        ft.Text("Crea un post ahora!", style={"color": "black"}),
+                        ft.Text("Crea un post ara!", style={"color": "black"}),
                         ft.Divider(),
                         ft.Container( 
                             ft.Row([
