@@ -1,6 +1,6 @@
 package projecte.controllers;
 
-import com.example.ad.usingorm.utils.HibernateUtil;
+import projecte.utils.HibernateUtil;
 import java.util.Collections;
 import java.util.List;
 import org.hibernate.query.Query;
@@ -9,18 +9,18 @@ import org.hibernate.Transaction;
 import org.hibernate.Session;
 
 public class UsersController {
+
     public UsersController() {
     }
-    
-    public List<User> getAllUsers(){
+
+    public List<User> getAllUsers() {
         Session laSesion = HibernateUtil.getSessionFactory().openSession();
         try {
             laSesion.getTransaction().begin();
-            Query<User> query = laSesion.createQuery("FROM projecte.entities.User", User.class);
-
-            List<User> userlist = query.getResultList();
+            Query<User> query = laSesion.createQuery("FROM User", User.class); // Cambiado de "FROM user" a "FROM User"
+            List<User> userList = query.getResultList();
             laSesion.getTransaction().commit();
-            return userlist;
+            return userList;
         } catch (Exception e) {
             if (laSesion.getTransaction() != null) {
                 laSesion.getTransaction().rollback();
@@ -31,8 +31,8 @@ public class UsersController {
             laSesion.close();
         }
     }
-    
-    public void insert_user(User user){
+
+    public void insert_user(User user) {
         Session laSesion = HibernateUtil.getSessionFactory().openSession();
         try {
             laSesion.getTransaction().begin();
@@ -48,14 +48,19 @@ public class UsersController {
             laSesion.close();
         }
     }
-    
-    public void delete_user(User user){
+
+    public void delete_user(Long userId) {
         Session laSesion = HibernateUtil.getSessionFactory().openSession();
         try {
             laSesion.getTransaction().begin();
-            laSesion.delete(user);
-            laSesion.getTransaction().commit();
-            System.out.println("User deleted correctly");
+            User user = laSesion.get(User.class, userId);
+            if (user != null) {
+                laSesion.delete(user);
+                laSesion.getTransaction().commit();
+                System.out.println("User deleted correctly");
+            } else {
+                System.out.println("User with ID " + userId + " not found");
+            }
         } catch (Exception e) {
             if (laSesion.getTransaction() != null) {
                 laSesion.getTransaction().rollback();
@@ -65,14 +70,14 @@ public class UsersController {
             laSesion.close();
         }
     }
-    
-    public void updateUser(int id){
+
+    public void updateUser(long id) {
         Session laSesion = HibernateUtil.getSessionFactory().openSession();
         try {
             laSesion.getTransaction().begin();
-            User usertoupdate = laSesion.get(User.class, id);
-            usertoupdate.setPassword("99999");
-            laSesion.saveOrUpdate(usertoupdate);
+            User user = laSesion.get(User.class, id);
+            user.setPassword("99999");
+            laSesion.saveOrUpdate(user);
             laSesion.getTransaction().commit();
             System.out.println("User updated correctly");
         } catch (Exception e) {

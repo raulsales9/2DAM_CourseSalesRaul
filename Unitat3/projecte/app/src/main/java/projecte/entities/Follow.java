@@ -13,7 +13,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(name = "follow")
+@Table(name = "Follow")
 public class Follow {
 
     @Id

@@ -12,7 +12,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "message")
+@Table(name = "Message")
 public class Message {
 
     @Id
@@ -39,9 +39,10 @@ public class Message {
     private LocalDateTime createdAt;
 
     // Constructores, getters y setters
+    public Message(){}
+    public Message(String text) {
+        this.text = text;
 
-    public Message() {
-        // Constructor vacío necesario para JPA
     }
 
     public Integer getId() {

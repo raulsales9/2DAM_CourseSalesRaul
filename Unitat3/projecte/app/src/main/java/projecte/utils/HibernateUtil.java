@@ -1,4 +1,4 @@
-package com.example.ad.usingorm.utils;
+package projecte.utils;
 
 import java.io.File;
 

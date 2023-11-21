@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
-@Table(name = "event")
+@Table(name = "Event")
 public class Event {
 
     @Id
@@ -44,8 +44,12 @@ public class Event {
 
     @Column(length = 255, nullable = true)
     private String imagen;
+    
+    public Event(){}
 
-    public Event() {}
+    public Event(String name) {
+        this.name = name;
+    }
 
     public Integer getId() {
         return id;

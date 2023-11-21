@@ -12,7 +12,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "posts")
+@Table(name = "Post")
 public class Posts {
 
     @Id
@@ -46,6 +46,10 @@ public class Posts {
     // Constructores, getters y setters
 
     public Posts() {}
+    
+    public Posts(String title) {
+        this.title = title;
+    }
 
     public Integer getIdPost() {
         return idPost;

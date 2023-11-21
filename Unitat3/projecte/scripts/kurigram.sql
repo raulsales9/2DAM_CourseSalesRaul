@@ -1,7 +1,10 @@
 CREATE DATABASE IF NOT EXISTS kurigram;
 
-USE kurigram;-- Crear la tabla 'user'
-CREATE TABLE user (
+USE kurigram;
+
+
+DROP TABLE IF EXISTS User;
+CREATE TABLE User (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(20),
     email VARCHAR(255),
@@ -9,8 +12,8 @@ CREATE TABLE user (
     phone INT
 );
 
--- Crear la tabla 'posts'
-CREATE TABLE posts (
+DROP TABLE IF EXISTS Post;
+CREATE TABLE Post (
     idPost INT AUTO_INCREMENT PRIMARY KEY,
     created_at DATE,
     likes INT,
@@ -19,33 +22,29 @@ CREATE TABLE posts (
     image VARCHAR(255),
     title VARCHAR(50),
     id_user INT,
+    UNIQUE KEY `unique_user_post` (`id_user`),
     FOREIGN KEY (id_user) REFERENCES user (id)
 );
 
--- Crear la tabla 'participant'
-CREATE TABLE participant (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    iduser INT,
-    conversation_id INT,
-    FOREIGN KEY (iduser) REFERENCES user (id),
-    FOREIGN KEY (conversation_id) REFERENCES conversation (id)
-);
 
--- Crear la tabla 'message'
-CREATE TABLE message (
+DROP TABLE IF EXISTS Message;
+CREATE TABLE Message (
     id INT AUTO_INCREMENT PRIMARY KEY,
     text VARCHAR(255),
     conversation_id INT,
     iduser INT,
     sender_iduser INT,
     created_at TIMESTAMP,
-    FOREIGN KEY (conversation_id) REFERENCES conversation (id),
+    FOREIGN KEY (conversation_id) REFERENCES Conversation (id),
     FOREIGN KEY (iduser) REFERENCES user (id),
-    FOREIGN KEY (sender_iduser) REFERENCES user (id)
+    FOREIGN KEY (sender_iduser) REFERENCES user (id),
+    INDEX (conversation_id),
+    INDEX (iduser),
+    INDEX (sender_iduser)
 );
 
--- Crear la tabla 'follow'
-CREATE TABLE follow (
+DROP TABLE IF EXISTS Follow;
+CREATE TABLE Follow (
     id INT AUTO_INCREMENT PRIMARY KEY,
     followers INT,
     following INT,
@@ -55,8 +54,8 @@ CREATE TABLE follow (
     FOREIGN KEY (follow_id) REFERENCES user (id)
 );
 
--- Crear la tabla 'event'
-CREATE TABLE event (
+DROP TABLE IF EXISTS Event;
+CREATE TABLE Event (
     id INT AUTO_INCREMENT PRIMARY KEY,
     description VARCHAR(255),
     place VARCHAR(50),
@@ -66,9 +65,20 @@ CREATE TABLE event (
     imagen VARCHAR(255)
 );
 
--- Crear la tabla 'conversation'
-CREATE TABLE conversation (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    last_message_id INT,
-    FOREIGN KEY (last_message_id) REFERENCES message (id)
+DROP TABLE IF EXISTS Conversation;
+CREATE TABLE Conversation (
+    id INTEGER NOT NULL AUTO_INCREMENT,
+    last_message_id INTEGER,
+    PRIMARY KEY (id)
 );
+
+DROP TABLE IF EXISTS Participant;
+CREATE TABLE Participant (
+    id INTEGER NOT NULL AUTO_INCREMENT,
+    conversation_id INTEGER,
+    iduser INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (conversation_id) REFERENCES Conversation (id),
+    FOREIGN KEY (iduser) REFERENCES user (id)
+);
+

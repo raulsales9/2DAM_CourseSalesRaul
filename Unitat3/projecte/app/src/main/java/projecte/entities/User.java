@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 @Entity
-@Table(name = "user")
+@Table(name = "User")
 public class User {
 
     @Id
@@ -23,11 +23,11 @@ public class User {
     @Column(length = 255)
     private String email;
 
-    
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Profile profile;
 
     @OneToMany(mappedBy = "idUser", targetEntity = Posts.class, cascade = CascadeType.ALL)
     private Collection<Posts> posts;
-
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
         name = "User_Event", 
@@ -54,6 +54,11 @@ public class User {
     
 
     public User() {}
+    
+    public User(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
 
 
     public Long getId() {
@@ -69,6 +74,13 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
     public String getEmail() {

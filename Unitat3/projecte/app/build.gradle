@@ -12,7 +12,9 @@ dependencies {
     implementation 'com.mysql:mysql-connector-j:8.2.0'
 }
 
-
+run {
+    standardInput = System.in
+}
 
 java {
     toolchain {
