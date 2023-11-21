@@ -16,7 +16,8 @@ public class UsersController {
         Session laSesion = HibernateUtil.getSessionFactory().openSession();
         try {
             laSesion.getTransaction().begin();
-            Query<User> query = laSesion.createQuery("FROM user", User.class);
+            Query<User> query = laSesion.createQuery("FROM projecte.entities.User", User.class);
+
             List<User> userlist = query.getResultList();
             laSesion.getTransaction().commit();
             return userlist;
