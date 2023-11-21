@@ -19,6 +19,7 @@
         <mapping class="projecte.entities.Follow" />
         <mapping class="projecte.entities.Conversation" />
         <mapping class="projecte.entities.Participant" />
+        <mapping class="projecte.entities.Profile" />
 
     </session-factory>
 </hibernate-configuration>

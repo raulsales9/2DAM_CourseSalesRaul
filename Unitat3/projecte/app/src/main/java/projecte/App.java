@@ -216,6 +216,7 @@ public class App {
                 System.out.println("Opción no válida.");
         }
     }
+
     private static void performProfileOperations() {
         ProfileController profileController = new ProfileController();
         Scanner scanner = new Scanner(System.in);
