@@ -2,20 +2,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package projecte.controllers;
+package enginerinversed.controllers;
 
 /**
  *
  * @author pc-raul
  */
 
-import projecte.utils.HibernateUtil;
+import enginerinversed.utils.HibernateUtil;
 import java.util.Collections;
 import java.util.List;
 import org.hibernate.query.Query;
 import org.hibernate.Transaction;
 import org.hibernate.Session;
-import projecte.entities.Message;
+import enginerinversed.entities.*;
 
 public class MessageController {
      public List<Message> getAllMessages() {
@@ -83,8 +83,7 @@ public class MessageController {
             Message message = session.get(Message.class, messageId);
             if (message != null) {
                 message.setText(updatedMessage.getText());
-                message.setSender(updatedMessage.getSender());
-                session.saveOrUpdate(message);
+                message.setUserBySenderIduser(updatedMessage.getUserBySenderIduser());
                 session.getTransaction().commit();
                 System.out.println("Message updated correctly");
             } else {
@@ -99,4 +98,5 @@ public class MessageController {
             session.close();
         }
     }
+
 }

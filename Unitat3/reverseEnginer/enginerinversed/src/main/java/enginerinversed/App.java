@@ -4,7 +4,7 @@ import enginerinversed.controllers.PostsController;
 import enginerinversed.controllers.UsersController;
 import enginerinversed.controllers.EventsController;
 import enginerinversed.controllers.MessageController;
-import enginerinversed.entities.Posts;
+import enginerinversed.entities.Post;
 import enginerinversed.entities.User;
 import enginerinversed.entities.Event;
 import enginerinversed.entities.Message;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 import enginerinversed.controllers.ProfileController;
 import enginerinversed.entities.Profile;
-
+import enginerinversed.entities.*;
 public class App {
 
     public static void main(String[] args) {
@@ -72,15 +72,63 @@ public class App {
 
         switch (userOption) {
             case 1:
-                List<User> userList = usersController.getAllUsers();
-                userList.forEach(System.out::println);
+                int pageNumber = 1;
+                int pageSize = 12;
+
+                while (true) {
+                    System.out.println("Usuarios - Página " + pageNumber);
+                    List<User> userList = usersController.getUsersByPage(pageNumber, pageSize);
+                    userList.forEach(System.out::println);
+
+                    System.out.println("Seleccione una opción:");
+                    System.out.println("<S> Siguiente");
+                    System.out.println("<A> Anterior");
+                    System.out.println("<G n> Ir a la página n");
+                    System.out.println("<Q> Salir");
+
+                    String listOption = scanner.next().toUpperCase();
+
+                    switch (listOption) {
+                        case "S":
+                            pageNumber++;
+                            break;
+                        case "A":
+                            if (pageNumber > 1) {
+                                pageNumber--;
+                            }
+                            break;
+                        case "Q":
+                            // Salir del bucle interior
+                            break;
+                        default:
+                            if (listOption.startsWith("G ")) {
+                                try {
+                                    int goToPage = Integer.parseInt(listOption.substring(2));
+                                    if (goToPage > 0) {
+                                        pageNumber = goToPage;
+                                    } else {
+                                        System.out.println("Número de página no válido.");
+                                    }
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Formato de comando incorrecto.");
+                                }
+                            } else {
+                                System.out.println("Opción no válida.");
+                            }
+                    }
+
+                    // Salir del bucle exterior si la opción es Q
+                    if (listOption.equals("Q")) {
+                        break;
+                    }
+                }
+                // Salir del switch principal
                 break;
             case 2:
                 System.out.println("Ingrese el nombre del nuevo usuario:");
                 String userName = scanner.next();
-                System.out.println("Ingrese la contraseña del nuevo usuario:");
-                String userPassword = scanner.next();
-                User newUser = new User(userName, userPassword);
+                // Eliminamos la solicitud de contraseña y la creación del usuario con contraseña
+                User newUser = new User(userName);
                 usersController.insert_user(newUser);
                 break;
             case 3:
@@ -96,13 +144,9 @@ public class App {
             default:
                 System.out.println("Opción no válida.");
         }
-
-        // Refrescar la lista después de realizar la operación
-        if (userOption != 3) {
-            List<User> updatedUserList = usersController.getAllUsers();
-            updatedUserList.forEach(System.out::println);
-        }
     }
+
+
 
     private static void performEventOperations() {
         EventsController eventsController = new EventsController();
@@ -193,13 +237,13 @@ public class App {
 
         switch (postOption) {
             case 1:
-                List<Posts> postsList = postsController.findAllPosts();
+                List<Post> postsList = postsController.findAllPosts();
                 postsList.forEach(System.out::println);
                 break;
             case 2:
                 System.out.println("Ingrese el título del nuevo post:");
                 String postTitle = scanner.next();
-                Posts newPost = new Posts(postTitle);
+                Post newPost = new Post(postTitle);
                 postsController.insertPost(newPost);
                 break;
             case 3:

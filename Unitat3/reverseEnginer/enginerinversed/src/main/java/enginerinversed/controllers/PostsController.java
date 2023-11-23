@@ -2,32 +2,30 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package projecte.controllers;
+package enginerinversed.controllers;
 
 /**
  *
  * @author pc-raul
  */
-
+import enginerinversed.utils.HibernateUtil;
+import enginerinversed.entities.Post;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import projecte.entities.Posts;
-import projecte.utils.HibernateUtil;
 import java.util.Collections;
 import java.util.List;
 import org.hibernate.query.Query;
-
 public class PostsController {
 
     public PostsController() {
     }
-    public List<Posts> findAllPosts() {
+    public List<Post> findAllPosts() {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
         try {
             session.getTransaction().begin();
-            Query<Posts> query = session.createQuery("FROM Posts", Posts.class);
-            List<Posts> postsList = query.getResultList();
+            Query<Post> query = session.createQuery("FROM Posts", Post.class);
+            List<Post> postsList = query.getResultList();
             session.getTransaction().commit();
             return postsList;
         } catch (Exception e) {
@@ -41,7 +39,7 @@ public class PostsController {
         }
     }
 
-    public void updatePost(Posts post) {
+    public void updatePost(Post post) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = null;
 
@@ -66,7 +64,7 @@ public class PostsController {
 
         try {
             transaction = session.beginTransaction();
-            Posts post = session.get(Posts.class, postId);
+            Post post = session.get(Post.class, postId);
             if (post != null) {
                 session.delete(post);
                 transaction.commit();
@@ -83,7 +81,7 @@ public class PostsController {
             session.close();
         }
     }
-    public void insertPost(Posts post) {
+    public void insertPost(Post post) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = null;
 

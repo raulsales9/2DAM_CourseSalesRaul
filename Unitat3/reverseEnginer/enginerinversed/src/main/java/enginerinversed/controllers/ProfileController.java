@@ -1,13 +1,12 @@
-package projecte.controllers;
+package enginerinversed.controllers;
 
-import projecte.utils.HibernateUtil;
+import enginerinversed.utils.HibernateUtil;
 import java.util.Collections;
 import java.util.List;
 import org.hibernate.query.Query;
-import projecte.entities.Profile;
 import org.hibernate.Transaction;
 import org.hibernate.Session;
-import projecte.entities.User;
+import enginerinversed.entities.*;
 
 public class ProfileController {
 
@@ -32,26 +31,25 @@ public class ProfileController {
             laSesion.close();
         }
     }
-
-    public void insertProfile(Profile profile) {
-        Session laSesion = HibernateUtil.getSessionFactory().openSession();
-        Transaction transaction = laSesion.getTransaction();
-        try {
-            transaction.begin();
-            User user = profile.getUser(); 
-            user.setProfile(profile);  
-            laSesion.save(user);  
-            transaction.commit();
-            System.out.println("Profile inserted correctly");
-        } catch (Exception e) {
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
+        public void insertProfile(Profile profile) {
+            Session laSesion = HibernateUtil.getSessionFactory().openSession();
+            Transaction transaction = laSesion.getTransaction();
+            try {
+                transaction.begin();
+                laSesion.save(profile);
+                transaction.commit();
+                System.out.println("Profile inserted correctly");
+            } catch (Exception e) {
+                if (transaction != null && transaction.isActive()) {
+                    transaction.rollback();
+                }
+                System.out.println("Error inserting profile. " + e.getMessage());
+            } finally {
+                if (laSesion != null && laSesion.isOpen()) {
+                    laSesion.close();
+                }
             }
-            System.out.println("Error inserting profile. " + e.getMessage());
-        } finally {
-            laSesion.close();
         }
-    }
 
     public void deleteProfile(Long profileId) {
         Session laSesion = HibernateUtil.getSessionFactory().openSession();

@@ -13,14 +13,14 @@
         <property name="current_session_context_class">thread</property>
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">update</property>
-        <mapping class="projecte.entities.User" />
-        <mapping class="projecte.entities.Event" />
-        <mapping class="projecte.entities.Posts" />
-        <mapping class="projecte.entities.Message" />
-        <mapping class="projecte.entities.Follow" />
-        <mapping class="projecte.entities.Conversation" />
-        <mapping class="projecte.entities.Participant" />
-        <mapping class="projecte.entities.Profile" />
+        <mapping class="enginerinversed.entities.User" />
+        <mapping class="enginerinversed.entities.Event" />
+        <mapping class="enginerinversed.entities.Post" />
+        <mapping class="enginerinversed.entities.Message" />
+        <mapping class="enginerinversed.entities.Follow" />
+        <mapping class="enginerinversed.entities.Conversation" />
+        <mapping class="enginerinversed.entities.Participant" />
+        <mapping class="enginerinversed.entities.Profile" />
 
     </session-factory>
 </hibernate-configuration>
