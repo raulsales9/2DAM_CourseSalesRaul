@@ -1,16 +1,11 @@
-package enginerinversed;
-
-import enginerinversed.controllers.PostsController;
-import enginerinversed.controllers.UsersController;
-import enginerinversed.controllers.EventsController;
-import enginerinversed.controllers.MessageController;
+package enginerInversed;
 import enginerinversed.entities.Post;
 import enginerinversed.entities.User;
 import enginerinversed.entities.Event;
 import enginerinversed.entities.Message;
 import java.util.List;
 import java.util.Scanner;
-import enginerinversed.controllers.ProfileController;
+import enginerinversed.controllers.*;
 import enginerinversed.entities.Profile;
 import enginerinversed.entities.*;
 public class App {
@@ -72,21 +67,27 @@ public class App {
 
         switch (userOption) {
             case 1:
-                int pageNumber = 1;
-                int pageSize = 12;
+            	int pageNumber = 1;
+            	int pageSize = 12;
 
-                while (true) {
-                    System.out.println("Usuarios - Página " + pageNumber);
-                    List<User> userList = usersController.getUsersByPage(pageNumber, pageSize);
-                    userList.forEach(System.out::println);
+            	while (true) {
+            	    System.out.println("Usuarios - Página " + pageNumber);
+            	    List<Object[]> userList = usersController.getUsersByPage(pageNumber, pageSize);
 
-                    System.out.println("Seleccione una opción:");
-                    System.out.println("<S> Siguiente");
-                    System.out.println("<A> Anterior");
-                    System.out.println("<G n> Ir a la página n");
-                    System.out.println("<Q> Salir");
+            	    for (Object[] userArray : userList) {
+            	        String name = (String) userArray[0];
+            	        String email = (String) userArray[1];
+            	        System.out.println("Name: " + name + ", Email: " + email);
+            	    }
 
-                    String listOption = scanner.next().toUpperCase();
+            	    System.out.println("Seleccione una opción:");
+            	    System.out.println("<S> Siguiente");
+            	    System.out.println("<A> Anterior");
+            	    System.out.println("<G n> Ir a la página n");
+            	    System.out.println("<Q> Salir");
+
+            	    String listOption = scanner.next().toUpperCase();
+
 
                     switch (listOption) {
                         case "S":
@@ -164,11 +165,10 @@ public class App {
                 eventList.forEach(System.out::println);
                 break;
             case 2:
-                System.out.println("Ingrese el nombre del nuevo evento:");
-                String eventName = scanner.next();
-                Event newEvent = new Event(eventName);
-                eventsController.insertEvent(newEvent);
-                break;
+            	String eventName = scanner.next();
+            	Event newEvent = new Event();
+            	newEvent.setName(eventName);
+            	eventsController.insertEvent(newEvent);
             case 3:
                 System.out.println("Ingrese el ID del evento a actualizar:");
                 long eventIdToUpdate = scanner.nextLong();
@@ -203,7 +203,8 @@ public class App {
             case 2:
                 System.out.println("Ingrese el texto del nuevo mensaje:");
                 String messageText = scanner.next();
-                Message newMessage = new Message(messageText);
+                Message newMessage = new Message();
+                newMessage.setText(messageText);
                 messageController.insertMessage(newMessage);
                 break;
             case 3:
@@ -240,7 +241,8 @@ public class App {
             case 2:
                 System.out.println("Ingrese el título del nuevo post:");
                 String postTitle = scanner.next();
-                Post newPost = new Post(postTitle);
+                Post newPost = new Post();
+                newPost.setTitle(postTitle);
                 postsController.insertPost(newPost);
                 break;
             case 3:
@@ -278,7 +280,8 @@ public class App {
             case 2:
                 System.out.println("Ingrese la bio del nuevo perfil:");
                 String bio = scanner.next();
-                Profile newProfile = new Profile(bio);
+                Profile newProfile = new Profile();
+                newProfile.setBio(bio);
                 profileController.insertProfile(newProfile);
                 break;
             case 3:

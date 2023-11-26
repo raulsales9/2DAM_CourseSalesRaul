@@ -21,5 +21,8 @@
         <mapping class="enginerinversed.entities.Conversation" />
         <mapping class="enginerinversed.entities.Participant" />
         <mapping class="enginerinversed.entities.Profile" />
+        <mapping class="enginerinversed.entities.UserFollowId" />
+        
+        <mapping class="enginerinversed.entities.UserFollow" />
     </session-factory>
 </hibernate-configuration>
