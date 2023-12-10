@@ -1,40 +1,30 @@
-CREATE TYPE Direccion AS (
-    Direccion VARCHAR(100),
-    Ciudad VARCHAR(50),
-    Pais VARCHAR(50),
-    Codigo_Postal VARCHAR(10)
-);
-
-CREATE TYPE Contacto AS (
-    Telefono VARCHAR(15),
-    Email VARCHAR(100)
-);
-
 CREATE TABLE Persona (
     ID INT PRIMARY KEY,
     Nombre VARCHAR(100),
     Apellido VARCHAR(100),
-    Direccion Direccion,
-    Contacto Contacto
+    Direccion VARCHAR(100),
+    Ciudad VARCHAR(50),
+    Pais VARCHAR(50),
+    Codigo_Postal VARCHAR(10),
+    Telefono VARCHAR(15),
+    Email VARCHAR(100)
 );
-
-ALTER TABLE Persona ADD CONSTRAINT unique_id UNIQUE (ID);
 
 CREATE TABLE Cliente (
     ID INT PRIMARY KEY,
     Fecha_Registro DATE
-) INHERITS (Persona);
+);
 
 CREATE TABLE Proveedor (
     ID INT PRIMARY KEY,
     Empresa VARCHAR(100)
-) INHERITS (Persona);
+);
 
 CREATE TABLE Empleado (
     ID INT PRIMARY KEY,
     Fecha_Contratacion DATE,
     Salario DECIMAL(8,2)
-) INHERITS (Persona);
+);
 
 CREATE TABLE Producto (
     ID INT PRIMARY KEY,
@@ -53,6 +43,7 @@ CREATE TABLE Pedido (
     FOREIGN KEY (ID_Producto) REFERENCES Producto(ID),
     FOREIGN KEY (ID_Cliente) REFERENCES Cliente(ID)
 );
+
 
 CREATE TABLE Detalle_Pedido (
     ID_Pedido INT,
