@@ -1,43 +1,67 @@
 package org.raul.conversor;
 
-import javax.management.Query;
-import java.awt.*;
+import java.util.List;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.raul.conversor.entities_mysql.Asignatura;
+import org.raul.conversor.entities_mysql.Aula;
+import org.raul.conversor.entities_mysql.Curso;
 
 public class Main {
     public static void main(String[] args) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("databases");
-        EntityManager em = emf.createEntityManager();
+    
+        
+        // Configuración de la conexión a la base de datos MySQL
+        Configuration mysqlConfig = new Configuration();
+        mysqlConfig.configure("hibernate.cfg.xml"); // Asegúrate de que este archivo exista y tenga la configuración correcta
+        SessionFactory mysqlSessionFactory = mysqlConfig.buildSessionFactory();
 
-        em.getTransaction().begin();
-        for(int i = 9;  i < 10;i++){
-            Point p = new Point(i, i);
-            em.persist(p);
+        // Configuración de la conexión a la base de datos ObjectDB
+        Configuration objectDbConfig = new Configuration();
+        objectDbConfig.configure("objectdb.cfg.xml"); // Asegúrate de que este archivo exista y tenga la configuración correcta
+        SessionFactory objectDbSessionFactory = objectDbConfig.buildSessionFactory();
+
+        // Crea una sesión de Hibernate para MySQL
+        Session mysqlSession = mysqlSessionFactory.openSession();
+
+        // Crea una sesión de Hibernate para ObjectDB
+        Session objectDbSession = objectDbSessionFactory.openSession();
+
+        // Inicia una transacción en MySQL
+        mysqlSession.beginTransaction();
+
+        // Obtiene todas las entidades de MySQL
+        List<Asignatura> asignaturas = (List<Asignatura>) mysqlSession.createQuery("from Asignatura").list();
+        List<Aula> aulas = (List<Aula>) mysqlSession.createQuery("from Aula").list();
+        List<Curso> cursos = (List<Curso>) mysqlSession.createQuery("from Curso").list();
+
+        // Finaliza la transacción en MySQL
+        mysqlSession.getTransaction().commit();
+
+        // Inicia una transacción en ObjectDB
+        objectDbSession.beginTransaction();
+
+        // Inserta todas las entidades en ObjectDB
+        for (Asignatura asignatura : asignaturas) {
+            objectDbSession.save(asignatura);
+        }
+        for (Aula aula : aulas) {
+            objectDbSession.save(aula);
+        }
+        for (Curso curso : cursos) {
+            objectDbSession.save(curso);
         }
 
-        em.getTransaction().commit();
+        // Confirma la transacción en ObjectDB
+        objectDbSession.getTransaction().commit();
 
-        Query ql = em.createQuery("SELECT COUNT(p) FROM Point p");
-        System.out.println("Total points : " + ql.getSingleResult());
+        // Cierra las sesiones
+        mysqlSession.close();
+        objectDbSession.close();
 
-        Query ql = em.createQuery("SELECT AVG(p) FROM Point p");
-        System.out.println("Total points : " + ql.getSingleResult());
-        TypesQuery<Point> query = em.createQuery("SELECT p FROM Point p ", Point.class);
-        List<Point> results = query.getResultList();
-        System.out.println("\nPuntos (x,y) : \n");
-        int k=0;
-        for (Point p : results){
-            System.out.println("ID="p.id+"");
-            k++;
-            if (k > 10){ k=0; System.out.println();}
-        }
-        Point search = new Point();
-        search.id=10;
-        search = em.find(Point.class, search);
-        if (search!=null){
-
-        }else{
-            em.close();
-            emf.close;
-        }
+        // Cierra las SessionFactory
+        mysqlSessionFactory.close();
+        objectDbSessionFactory.close();
     }
-}
+    }    
