@@ -15,4 +15,3 @@
         <property name="hbm2ddl.auto">read</property>
     </session-factory>
 </hibernate-configuration>
-1

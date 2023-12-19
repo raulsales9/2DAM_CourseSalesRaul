@@ -1,67 +1,55 @@
 package org.raul.conversor;
 
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.raul.conversor.entities_mysql.Asignatura;
 import org.raul.conversor.entities_mysql.Aula;
 import org.raul.conversor.entities_mysql.Curso;
+import org.raul.conversor.entities_mysql.Estudiante;
 
 public class Main {
     public static void main(String[] args) {
-    
-        
-        // Configuración de la conexión a la base de datos MySQL
-        Configuration mysqlConfig = new Configuration();
-        mysqlConfig.configure("hibernate.cfg.xml"); // Asegúrate de que este archivo exista y tenga la configuración correcta
-        SessionFactory mysqlSessionFactory = mysqlConfig.buildSessionFactory();
+        // Crear EntityManagerFactory para la base de datos relacional
+        EntityManagerFactory emfRelacional = Persistence.createEntityManagerFactory("miUnidadDePersistenciaRelacional");
+        EntityManager emRelacional = emfRelacional.createEntityManager();
 
-        // Configuración de la conexión a la base de datos ObjectDB
-        Configuration objectDbConfig = new Configuration();
-        objectDbConfig.configure("objectdb.cfg.xml"); // Asegúrate de que este archivo exista y tenga la configuración correcta
-        SessionFactory objectDbSessionFactory = objectDbConfig.buildSessionFactory();
+        // Iniciar transacción
+        emRelacional.getTransaction().begin();
 
-        // Crea una sesión de Hibernate para MySQL
-        Session mysqlSession = mysqlSessionFactory.openSession();
+        // Consulta para obtener todos los estudiantes
+        List<Estudiante> estudiantes = emRelacional.createQuery("SELECT e FROM Estudiante e", Estudiante.class).getResultList();
 
-        // Crea una sesión de Hibernate para ObjectDB
-        Session objectDbSession = objectDbSessionFactory.openSession();
+        // Cerrar transacción
+        emRelacional.getTransaction().commit();
 
-        // Inicia una transacción en MySQL
-        mysqlSession.beginTransaction();
+        // Cerrar EntityManager y EntityManagerFactory
+        emRelacional.close();
+        emfRelacional.close();
 
-        // Obtiene todas las entidades de MySQL
-        List<Asignatura> asignaturas = (List<Asignatura>) mysqlSession.createQuery("from Asignatura").list();
-        List<Aula> aulas = (List<Aula>) mysqlSession.createQuery("from Aula").list();
-        List<Curso> cursos = (List<Curso>) mysqlSession.createQuery("from Curso").list();
+        // Crear EntityManagerFactory para ObjectDB
+        EntityManagerFactory emfObjectDB = Persistence.createEntityManagerFactory("$objectdb/db/miBaseDeDatos.odb");
+        EntityManager emObjectDB = emfObjectDB.createEntityManager();
 
-        // Finaliza la transacción en MySQL
-        mysqlSession.getTransaction().commit();
+        // Iniciar transacción
+        emObjectDB.getTransaction().begin();
 
-        // Inicia una transacción en ObjectDB
-        objectDbSession.beginTransaction();
-
-        // Inserta todas las entidades en ObjectDB
-        for (Asignatura asignatura : asignaturas) {
-            objectDbSession.save(asignatura);
-        }
-        for (Aula aula : aulas) {
-            objectDbSession.save(aula);
-        }
-        for (Curso curso : cursos) {
-            objectDbSession.save(curso);
+        // Almacenar todos los estudiantes en la base de datos ObjectDB
+        for (Estudiante estudiante : estudiantes) {
+            emObjectDB.persist(estudiante);
         }
 
-        // Confirma la transacción en ObjectDB
-        objectDbSession.getTransaction().commit();
+        // Confirmar la transacción
+        emObjectDB.getTransaction().commit();
 
-        // Cierra las sesiones
-        mysqlSession.close();
-        objectDbSession.close();
-
-        // Cierra las SessionFactory
-        mysqlSessionFactory.close();
-        objectDbSessionFactory.close();
+        // Cerrar EntityManager y EntityManagerFactory
+        emObjectDB.close();
+        emfObjectDB.close();
     }
-    }    
+}
+
+    
