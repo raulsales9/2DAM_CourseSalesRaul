@@ -40,11 +40,15 @@ class VentanaPrincipal(QMainWindow):
 
     def check_passwd(self):
         if self.name.text() == 'admin' and self.password.text() == 'admin':
-            self.login_status.setText('Credenciales correctas')
+            # podria ser un Qmessagebox
+            self.login_status.setText('Credenciales correctes')
             self.login_status.setStyleSheet("color: green")
+            # continua endavant (hi ha que juntar el codi amb el editor??!)
+            self.showMaximized()
         else:
-            self.login_status.setText('Credenciales incorrectas')
+            self.login_status.setText('Credencials incorrectes')
             self.login_status.setStyleSheet("color: red")
+            QMessageBox.warning(self, "Error", "L'usuari o la contrasenya són incorrectes")
 
 app = QApplication([])
 
