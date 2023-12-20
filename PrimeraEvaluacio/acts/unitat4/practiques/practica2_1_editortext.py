@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QMainWindow, QTextEdit, QFileDialog, QApplication, QMessageBox
+from PySide6.QtWidgets import QMainWindow, QTextEdit, QFileDialog, QApplication, QMessageBox, QToolBar
 from PySide6.QtGui import QIcon, QAction, QKeySequence
 import sys
 import os
@@ -17,8 +17,10 @@ class Editor(QMainWindow):
         #shortcut per a tecles especials i controls
         self.open_action.setShortcut('Ctrl+O')
         self.open_action.triggered.connect(self.open_file)
-       
+        self.bar = QToolBar("Barra")
+        #self.bar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         self.save_action = QAction(QIcon(save), 'Guardar', self)
+        #self.save_action.setToolTip("Guardar arxiu")
         self.save_action.setShortcut('Ctrl+S')
         self.save_action.triggered.connect(self.save_file)
 
