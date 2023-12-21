@@ -11,44 +11,27 @@ import org.raul.conversor.entities_mysql.Asignatura;
 import org.raul.conversor.entities_mysql.Aula;
 import org.raul.conversor.entities_mysql.Curso;
 import org.raul.conversor.entities_mysql.Estudiante;
+import postgre_obj.utils.HibernateUtil;
 
 public class Main {
     public static void main(String[] args) {
-        // Crear EntityManagerFactory para la base de datos relacional
-        EntityManagerFactory emfRelacional = Persistence.createEntityManagerFactory("miUnidadDePersistenciaRelacional");
-        EntityManager emRelacional = emfRelacional.createEntityManager();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        // Iniciar una transacción
+        session.beginTransaction();
 
-        // Iniciar transacción
-        emRelacional.getTransaction().begin();
+        // Realizar la consulta
+        List<Asignatura> asignaturas = session.createQuery("FROM Asignatura").list();
 
-        // Consulta para obtener todos los estudiantes
-        List<Estudiante> estudiantes = emRelacional.createQuery("SELECT e FROM Estudiante e", Estudiante.class).getResultList();
-
-        // Cerrar transacción
-        emRelacional.getTransaction().commit();
-
-        // Cerrar EntityManager y EntityManagerFactory
-        emRelacional.close();
-        emfRelacional.close();
-
-        // Crear EntityManagerFactory para ObjectDB
-        EntityManagerFactory emfObjectDB = Persistence.createEntityManagerFactory("$objectdb/db/miBaseDeDatos.odb");
-        EntityManager emObjectDB = emfObjectDB.createEntityManager();
-
-        // Iniciar transacción
-        emObjectDB.getTransaction().begin();
-
-        // Almacenar todos los estudiantes en la base de datos ObjectDB
-        for (Estudiante estudiante : estudiantes) {
-            emObjectDB.persist(estudiante);
+        // Imprimir los resultados
+        for (Asignatura asignatura : asignaturas) {
+            System.out.println(asignatura);
         }
 
-        // Confirmar la transacción
-        emObjectDB.getTransaction().commit();
+        // Finalizar la transacción
+        session.getTransaction().commit();
 
-        // Cerrar EntityManager y EntityManagerFactory
-        emObjectDB.close();
-        emfObjectDB.close();
+        // Cerrar la Session
+        session.close();
     }
 }
 

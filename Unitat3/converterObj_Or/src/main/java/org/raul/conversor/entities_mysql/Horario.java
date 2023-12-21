@@ -20,6 +20,11 @@ import javax.persistence.Table;
 @Table(name = "Horarios")
 public class Horario {
 
+    @Override
+    public String toString() {
+        return "Horario{" + "id=" + id + ", dia=" + dia + ", horaInicio=" + horaInicio + ", horaFin=" + horaFin + ", aula=" + aula + '}';
+    }
+
     public Horario(int id, String dia, Time horaInicio, Time horaFin, Aula aula) {
         this.id = id;
         this.dia = dia;

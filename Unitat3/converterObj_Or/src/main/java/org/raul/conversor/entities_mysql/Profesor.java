@@ -18,6 +18,11 @@ import javax.persistence.Table;
 @Table(name = "Profesores")
 public class Profesor {
 
+    @Override
+    public String toString() {
+        return "Profesor{" + "id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", especialidad=" + especialidad + '}';
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

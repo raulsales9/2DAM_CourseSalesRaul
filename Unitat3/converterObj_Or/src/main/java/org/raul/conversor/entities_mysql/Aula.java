@@ -19,6 +19,11 @@ import javax.persistence.Table;
 @Table(name = "Aulas")
 public class Aula {
 
+    @Override
+    public String toString() {
+        return "Aula{" + "id=" + id + ", nombre=" + nombre + ", capacidad=" + capacidad + ", asignatura=" + asignatura + '}';
+    }
+
     public int getId() {
         return id;
     }
