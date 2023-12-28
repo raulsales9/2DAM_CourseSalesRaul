@@ -13,11 +13,11 @@
         <property name="current_session_context_class">thread</property>
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">update</property>
-        <mapping class="org.raul.conversor.entities_mysql.Asignatura"/>
-        <mapping class="org.raul.conversor.entities_mysql.Aula"/>
-        <mapping class="org.raul.conversor.entities_mysql.Curso"/>
-        <mapping class="org.raul.conversor.entities_mysql.Estudiante"/>
-        <mapping class="org.raul.conversor.entities_mysql.Horario"/>
-        <mapping class="org.raul.conversor.entities_mysql.Profesor"/>
+        <mapping class="com.raul.conversorobj.conversorobj.entities_mysql.Asignatura"/>
+        <mapping class="com.raul.conversorobj.conversorobj.entities_mysql.Aula"/>
+        <mapping class="com.raul.conversorobj.conversorobj.entities_mysql.Curso"/>
+        <mapping class="com.raul.conversorobj.conversorobj.entities_mysql.Estudiante"/>
+        <mapping class="com.raul.conversorobj.conversorobj.entities_mysql.Horario"/>
+        <mapping class="com.raul.conversorobj.conversorobj.entities_mysql.Profesor"/>
     </session-factory>
 </hibernate-configuration>
