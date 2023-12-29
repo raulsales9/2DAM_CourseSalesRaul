@@ -18,16 +18,47 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import org.hibernate.Session;
 import com.raul.conversorobj.conversorobj.utils.HibernateUtil;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-
-
-public class Conversorobj {
+public class Conversorobj extends Application {
 
     public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("Conversor de Datos");
+
+        Button convertButton = new Button("Convertir Datos a ObjectDB");
+        Button crudButton = new Button("Operaciones CRUD");
+
+        convertButton.setOnAction(e -> convertirDatosObjectDB());
+        crudButton.setOnAction(e -> abrirVentanaCRUD());
+
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(20, 20, 20, 20));
+        layout.getChildren().addAll(convertButton, crudButton);
+
+        Scene scene = new Scene(layout, 300, 200);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    private void convertirDatosObjectDB() {
         EntityManagerFactory emf = null;
         EntityManager em = null;
 
-        try (Session hibernateSession = HibernateUtil.getSessionFactory().openSession()) {
+        try (var hibernateSession = HibernateUtil.getSessionFactory().openSession()) {
             emf = Persistence.createEntityManagerFactory("objectdb:database.odb");
             em = emf.createEntityManager();
 
@@ -58,8 +89,10 @@ public class Conversorobj {
             persistirDatosEnODB(aulas, hibernateSession, em);
             persistirDatosEnODB(horarios, hibernateSession, em);
 
+            mostrarAlerta("Conversión completada", "Los datos se han convertido correctamente a ObjectDB.");
         } catch (Exception e) {
             e.printStackTrace();
+            mostrarAlerta("Error", "Err");
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();
@@ -70,26 +103,26 @@ public class Conversorobj {
         }
     }
 
-    private static void persistirDatosEnODB(List<?> entidades, Session hibernateSession, EntityManager objectdbEm) {
+    private void persistirDatosEnODB(List<?> entidades, Session hibernateSession, EntityManager objectdbEm) {
         objectdbEm.getTransaction().begin();
 
         for (Object entidad : entidades) {
-            if (entidad instanceof Estudiante) {
-                // Convertir Estudiante a Estudiantes antes de persistir en ObjectDB
-                Estudiante estudianteRelacional = (Estudiante) entidad;
-
-                Estudiantes estudianteObjeto = new Estudiantes();
-                estudianteObjeto.setNombre(estudianteRelacional.getNombre());
-                estudianteObjeto.setApellido(estudianteRelacional.getApellido());
-                estudianteObjeto.setEmail(estudianteRelacional.getEmail());
-
-                objectdbEm.persist(estudianteObjeto);
-            } else {
-                // Para otras entidades, simplemente persistir
-                objectdbEm.persist(entidad);
-            }
+            objectdbEm.persist(entidad);
         }
 
         objectdbEm.getTransaction().commit();
     }
+
+    private void abrirVentanaCRUD() {
+        mostrarAlerta("alerta que no puedo poner porque no entiendo javafx","error");
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+    
 }
