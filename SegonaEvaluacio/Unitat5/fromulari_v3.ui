@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>483</width>
+    <height>168</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="nombreLabel">
+        <property name="text">
+         <string>Nombre</string>
+        </property>
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <property name="indent">
+         <number>-1</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="nombreLineEdit"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="apellidosLabel">
+        <property name="text">
+         <string>Apellidos</string>
+        </property>
+        <property name="indent">
+         <number>-1</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="apellidosLineEdit"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="direcciNLabel">
+        <property name="text">
+         <string>Dirección</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="direcciNLineEdit"/>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>Abrir</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="1">
+     <layout class="QFormLayout" name="formLayout_2">
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="nombreLineEdit_2"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="apellidosLabel_2">
+        <property name="text">
+         <string>Teléfono</string>
+        </property>
+        <property name="indent">
+         <number>19</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="apellidosLineEdit_2"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="direcciNLabel_2">
+        <property name="text">
+         <string>Correo</string>
+        </property>
+        <property name="indent">
+         <number>19</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="direcciNLineEdit_2"/>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="text">
+         <string>Cerrar</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="nombreLabel_2">
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>DNI</string>
+        </property>
+        <property name="indent">
+         <number>23</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>483</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <tabstops>
+  <tabstop>nombreLineEdit</tabstop>
+  <tabstop>nombreLineEdit_2</tabstop>
+  <tabstop>apellidosLineEdit</tabstop>
+  <tabstop>apellidosLineEdit_2</tabstop>
+  <tabstop>direcciNLineEdit</tabstop>
+  <tabstop>direcciNLineEdit_2</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>pushButton_2</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
