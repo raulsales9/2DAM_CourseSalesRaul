@@ -41,21 +41,21 @@
         <item>
          <widget class="QPushButton" name="pushButton_4">
           <property name="text">
-           <string>PushButton</string>
+           <string>Copiar</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="pushButton_3">
           <property name="text">
-           <string>PushButton</string>
+           <string>Cortar</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="pushButton_5">
           <property name="text">
-           <string>PushButton</string>
+           <string>Pegar</string>
           </property>
          </widget>
         </item>
@@ -66,14 +66,14 @@
         <item>
          <widget class="QPushButton" name="pushButton_2">
           <property name="text">
-           <string>PushButton</string>
+           <string>Selecionar todo</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="pushButton">
           <property name="text">
-           <string>PushButton</string>
+           <string>Eleminar todo</string>
           </property>
          </widget>
         </item>
@@ -96,5 +96,86 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton_4</sender>
+   <signal>clicked()</signal>
+   <receiver>textEdit</receiver>
+   <slot>copy()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>125</x>
+     <y>335</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>140</x>
+     <y>279</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>textEdit</receiver>
+   <slot>cut()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>320</x>
+     <y>342</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_5</sender>
+   <signal>clicked()</signal>
+   <receiver>textEdit</receiver>
+   <slot>paste()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>503</x>
+     <y>341</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>503</x>
+     <y>298</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>textEdit</receiver>
+   <slot>selectAll()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>244</x>
+     <y>378</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>252</x>
+     <y>288</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>textEdit</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>459</x>
+     <y>369</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>464</x>
+     <y>305</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
