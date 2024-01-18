@@ -1,22 +1,27 @@
 package com.example.testraul.demo.controllers;
 
 import com.example.testraul.demo.entitie.User;
-import com.example.testraul.demo.repository.UserRepository;
+import com.example.testraul.demo.repository.userRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/api/users")
-public class UserController {
+public class userController {
 
     @Autowired
-    private UserRepository userRepository;
+    private userRepository userRepository;
 
+    @GetMapping("/Showform")
+    public String showform(){
+        return "mainpage";
+    }
     // Create a new user
     @PostMapping("/")
-    public User createUser(@RequestBody User user) {
+    public User createUser(@RequestParam User user) {
         return userRepository.save(user);
     }
 
@@ -26,31 +31,4 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    // Get a single user
-    @GetMapping("/{id}")
-    public User getUserById(@PathVariable(value = "id") Integer userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
-    }
-
-    // Update a user
-    @PutMapping("/{id}")
-    public User updateUser(@PathVariable(value = "id") Integer userId, @RequestBody User userDetails) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
-
-        user.setName(userDetails.getName());
-        user.setEmail(userDetails.getEmail());
-        user.setFechaRegistro(userDetails.getFechaRegistro());
-
-        return userRepository.save(user);
-    }
-
-    // Delete a user
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable(value = "id") Integer userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
-
-        userRepository.delete(user);
-
-        return ResponseEntity.ok().build();
-    }
 }

@@ -1,44 +1,23 @@
 package com.example.testraul.demo.dtos;
 
+import com.example.testraul.demo.entitie.User;
+
 import java.util.Date;
 
 public class userDto {
-    private int id;
-    private String name;
-    private String email;
-    private Date fechaRegistro;
 
-    public int getId() {
-        return id;
+    public User convertToEntity(userDto userDto) {
+        User user = new User();
+        user.setID(userDto.getIDUser());
+        user.setName(userDto.getNameUser());
+        return user;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    private int getIDUser() {
+        return 0;
     }
 
-    public String getName() {
-        return name;
+    private String getNameUser(email) {
+        return null;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Date getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    // Getters and setters
 }
