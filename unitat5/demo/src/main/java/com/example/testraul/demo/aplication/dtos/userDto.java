@@ -1,13 +1,14 @@
-package com.example.testraul.demo.entitie;
+package com.example.testraul.demo.aplication.dtos;
 
-
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.util.Date;
 
-@Entity
-@Table(name = "User")
-public class User {
+
+public class userDto {
     public int getID() {
         return ID;
     }
@@ -52,4 +53,7 @@ public class User {
 
     @Column(name = "FechaRegistro")
     private Date fechaRegistro;
+
+
 }
+

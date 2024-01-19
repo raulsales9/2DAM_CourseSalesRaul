@@ -1,6 +1,6 @@
-package com.example.testraul.demo.repository;
+package com.example.testraul.demo.infraestructure.persistence;
 
-import com.example.testraul.demo.entitie.User;
+import com.example.testraul.demo.domain.entitie.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
