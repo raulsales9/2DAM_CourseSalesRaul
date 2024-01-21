@@ -24,7 +24,7 @@ public class userServiceImpl implements userService {
     }
 
     @Override
-    public userDto getUserById(int id) {
+    public userDto getUserById(long id) {
         User user = userRepository.findById(id).orElse(null);
         return (user != null) ? userDtoConverter.convertToDto(user) : null;
     }
@@ -46,7 +46,7 @@ public class userServiceImpl implements userService {
     }
 
     @Override
-    public void deleteUser(int id) {
+    public void deleteUser(long id) {
         userRepository.deleteById(id);
     }
 }

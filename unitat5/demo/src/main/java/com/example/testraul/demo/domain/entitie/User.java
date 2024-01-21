@@ -4,16 +4,35 @@ package com.example.testraul.demo.domain.entitie;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "User")
+@Table(name = "user")
 public class User {
-    public int getID() {
-        return ID;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
+
+    @Column(name = "Nombre")
+    private String name;
+
+    @Column(name = "Email")
+    private String email;
+
+    @Column(name = "FechaRegistro")
+    private Date fechaRegistro;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts;
+
+    public long getId() {
+        return id;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(long id){
+        this.id = id;
     }
 
     public String getName() {
@@ -40,17 +59,11 @@ public class User {
         this.fechaRegistro = fechaRegistro;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ID;
+    public List<Post> getPosts() {
+        return posts;
+    }
 
-    @Column(name = "Nombre")
-    private String name;
-
-    @Column(name = "Email")
-    private String email;
-
-    @Column(name = "FechaRegistro")
-    private Date fechaRegistro;
-
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
 }

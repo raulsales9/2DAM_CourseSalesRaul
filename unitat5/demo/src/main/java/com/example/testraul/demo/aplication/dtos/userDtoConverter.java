@@ -7,7 +7,7 @@ public class userDtoConverter {
 
     public static User convertToEntity(userDto userDto) {
         User user = new User();
-        user.setID(userDto.getID());
+        user.setId(userDto.getId());
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
         user.setFechaRegistro(userDto.getFechaRegistro());
@@ -16,7 +16,7 @@ public class userDtoConverter {
 
     public static userDto convertFromEntity(User user) {
         userDto userDto = new userDto();
-        userDto.setID(user.getID());
+        userDto.setId(user.getId());
         userDto.setName(user.getName());
         userDto.setEmail(user.getEmail());
         userDto.setFechaRegistro(user.getFechaRegistro());
@@ -25,7 +25,7 @@ public class userDtoConverter {
 
     public static userDto convertToDto(User user) {
         userDto userDto = new userDto();
-        userDto.setID(user.getID());
+        userDto.setId(user.getId());
         userDto.setName(user.getName());
         userDto.setEmail(user.getEmail());
         userDto.setFechaRegistro(user.getFechaRegistro());

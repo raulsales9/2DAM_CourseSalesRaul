@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+:<!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
@@ -8,7 +8,8 @@
 </head>
 <body>
 <div class="container mt-4">
-    <h2>User List</h2>
+    <h2>User List</h2><td>
+    <th>Insertar</th><a th:href="@{/api/users/insertuser}"><img src="/assets/img/insertar.png" height="30" width="30"></a></td>
     <table class="table">
         <thead>
         <tr>
@@ -16,7 +17,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>Registration Date</th>
-            <th>Insertar</th>
+
             <th>Borrar</th>
             <th>Actualizar</th>
         </tr>
@@ -25,14 +26,15 @@
         <!-- userList.html -->
         <tbody>
         <tr th:each="user : ${users}">
-            <td th:text="${user.ID}"></td>
+            <td th:text="${user.id}"></td>
             <td th:text="${user.name}" th:href="@{/api/users/userDetail}"></td>
             <td th:text="${user.email}"></td>
             <td th:text="${#dates.format(user.fechaRegistro, 'yyyy-MM-dd HH:mm:ss')}"></td>
-            <td><a th:href="@{/api/users/insertuser}"><img src="/assets/img/insertar.png" height="30" width="30"></a></td>
-            <td><a href="userChange"><img src="/assets/img/actualizar.png" height="30" width="30"></a></td>
-            <td><a href="userList"><img src="/assets/img/borrar.png" height="30" width="30"></a> </td>
+            <td><a th:href="@{'/api/users/userForm/' + ${user.id}}"><img src="/assets/img/actualizar.png" height="30" width="30"></a></td>
+            <!-- Enlace para borrar usuario -->
+            <td><a th:href="@{'/api/users/user/' + ${user.id}}"><img src="/assets/img/borrar.png" height="30" width="30"></a></td>
         </tr>
+
         </tbody>
 
         </tbody>

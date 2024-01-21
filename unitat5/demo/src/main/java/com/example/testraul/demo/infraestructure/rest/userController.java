@@ -3,8 +3,6 @@ package com.example.testraul.demo.infraestructure.rest;
 import com.example.testraul.demo.aplication.dtos.userDto;
 import com.example.testraul.demo.aplication.service.impl.userServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,17 +21,19 @@ public class userController {
         model.addAttribute("userDto", new userDto());
         return "mainpage";
     }
+
     @GetMapping("/allUsers")
     public String getAllUsers(Model model) {
         List<userDto> users = userServiceImpl.getAllUsers();
         model.addAttribute("users", users);
-        return "userList";
+        return "/user/userList";
     }
+
     // Create a new user
     @GetMapping("/insertuser")
     public String showInsertUserForm(Model model) {
         model.addAttribute("userDto", new userDto());
-        return "userInsert";
+        return "/user/userInsert";
     }
 
     @PostMapping("/insertuser")
@@ -42,28 +42,26 @@ public class userController {
         return "redirect:/api/users/allUsers";
     }
 
-
     @DeleteMapping("/user/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable int id) {
+    public String deleteUser(@PathVariable long id) {
         userServiceImpl.deleteUser(id);
-        return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
+        // Redirige a la ruta '/api/users/allUsers'
+        return "redirect:/api/users/allUsers";
     }
 
-
-
     @GetMapping("/userForm/{id}")
-    public String showUserForm(@PathVariable int id, Model model) {
+    public String showUserForm(@PathVariable long id, Model model) {
         userDto userDto = userServiceImpl.getUserById(id);
         if (userDto == null) {
             return "error";
         }
         model.addAttribute("userDto", userDto);
-        return "userChange";
+        return "/user/userChange";
     }
 
     @PostMapping("/saveUser")
-    public ResponseEntity<String> saveUser(@ModelAttribute userDto userDto) {
+    public String saveUser(@ModelAttribute userDto userDto) {
         userServiceImpl.updateUser(userDto);
-        return new ResponseEntity<>("User updated successfully", HttpStatus.OK);
+        return "redirect:/api/users/allUsers";
     }
 }
