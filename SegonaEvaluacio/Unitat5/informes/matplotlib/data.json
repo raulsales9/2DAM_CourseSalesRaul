@@ -1,0 +1,7 @@
+{"productos": [
+    {"nombre": "Producto A", "ventas_mensuales": [120, 150, 100, 200, 180, 220, 250, 300, 280, 200, 180, 150]},
+    {"nombre": "Producto B", "ventas_mensuales": [80, 100, 90, 120, 150, 130, 110, 100, 80, 70, 90, 100]},
+    {"nombre": "Producto C", "ventas_mensuales": [200, 180, 250, 220, 280, 300, 320, 280, 250, 220, 200, 180]}
+],
+"meses": ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+}
