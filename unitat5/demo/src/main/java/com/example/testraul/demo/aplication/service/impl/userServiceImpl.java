@@ -3,7 +3,7 @@ package com.example.testraul.demo.aplication.service.impl;
 import com.example.testraul.demo.aplication.dtos.userDto;
 import com.example.testraul.demo.aplication.dtos.userDtoConverter;
 import com.example.testraul.demo.domain.entitie.User;
-import com.example.testraul.demo.infraestructure.persistence.userRepository;
+import com.example.testraul.demo.infraestructure.persistence.UserRepository;
 import com.example.testraul.demo.aplication.service.userService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 public class userServiceImpl implements userService {
 
     @Autowired
-    private userRepository userRepository;
+    private UserRepository userRepository;
 
     @Override
     public void insertUser(userDto userDto) {
