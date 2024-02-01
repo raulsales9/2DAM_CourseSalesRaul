@@ -1,4 +1,4 @@
-package com.irojas.demojwt.Jwt;
+package com.irojas.demojwt.infrastructure.Jwt;
 
 import java.io.IOException;
 

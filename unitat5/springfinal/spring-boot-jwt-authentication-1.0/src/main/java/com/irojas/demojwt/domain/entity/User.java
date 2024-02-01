@@ -1,4 +1,4 @@
-package com.irojas.demojwt.User;
+package com.irojas.demojwt.domain.entity;
 
 import java.util.Collection;
 import java.util.List;
@@ -39,7 +39,7 @@ public class User implements UserDetails {
     String firstname;
     String country;
     String password;
-    @Enumerated(EnumType.STRING) 
+    @Enumerated(EnumType.STRING)
     Role role;
 
     @Override

@@ -1,4 +1,4 @@
-package com.irojas.demojwt.Auth;
+package com.irojas.demojwt.application.Auth;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -6,10 +6,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.irojas.demojwt.Jwt.JwtService;
-import com.irojas.demojwt.User.Role;
-import com.irojas.demojwt.User.User;
-import com.irojas.demojwt.User.UserRepository;
+import com.irojas.demojwt.infrastructure.Jwt.JwtService;
+import com.irojas.demojwt.domain.entity.Role;
+import com.irojas.demojwt.domain.entity.User;
+import com.irojas.demojwt.domain.pesistence.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
