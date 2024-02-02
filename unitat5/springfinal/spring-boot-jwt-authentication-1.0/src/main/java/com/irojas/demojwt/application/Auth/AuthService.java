@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.irojas.demojwt.infrastructure.Jwt.JwtService;
 import com.irojas.demojwt.domain.entity.Role;
 import com.irojas.demojwt.domain.entity.User;
-import com.irojas.demojwt.domain.pesistence.UserRepository;
+import com.irojas.demojwt.domain.persistence.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

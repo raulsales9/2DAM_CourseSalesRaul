@@ -1,4 +1,4 @@
-package com.irojas.demojwt.domain.pesistence;
+package com.irojas.demojwt.domain.persistence;
 
 import java.util.Optional;
 

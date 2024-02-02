@@ -24,16 +24,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-            .csrf(csrf -> 
+            .csrf(csrf ->
                 csrf
                 .disable())
             .authorizeHttpRequests(authRequest ->
               authRequest
                 .requestMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated()
-                )
-            .sessionManagement(sessionManager->
-                sessionManager 
+            )
+                .sessionManagement(sessionManager->
+                sessionManager
                   .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authProvider)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -42,4 +42,8 @@ public class SecurityConfig {
 
     }
 
+    //configurem un formulari de inici de sesio
+    //protected void configure(HttpSecurity http) throws Exception{
+    //    http.authorizeRequests().antMatchers().permitAll().anyRequest().authenticated().and().formLogin().permitall().and().logout();
+    //}
 }
