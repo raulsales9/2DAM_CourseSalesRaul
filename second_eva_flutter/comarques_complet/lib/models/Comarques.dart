@@ -1,6 +1,5 @@
 class Comarques {
   late String comarca;
-  String? nom;
   String? capital;
   int? poblacio;
   String? img;

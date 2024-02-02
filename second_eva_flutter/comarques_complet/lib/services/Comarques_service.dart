@@ -2,6 +2,7 @@ import 'package:comarques_complet/models/Comarques.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/material.dart';
 
 class ComarquesService {
   var url1 =
@@ -21,7 +22,7 @@ class ComarquesService {
                 Comarques.fromJSON(comarca as Map<String, dynamic>))
             .toList();
         comarquesList.forEach((comarca) {
-          // print(comarca);
+          print(comarca);
         });
 
         return comarquesList;
@@ -35,7 +36,7 @@ class ComarquesService {
     }
   }
 
-  Future<Comarques> getInfoComarca(String comarca) async {
+  Future<Comarques?> getInfoComarca(String comarca) async {
     try {
       var encodedComarca = Uri.encodeComponent(comarca);
       var url2 =
@@ -62,14 +63,27 @@ class ComarquesService {
   }
 
   Future<List<dynamic>> obtenirProvincies() async {
-    final response = await http.get(Uri.parse(url3));
-    if (response.statusCode == 200) {
-      final provincies = jsonDecode(response.body);
-      //print(provincies);
-      return provincies;
-    } else {
-      throw Exception(
-          'Failed to load provinces. Status code: ${response.statusCode}');
+    /// Obté la llista de províncies
+    try {
+      // Nota: Per a que funcione en web cal afegir al web/manifest.json la línia "permissions": ["http://*/", "https://*/"],
+      String url =
+          "https://node-comarques-rest-server-production.up.railway.app/api/comarques";
+      var data = await http.get(Uri.parse(url));
+      debugPrint("111111111111111111111111111");
+      if (data.statusCode == 200) {
+        String body = utf8.decode(data.bodyBytes);
+        final bodyJSON = jsonDecode(body);
+        debugPrint(bodyJSON.toString());
+        return bodyJSON;
+      } else {
+        debugPrint("222222222222222222222");
+        return [];
+        
+      }
+    } catch (except) {
+      debugPrint("3333333333333333333333333333333");
+      debugPrint(except.toString());
+      return [];
     }
   }
 }

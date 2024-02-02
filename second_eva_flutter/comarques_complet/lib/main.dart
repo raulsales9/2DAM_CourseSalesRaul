@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       //redirecció a login, pantalla d'accés requerit per a gastar l'app
-      home: LoginPage(title: "comarques"),
+      home: LoginScreen(),
     );
   }
 }

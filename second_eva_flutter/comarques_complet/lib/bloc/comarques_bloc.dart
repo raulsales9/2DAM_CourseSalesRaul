@@ -11,12 +11,6 @@ class ComarquesBloc {
   String? _nomComarcaActual;
   Comarques? comarcaActual;
 
-  static ComarquesBloc? _comarquesBloc;
-  factory ComarquesBloc() {
-    _comarquesBloc ??= ComarquesBloc._();
-    return _comarquesBloc!;
-  }
-
 // Controlador per a la llista de provincies
   final _provinciesController = StreamController<List<Provincies>>.broadcast();
 
@@ -26,6 +20,15 @@ class ComarquesBloc {
 // Controlador per a la informació de la comarca actual
   final _comarcaActualController = StreamController<Comarques>.broadcast();
 
+  static ComarquesBloc? _comarquesBloc;
+
+  ComarquesBloc._() {
+    carregaProvincies();
+  }
+  factory ComarquesBloc() {
+    _comarquesBloc ??= ComarquesBloc._();
+    return _comarquesBloc!;
+  }
 // Getter per a l'Stream de _provinciesController:
 // Retorna l'stream sobre el qual s'emetrà la llista de províncies
 // en la creació del BLoC.
@@ -51,19 +54,6 @@ class ComarquesBloc {
 
 //Càrrega inicial de les províncies
 //El constructor privat del BLoC que hem implementat per al patró Singleton, invoca el mètode carregaProvincies:
-  ComarquesBloc._();
-
-  set nomComarcaActual(String? comarca) {
-    if (comarca != null) {
-      if (_nomComarcaActual != comarca) {
-        _nomComarcaActual = comarca;
-        carregaComarca(comarca);
-      } else {
-        actualitzaComarca();
-      }
-    }
-  }
-
   set provinciaActual(String? provincia) {
     if (provincia != null) {
       if (_provinciaActual != provincia) {
@@ -71,6 +61,16 @@ class ComarquesBloc {
         carregaComarques(_provinciaActual!);
       } else {
         actualitzaComarques();
+      }
+    }
+  }
+  set nomComarcaActual(String? comarca) {
+    if (comarca != null) {
+      if (_nomComarcaActual != comarca) {
+        _nomComarcaActual = comarca;
+        carregaComarca(comarca);
+      } else {
+        actualitzaComarca();
       }
     }
   }

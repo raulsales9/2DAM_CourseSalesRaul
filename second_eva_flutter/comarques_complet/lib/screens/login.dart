@@ -1,127 +1,98 @@
 import 'package:flutter/material.dart';
-import 'package:comarques_complet/screens/provincies.dart';
+import 'package:comarques_complet/screens/selector_provincia.dart';
 import 'package:comarques_complet/screens/registre.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Les Comarques de Raul',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const LoginPage(title: 'Flutter Demo Home Page'),
-    );
-  }
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _controlador = TextEditingController();
+  final TextEditingController _controladorPass = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
       body: Container(
-        padding: EdgeInsets.all(25.0),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("../assets/img/background_webapp.webp"),
-            fit: BoxFit.fill,
-          ),
-        ),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image.asset(
-                  "../assets/img/logo.png",
-                  height: 450,
-                  width: 250,
+        margin: const EdgeInsets.all(20.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Image.asset(
+                "../assets/img/logo.png",
+                height: 450,
+                width: 250,
+              ),
+              Text(
+                "Les nostres comarques",
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+              TextFormField(
+                controller: _controlador,
+                decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  labelText: 'Usuari',
+                  border: OutlineInputBorder(),
                 ),
-                SizedBox(height: 10),
-                TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor, ingresa el usuario';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Usuario',
-                    border: OutlineInputBorder(),
+              ),
+              TextFormField(
+                controller: _controladorPass,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  labelText: 'Contrassenya',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: (() {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: ((context) => SelectorProvincia()),
+                        ),
+                      );
+                    }),
+                    child: const Text('Login'),
                   ),
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor, ingresa la contraseña';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Contraseña',
-                    border: OutlineInputBorder(),
+                  ElevatedButton(
+                    onPressed: (() {
+                      Future<Map?> resposta = mostraDialog(context);
+                      resposta.then((value) {
+                        setState(() {
+                          _controlador.text = value?["username"];
+                          _controladorPass.text = value?["pass"];
+                        });
+                      });
+                    }),
+                    child: const Text('Register'),
                   ),
-                ),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProvinciesScreen()),
-                        );
-                      },
-                      child: Text('Iniciar sesión'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RegisterPage()),
-                        );
-                      },
-                      child: Text('Registrarse'),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10),
-              ],
-            ),
+                ],
+              )
+            ],
           ),
         ),
       ),
     );
+  }
+
+  Future<Map?> mostraDialog(BuildContext context) {
+    return showDialog(
+        // Proporcionem el context
+        context: context,
+        // I la funció (builder) que constueix el diàleg
+        builder: (context) {
+          // Aquesta consistirà en la creació d'un diàleg personalitzat
+          return const DialegAmbFormulari();
+        });
   }
 }

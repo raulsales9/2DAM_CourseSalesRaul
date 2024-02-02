@@ -1,10 +1,10 @@
-import 'package:comarques_complet/models/Comarques.dart';
+import 'package:comarques_complet/models/infooratge.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class oratgeService {
-  Future<dynamic> obteClima(
+  Future<infooratge> obteClima(
       {required double longitud, required double latitud}) async {
     try {
       var url4 =
