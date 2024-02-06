@@ -8,7 +8,7 @@
 		<version>3.2.2</version>
 		<relativePath/>
 	</parent>
-	<groupId>com.irojas</groupId>
+	<groupId>com.raulsales</groupId>
 	<artifactId>demo-jwt</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>demo-jwt</name>
