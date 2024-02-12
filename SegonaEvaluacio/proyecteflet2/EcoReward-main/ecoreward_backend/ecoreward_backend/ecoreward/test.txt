@@ -1,0 +1,64 @@
+   def get_hacciones_data(request):
+        hacciones_data = HAcciones.objects.all()
+        return render(request, "hacciones_data.html", {"hacciones_data": hacciones_data})
+
+
+    def get_hcompras_data(request):
+        hcompras_data = HCompras.objects.all()
+        return render(request, "hcompras_data.html", {"hcompras_data": hcompras_data})
+
+
+    def get_logros_data(request):
+        logros_data = Logros.objects.all()
+        return render(request, "logros_data.html", {"logros_data": logros_data})
+
+
+    @login_required
+    def crear_logro(request):
+        if request.method == "POST":
+            name = request.POST["name"]
+            value = request.POST["value"]
+            iduser = request.user
+
+            Logros.objects.create(name=name, value=value, iduser=iduser)
+
+        return render(request, "registrar_logro.html")
+
+
+    @login_required
+    def crear_accion(request):
+        if request.method == "POST":
+            fecha = request.POST["fecha"]
+            iduser = request.user
+
+            Acciones.objects.create(fecha=fecha, iduser=iduser)
+
+        return render(request, "registrar_accion.html")
+
+
+    @login_required
+    def registrar_recompensa(request):
+        if request.method == "POST":
+            name = request.POST["name"]
+            value = request.POST["value"]
+            idemp_id = request.POST["idemp"]
+            iduser = request.user
+            ProdRecompensa.objects.create(
+                name=name, value=value, iduser=iduser, idemp_id=idemp_id
+            )
+
+        return render(request, "registrar_recompensa.html")
+
+
+    @login_required
+    def registrar_prod_sostenible(request):
+        if request.method == "POST":
+            fecha = request.POST["fecha"]
+            descripcion = request.POST["descripcion"]
+            iduser = request.user
+
+            ProdSostenible.objects.create(
+                fecha=fecha, descripcion=descripcion, iduser=iduser
+            )
+
+        return render(request, "registrar_prod_sostenible.html")

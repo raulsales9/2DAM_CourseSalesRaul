@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block userlist %}
+<!--Tenemos herencia de plantilla mediante uso de extends y blocks, tomamos base como padre , los otros ficheros de forma de arbol-->
+        <h1 class="white">List of Users: </h1>
+        <table>
+            {% for user in users %}
+            <tr>
+                <td>{{user.username}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+{% endblock %}

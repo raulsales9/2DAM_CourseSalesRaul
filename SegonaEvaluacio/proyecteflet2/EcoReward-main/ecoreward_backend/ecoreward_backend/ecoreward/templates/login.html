@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block login %}
+<main>
+    <div class="col-xl-6 col-lg-6 col-12">
+    <h2>Iniciar sesión</h2>
+    <form method="post" action="{% url 'list_users' %}">
+        {% csrf_token %}
+        {{form|crispy}}
+    </div>
+    <div class="col-xl-6 col-lg-6 col-12">Derecha</div>
+</main>
+{% endblock %}

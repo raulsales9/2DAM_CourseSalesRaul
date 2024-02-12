@@ -1,0 +1,7 @@
+# Ignorar el entorno virtual de PyCharm
+venv/
+
+# Otros archivos generados por PyCharm
+.idea/
+*.iml
+.DS_Store

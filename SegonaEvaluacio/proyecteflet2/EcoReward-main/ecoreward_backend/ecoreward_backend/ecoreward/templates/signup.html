@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+    <main>
+        <div class="col-xl-6 col-lg-6 col-12">
+            <h2>Registro de Usuario</h2>
+            <form method="post" action="{% url 'register_user' %}">
+                {% csrf_token %}
+                <label id="id_username">Username:</label>
+                <input type="text" name="name" required>
+
+                <label id="id_mail">Email:</label>
+                <input type="email" name="mail" required>
+
+                <label id="id_passwd">Password:</label>
+                <input type="password" name="passwd" required>
+
+                <button type="submit">Register</button>
+            </form>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-12">Derecha</div>
+    </main>
+{% endblock %}

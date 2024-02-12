@@ -1,0 +1,167 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, authenticate
+from django.http import JsonResponse
+from django.contrib.auth.models import User
+from django.utils.datastructures import MultiValueDictKeyError
+from django.views.generic import View
+import json
+from django.views.decorators.csrf import csrf_exempt
+
+
+from .models import (
+    Usuario,
+    Logros,
+    HCompras,
+    HAcciones,
+    Acciones,
+    ProdSostenible,
+    ProdRecompensa,
+)
+class Controller(View):
+    @api_view(['POST'])
+    def api_login(request):
+        if request.method == 'POST':
+            username = request.data.get('username')
+            password = request.data.get('passwd')
+
+            if not (username and password):
+                return Response({'message': 'Por favor, proporciona nombre de usuario y contraseña'}, status=status.HTTP_400_BAD_REQUEST)
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return Response({'message': 'Inicio de sesión exitoso'}, status=status.HTTP_200_OK)
+            else:
+                return Response({'message': 'Nombre de usuario o contraseña incorrectos'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        return Response({'message': 'Método no permitido'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+    @csrf_exempt
+    def api_signup(request):
+        if request.method == 'POST':
+            try:
+                data = json.loads(request.body.decode('utf-8'))
+
+                username = data.get('username')
+                email = data.get('mail') 
+                password = data.get('passwd')
+
+                if username and email and password:
+                    user = Usuario.objects.create_user(
+                        username=username,
+                        email=email,
+                        password=password,
+                    )
+                    authenticated_user = authenticate(request, username=username, password=password)
+                    if authenticated_user is not None:
+                        login(request, authenticated_user)
+                        return JsonResponse({'message': 'Registro y autenticación exitosos'})
+                    else:
+                        return JsonResponse({'message': 'Error de autenticación'}, status=401)
+                else:
+                    return JsonResponse({'message': 'Campos incompletos'}, status=400)
+            except Exception as e:
+                print(f'Error en api_signup: {e}')
+                return JsonResponse({'message': 'Error al registrar el usuario'}, status=500)
+
+        return JsonResponse({'message': 'Método no permitido'}, status=405)
+    def api_list_users(request):
+        # porta tot de base de dades similar a findAll() de php, java etc.
+        users = Usuario.objects.all()
+        users_list = list(
+            users.values("username", "password", "email")
+        )  # or any fields you need
+        return JsonResponse(users_list, safe=False)
+
+    def list_users(request):
+        # porta tot de base de dades similar a findAll() de php, java etc.
+        users = Usuario.objects.all()
+        return render(request, "list_users.html", {"users": users})
+
+    # signup backend directly
+    def signup(request):
+        if request.method == "POST":
+            username = request.POST.get("username")
+            email = request.POST.get("mail")
+            password = request.POST.get("passwd") 
+    
+            if username and email and password:
+                user = Usuario.objects.create_user(
+                    username=username,
+                    email=email,
+                    password=password,
+                )
+    
+                authenticated_user = authenticate(request, username=username, password=password)
+    
+                if authenticated_user is not None:
+                    login(request, authenticated_user)
+                    return redirect("list_users")
+    
+        return render(request, "signup.html")
+
+    def get_hacciones_data(request):
+        hacciones_data = HAcciones.objects.all()
+        return render(request, "hacciones_data.html", {"hacciones_data": hacciones_data})
+
+
+    def get_hcompras_data(request):
+        hcompras_data = HCompras.objects.all()
+        return render(request, "hcompras_data.html", {"hcompras_data": hcompras_data})
+
+
+    def get_logros_data(request):
+        logros_data = Logros.objects.all()
+        return render(request, "logros_data.html", {"logros_data": logros_data})
+
+
+    @login_required
+    def crear_logro(request):
+        if request.method == "POST":
+            name = request.POST["name"]
+            value = request.POST["value"]
+            iduser = request.user
+
+            Logros.objects.create(name=name, value=value, iduser=iduser)
+
+        return render(request, "registrar_logro.html")
+
+
+    @login_required
+    def crear_accion(request):
+        if request.method == "POST":
+            fecha = request.POST["fecha"]
+            iduser = request.user
+
+            Acciones.objects.create(fecha=fecha, iduser=iduser)
+
+        return render(request, "registrar_accion.html")
+
+
+    @login_required
+    def registrar_recompensa(request):
+        if request.method == "POST":
+            name = request.POST["name"]
+            value = request.POST["value"]
+            idemp_id = request.POST["idemp"]
+            iduser = request.user
+
+            ProdRecompensa.objects.create(
+                name=name, value=value, iduser=iduser, idemp_id=idemp_id
+            )
+
+        return render(request, "registrar_recompensa.html")
+
+
+    @login_required
+    def registrar_prod_sostenible(request):
+        if request.method == "POST":
+            fecha = request.POST["fecha"]
+            descripcion = request.POST["descripcion"]
+            iduser = request.user
+
+            ProdSostenible.objects.create(
+                fecha=fecha, descripcion=descripcion, iduser=iduser
+            )
+
+        return render(request, "registrar_prod_sostenible.html")
