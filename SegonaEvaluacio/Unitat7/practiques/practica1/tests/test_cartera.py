@@ -23,3 +23,7 @@ def test_perdamunt_posibilitats():
     cartera = Cartera(100)
     with pytest.raises(SaldoInsuficiente):
         cartera.gastar(150)
+        
+def test_saldo_inicial_negatiu():
+    cartera = Cartera(-100)
+    assert cartera.saldo == 0
