@@ -1,5 +1,5 @@
 import pytest
-from cartera import Cartera, SaldoInsuficiente
+from practica1.cartera import Cartera, SaldoInsuficiente
 
 def test_saldo_inicial_per_defecte():
     cartera = Cartera()
