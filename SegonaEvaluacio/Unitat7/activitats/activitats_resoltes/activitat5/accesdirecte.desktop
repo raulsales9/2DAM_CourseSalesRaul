@@ -1,0 +1,13 @@
+[Desktop Entry]
+
+Type=Application
+
+Name=hello-world
+
+Comment=Hello World! with PySide6.
+
+Path=/opt/hello-world
+
+Exec=/opt/hello-world/hello-world
+
+Icon=hello-world

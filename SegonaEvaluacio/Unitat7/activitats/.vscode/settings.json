@@ -1,0 +1,7 @@
+{
+    "python.testing.pytestArgs": [
+        "activitats_resoltes"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
+}
