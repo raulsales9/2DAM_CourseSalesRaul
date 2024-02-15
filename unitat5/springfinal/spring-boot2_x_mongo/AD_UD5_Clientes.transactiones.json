@@ -1,0 +1,16 @@
+[{
+  "_id": {
+    "$oid": "65ce57fbfba99be0da13829b"
+  },
+  "monto": 500,
+  "fecha": "2024-02-15T12:00:00Z",
+  "tipo": "DEPOSITO",
+  "descripcion": "Depósito de fondos",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      1.23456,
+      2.34567
+    ]
+  }
+}]
