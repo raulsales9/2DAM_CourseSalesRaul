@@ -1,0 +1,665 @@
+/* Estils genèrics */
+
+html {
+    font-size: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    margin: 0px;
+    background-color: #ffffff;
+    padding: 0;
+    text-align: justify;
+    font-family: "Roboto", sans-serif;
+    color: #192150;
+    background-color: #ffffff;
+    /*  FLEX * /
+    display: flex;
+    flex-flow: row wrap;*/
+    /*********/
+    font-size: 100%;
+    line-height: 1.5;
+    font-size-adjust: none;
+    font-kerning: auto;
+    font-optical-sizing: auto;
+    font-variant-alternates: normal;
+    font-variant-east-asian: normal;
+    font-variant-emoji: normal;
+    font-variant-ligatures: normal;
+    font-variant-numeric: normal;
+    font-variant-position: normal;
+    font-language-override: normal;
+    font-feature-settings: normal;
+    font-variation-settings: normal;
+}
+
+#content {
+    width: 1600px;
+    margin: 0px auto;
+    /*  FLEX */
+    display: flex;
+    flex-flow: row wrap;
+}
+
+
+/* Capçaleres */
+
+h1 {
+    text-align: left;
+    font-size: 23px;
+    margin-top: 0px;
+    color: #653097;
+    font-family: 'Lato';
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    border-bottom: 3px solid #653097;
+}
+
+h2 {
+    text-align: left;
+    margin-top: 0px;
+    color: #653097;
+    font-family: 'Lato';
+    font-weight: 600;
+    text-transform: capitalize;
+    margin-bottom: 15px;
+}
+
+
+/* Barra de navegació superior */
+
+nav#sitetoc {
+    display: none;
+}
+
+
+/* Capçalera */
+
+#title-block-header {
+    padding: 0px;
+    margin: 0px;
+}
+
+#title-block-header h1 {
+    text-transform: capitalize;
+    margin: 25px;
+    border-bottom: none;
+}
+
+header {
+    order: 1;
+    height: 100px;
+    flex: 0 1 100%;
+    padding: 1em;
+    /********/
+    background-color: #65309741;
+    border-bottom: 1px solid #98c8c5;
+    margin: -.5em 0 1em 0;
+    margin-top: -0.5em;
+    font-size: 1em;
+    text-align: left;
+    font-size: 3px;
+    color: #653097;
+    font-family: 'Lato';
+}
+
+#TOC {
+    /*Navegació de l'esquerra*/
+    order: 2;
+    flex: 0 1 300px;
+    padding: 1em;
+}
+
+main {
+    order: 3;
+    flex: 1;
+    min-height: 500px;
+    padding: 1em;
+    max-width: 800px;
+}
+
+#mySidenav {
+    /*Navegació de la dreta*/
+    order: 4;
+    flex: 0 1 300px;
+    padding: 1em;
+}
+
+
+
+#mySidenav>.navContainer>a {
+    padding: 0.5em 0.5em 0.5em 2em;
+    text-indent: -1.5em;
+    display: block;
+    color: #653097;
+    background-color: #65309741;
+    margin-bottom: 0.2em;
+}
+    
+    
+}
+
+.navContainer>h3>a {
+    color: #653097;
+    text-align: left !important;
+    display: block;
+}
+
+
+/*  footer {
+    order:5;
+    height:100px;
+    flex:0 1 100%;
+  }*/
+
+
+/* BARRA ESQUERRA */
+
+nav#TOC ul {
+    padding: 0px;
+    list-style: none;
+}
+
+nav#TOC ul li a {
+    /*margin: 1px;
+    padding: 0px;*/
+    background-color: #653097;
+    color: #ffffff;
+    border-color: #ffffff;
+    display: block;
+    padding: 8px 10px 8px 20px;
+    border-width: 0 0 2px 0;
+    border-style: solid;
+}
+
+.navItemSelected {
+    border-left: 5px solid #ffffff !important;
+    /*text-decoration: underline;*/
+    font-weight: bold;
+}
+
+a:link,
+a:visited {
+    text-decoration: none;
+}
+
+.navContainer {
+    top: 0px;
+    left: 0px;
+    position: sticky;
+}
+
+.drawer-close-button {
+    /*Ocultem el botó de tancar menú */
+    display: none;
+}
+
+
+/* Imatges */
+
+img {
+    margin: auto;
+    display: block;
+    max-width:100%;
+}
+
+figcaption {
+    font-size: var(--figcaption-font-size);
+    line-height: var(--figcaption-line-height);
+    font-style: italic;
+    text-align: center;
+    color: var(--color-text-secondary);
+}
+
+.left-align-caption figcaption {
+    text-align: left;
+}
+
+figcaption code {
+    font-size: var(--figcaption-code-font-size);
+}
+
+
+/* Modal images */
+
+
+/* Style the Image Used to Trigger the Modal */
+
+img {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+figure>img:hover {
+    opacity: 0.7;
+}
+
+img.modal-content {
+    background-color: #ffffff;
+}
+
+
+/* The Modal (background) */
+
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    /*background-color: rgb(0, 0, 0);*/
+    /* Fallback color */
+    /*background-color: rgba(0, 0, 0, 0.9);*/
+    backdrop-filter: blur(10px);
+    /* Black w/ opacity */
+}
+
+
+/* Modal Content (Image) */
+
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 80%;
+    max-height: 80%;
+    /*max-width: 1200px;*/
+}
+
+
+/* Caption of Modal Image (Image Text) - Same Width as the Image */
+
+#caption {
+    margin: auto;
+    display: block;
+    width: auto;
+    max-width: 700px;
+    text-align: center;
+    color: #192150;
+    /*background-color: #ffcc00;*/
+    padding: 10px 0;
+    height: 50px;
+}
+
+
+/* Add Animation - Zoom in the Modal */
+
+.modal-content,
+#caption {
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+    from {
+        transform: scale(0)
+    }
+    to {
+        transform: scale(1)
+    }
+}
+
+
+/* 100% Image Width on Smaller Screens */
+
+@media only screen and (max-width: 700px) {
+    .modal-content {
+        width: 100%;
+    }
+}
+
+
+/* End modal images */
+
+
+/* Requadres amb notes, etc */
+
+div.note,
+div.tip,
+div.warning,
+div.caution,
+div.important {
+    padding: 1em;
+    margin: 1em 0em 1em 5em;
+    border-radius: 3px;
+}
+
+div.note::before,
+div.tip::before,
+div.warning::before,
+div.caution::before,
+div.important::before {
+    position: relative;
+    left: -4em;
+    top: 3em;
+    margin-top: -3em;
+    height: 50px;
+    display: block;
+    padding-top: 0.5em;
+    font-size: x-large;
+    font-weight: bold;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+div.note {
+    border-left: 3px solid #26c6da;
+}
+
+div.note::before {
+    background-image: url(rsc/note.svg);
+    content: "";
+    width: auto;
+}
+
+div.tip {
+    border-left: 3px solid #7cb342;
+}
+
+div.tip::before {
+    background-image: url(rsc/tip.svg);
+    content: "";
+    width: auto;
+}
+
+div.warning {
+    border-left: 3px solid #fb8c00
+}
+
+div.warning::before {
+    background-image: url(rsc/warning.svg);
+    content: "";
+    width: auto;
+}
+
+div.caution {
+    border-left: 3px solid #b71c1c;
+}
+
+div.caution::before {
+    background-image: url(rsc/caution.svg);
+    content: "";
+    width: auto;
+}
+
+div.important {
+    border-left: 3px solid #f9ce1d;
+}
+
+div.important::before {
+    background-image: url(rsc/important.svg);
+    content: "";
+    width: auto;
+}
+
+
+/* Estils per a la pàgina de l'índex */
+
+.indexContainer {
+    max-width: 1200;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+h1.siteTitle,
+h2.siteTitle {
+    text-align: right;
+}
+
+.left-block {
+    padding-top: 1rem;
+    padding-right: 1em;
+    width: 30%;
+    height: 100vh;
+    text-align: center;
+    border-right: #192150 1px solid;
+}
+
+.right-block {
+    width: 65%;
+    height: 100vh;
+}
+
+.bannerTitle {
+    margin-top: 1em;
+    margin-bottom: 2em;
+    width: 100%;
+    height: auto;
+}
+
+.abstract {
+    text-align: justify;
+}
+
+.card {
+    width: 320px;
+    overflow: hidden;
+    border-radius: 6px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.45);
+    background: #fff;
+    margin: 1.5em;
+}
+
+.card-cover {
+    height: auto;
+    max-height: 7rem;
+}
+
+.card-cover img {
+    max-height: 7rem;
+}
+
+.card .card-cover img {
+    max-width: 100%;
+}
+
+.card-content {
+    height: auto;
+    max-height: 4rem;
+    padding: 5px 15px;
+    font-size: 14px;
+    color: #333;
+}
+
+.card-content h3 {
+    margin: 0px;
+}
+
+.card-content p {
+    font-variant: small-caps;
+    border: 1px solid;
+    display: inline-block;
+    padding: 0em 0.5em;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin: 0px;
+}
+
+.card-content p.practica {
+    color: #653097;
+    border-color: #653097;
+}
+
+.card-content p.tutorial {
+    color: #fb8c00;
+    border-color: #fb8c00;
+}
+
+div.siteIndex {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+
+/* Per a pantalles menudes */
+
+@media (max-width: 768px) {
+    header,
+    main,
+    #TOC,
+    #mySidenav {
+        flex: unset;
+        width: 100%;
+    }
+    #content {
+        width: 100%;
+    }
+    main {
+        padding: 0px;
+    }
+    body {
+        padding: 10px;
+    }
+    div.note,
+    div.tip,
+    div.warning,
+    div.caution,
+    div.important {
+        padding: 0em;
+        margin: 0em;
+        border: 0px;
+        margin-top: 0em;
+        height: auto;
+        display: block;
+        padding-top: 0em;
+    }
+    div.note::before,
+    div.tip::before,
+    div.warning::before,
+    div.caution::before,
+    div.important::before {
+        content: none;
+        position: relative;
+        left: 0em;
+        top: 0em;
+        background: none;
+    }
+    div.note {
+        background-color: #b2ebf2;
+    }
+    div.tip {
+        background-color: #c5e1a5;
+    }
+    div.warning {
+        background-color: #ffcd40;
+    }
+    div.caution {
+        background-color: #ff8a80;
+    }
+    div.important {
+        background-color: #fff59d;
+    }
+    .indexContainer {
+        display: block;
+    }
+    .left-block {
+        width: 100%;
+        border-right: none;
+        float: left;
+        height: auto;
+    }
+    .right-block {
+        width: 100%;
+        float: left;
+    }
+    .right-block .abstract {
+        float: left;
+    }
+}
+
+
+
+/* Snackbars */
+
+#snackbar {
+    visibility: hidden; /* Hidden by default. Visible on click */
+    min-width: 250px; /* Set a default minimum width */
+    margin-left: -125px; /* Divide value of min-width by 2 */
+    background-color: #7d32cd; /* Black background color */
+    color: #ffffff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1; /* Add a z-index if needed */
+    left: 50%; /* Center the snackbar */
+    bottom: 30px; /* 30px from the bottom */
+  }
+  
+  /* Show the snackbar when clicking on a button (class added with JavaScript) */
+  #snackbar.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  }
+  
+  /* Animations to fade the snackbar in and out */
+  @-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+  }
+  
+  @keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+  }
+  
+  @-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
+  
+  @keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
+
+
+  /* PER AL BOTO DE COPIAR CODI FONT*/
+
+  .sourceCode {
+    position: relative;
+    padding: 0.5em 0.2em 0.2em 0.2em; /* Augmentem el padding superior per deixar espai pel botó */
+}
+div.sourceCode{ 
+    border: 1px solid #aaaaaa;
+    border-radius: 2px;
+ }
+
+div.button-copy {
+    width:24px;
+    height: 24px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-image: url(rsc/copy.svg);
+    background-size: contain;
+    /*filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(87deg) brightness(119%);*/
+    filter: invert(42%);
+}
+
+div.button-copy:hover {
+    filter: invert(60%);
+}
+div.button-copy:active {
+    filter: invert(80%);
+}
+
+/* FI BOTO COPIAR FONT*/
