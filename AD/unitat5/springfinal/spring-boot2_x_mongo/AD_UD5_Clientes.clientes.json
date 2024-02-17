@@ -1,0 +1,34 @@
+[{
+  "_id": {
+    "$oid": "65ce561dfba99be0da138294"
+  },
+  "apellidos": "Apellidos del cliente",
+  "claveseguridad": "ClaveSegura123",
+  "email": "cliente@example.com",
+  "nif": "12345678A",
+  "nombre": "Nombre del cliente",
+  "accounts": [
+    {
+      "saldoactual": 1000,
+      "banco": "Nombre del banco",
+      "dc": "1234",
+      "numerocuenta": "12345678901234567890",
+      "sucursal": "Nombre de la sucursal"
+    },
+    {
+      "saldoactual": 2000,
+      "banco": "Otro banco",
+      "dc": "5678",
+      "numerocuenta": "09876543210987654321",
+      "sucursal": "Otra sucursal"
+    }
+  ],
+  "recommendations": [
+    {
+      "observaciones": "Observaciones de la recomendación"
+    },
+    {
+      "observaciones": "Otras observaciones"
+    }
+  ]
+}]

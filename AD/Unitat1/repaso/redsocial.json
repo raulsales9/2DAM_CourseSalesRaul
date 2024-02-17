@@ -1,0 +1,51 @@
+{"Usuarios": [
+    {
+        "Nombre": "Juan Pérez",
+        "Edad": "28",
+        "Amigos": [
+            "2",
+            "3"
+        ],
+        "Publicaciones": [{
+            "Fecha": "2023-10-10",
+            "ID": "101",
+            "Texto": "Hola, ¡estoy emocionado de unirme a esta red social!"
+        }],
+        "ID": "1",
+        "Ciudad": "San Francisco",
+        "Intereses": [
+            "Deportes",
+            "Música",
+            "Viajes"
+        ]
+    },
+    {
+        "Nombre": "Maria Rodríguez",
+        "Edad": "24",
+        "Amigos": ["1"],
+        "Publicaciones": [{
+            "Fecha": "2023-10-10",
+            "ID": "102",
+            "Texto": "¡Hola a todos! Soy nueva aquí."
+        }],
+        "ID": "2",
+        "Ciudad": "Los Angeles",
+        "Intereses": [
+            "Literatura",
+            "Cine"
+        ]
+    },
+    {
+        "Nombre": "Paco",
+        "Edad": "23",
+        "Amigos": ["1"],
+        "Publicaciones": [{
+            "Fecha": "",
+            "ID": "",
+            "Texto": "nada"
+        }],
+        "ID": "",
+        "Ciudad": "Cullera",
+        "Intereses": ["Estudiar Polonia"]
+    }
+]}

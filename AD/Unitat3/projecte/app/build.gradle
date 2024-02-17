@@ -1,0 +1,31 @@
+plugins {
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    implementation 'org.hibernate:hibernate-core:5.6.15.Final'
+    implementation 'com.mysql:mysql-connector-j:8.2.0'
+}
+
+run {
+    standardInput = System.in
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+application {
+    mainClass = 'projecte.App'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

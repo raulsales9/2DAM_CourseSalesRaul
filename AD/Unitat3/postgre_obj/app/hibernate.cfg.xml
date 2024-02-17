@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="connection.url">jdbc:postgresql://localhost:5432/empresa</property>
+        <property name="connection.username">empresa</property>
+        <property name="connection.password">pass123</property>
+        <property name="connection.pool_size">5</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <property name="current_session_context_class">thread</property>
+        <property name="show_sql">true</property>
+        <property name="hbm2ddl.auto">update</property>
+        <mapping class="postgre_obj.entities.Direccion" />
+        <mapping class="postgre_obj.entities.Contacto" />
+        <mapping class="postgre_obj.entities.Persona" />
+        <mapping class="postgre_obj.entities.Cliente" />
+        <mapping class="postgre_obj.entities.Proveedor" />
+        <mapping class="postgre_obj.entities.Empleado" />
+        <mapping class="postgre_obj.entities.Producto" />
+        <mapping class="postgre_obj.entities.Pedido" />
+        <mapping class="postgre_obj.entities.DetallePedido" />
+        <mapping class="postgre_obj.entities.Inventario" />
+        <mapping class="postgre_obj.entities.Factura" />
+        <mapping class="postgre_obj.entities.DetalleFactura" />
+        <mapping class="postgre_obj.entities.Departamento" />
+    </session-factory>
+</hibernate-configuration>

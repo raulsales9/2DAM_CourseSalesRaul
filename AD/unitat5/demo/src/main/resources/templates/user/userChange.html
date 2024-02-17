@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Usuario</title>
+</head>
+<body>
+<div>
+    <h2>Editar Usuario</h2>
+    <form action="/api/users/saveUser" method="post" th:object="${userDto}">
+        <input type="hidden" th:field="*{id}" />
+
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" th:field="*{name}" />
+        <br/>
+
+        <label for="email">Correo electrónico:</label>
+        <input type="text" id="email" th:field="*{email}" />
+        <br/>
+
+        <!-- Otros campos del usuario -->
+
+        <button type="submit">Guardar Cambios</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,3 @@
+docker exec -it mariadb-srv bash
+mysql -u root -p
+SOURCE /var/lib/mariadb/nuevo.sql;

@@ -1,0 +1,18 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml">
+    <TableView fx:id="tablaAsignaturas">
+        <columns>
+            <TableColumn fx:id="columnaId" text="ID" />
+            <TableColumn fx:id="columnaNombre" text="Nombre" />
+        </columns>
+    </TableView>
+    <HBox>
+        <Button fx:id="botonCrear" text="Crear Asignatura" />
+        <Button fx:id="botonActualizar" text="Actualizar Asignatura" />
+        <Button fx:id="botonBorrar" text="Borrar Asignatura" />
+    </HBox>
+</VBox>-->

@@ -1,0 +1,23 @@
+CREATE TABLE Usuario (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Publicacion (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    usuario_id INTEGER NOT NULL,
+    contenido TEXT NOT NULL,
+    fecha_publicacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Amistad (
+    usuario1_id INTEGER NOT NULL,
+    usuario2_id INTEGER NOT NULL,
+    fecha_amistad DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (usuario1_id, usuario2_id),
+    FOREIGN KEY (usuario1_id) REFERENCES Usuario(id) ON DELETE CASCADE,
+    FOREIGN KEY (usuario2_id) REFERENCES Usuario(id) ON DELETE CASCADE
+);

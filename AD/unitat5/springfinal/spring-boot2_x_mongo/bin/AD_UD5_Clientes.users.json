@@ -1,0 +1,11 @@
+[{
+  "_id": {
+    "$oid": "65ce5649fba99be0da138296"
+  },
+  "country": "Nombre del país",
+  "firstname": "Primer nombre",
+  "lastname": "Apellido",
+  "password": "ContraseñaSegura",
+  "username": "NombreUsuario",
+  "role": "USER"
+}]
