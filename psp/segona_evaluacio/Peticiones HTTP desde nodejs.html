@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<!-- saved from url=(0085)https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ca" xml:lang="ca"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="generator" content="pandoc">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">        <title>Peticiones HTTP desde nodejs</title>
+    <style>
+        code{white-space: pre-wrap;}
+        span.smallcaps{font-variant: small-caps;}
+        div.columns{display: flex; gap: min(4vw, 1.5em);}
+        div.column{flex: auto; overflow-x: auto;}
+        div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+        /* The extra [class] is a hack that increases specificity enough to
+           override a similar rule in reveal.js */
+        ul.task-list[class]{list-style: none;}
+        ul.task-list li input[type="checkbox"] {
+          font-size: inherit;
+          width: 0.8em;
+          margin: 0 0.8em 0.2em -1.6em;
+          vertical-align: middle;
+        }
+        /* CSS for syntax highlighting */
+        pre > code.sourceCode { white-space: pre; position: relative; }
+        pre > code.sourceCode > span { line-height: 1.25; }
+        pre > code.sourceCode > span:empty { height: 1.2em; }
+        .sourceCode { overflow: visible; }
+        code.sourceCode > span { color: inherit; text-decoration: inherit; }
+        div.sourceCode { margin: 1em 0; }
+        pre.sourceCode { margin: 0; }
+        @media screen {
+        div.sourceCode { overflow: auto; }
+        }
+        @media print {
+        pre > code.sourceCode { white-space: pre-wrap; }
+        pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+        }
+        pre.numberSource code
+          { counter-reset: source-line 0; }
+        pre.numberSource code > span
+          { position: relative; left: -4em; counter-increment: source-line; }
+        pre.numberSource code > span > a:first-child::before
+          { content: counter(source-line);
+            position: relative; left: -1em; text-align: right; vertical-align: baseline;
+            border: none; display: inline-block;
+            -webkit-touch-callout: none; -webkit-user-select: none;
+            -khtml-user-select: none; -moz-user-select: none;
+            -ms-user-select: none; user-select: none;
+            padding: 0 4px; width: 4em;
+            color: #aaaaaa;
+          }
+        pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+        div.sourceCode
+          {  background-color: #f8f8f8; }
+        @media screen {
+        pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+        }
+        code span.al { color: #ef2929; } /* Alert */
+        code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+        code span.at { color: #204a87; } /* Attribute */
+        code span.bn { color: #0000cf; } /* BaseN */
+        code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+        code span.ch { color: #4e9a06; } /* Char */
+        code span.cn { color: #8f5902; } /* Constant */
+        code span.co { color: #8f5902; font-style: italic; } /* Comment */
+        code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+        code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+        code span.dt { color: #204a87; } /* DataType */
+        code span.dv { color: #0000cf; } /* DecVal */
+        code span.er { color: #a40000; font-weight: bold; } /* Error */
+        code span.ex { } /* Extension */
+        code span.fl { color: #0000cf; } /* Float */
+        code span.fu { color: #204a87; font-weight: bold; } /* Function */
+        code span.im { } /* Import */
+        code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+        code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+        code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+        code span.ot { color: #8f5902; } /* Other */
+        code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+        code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+        code span.ss { color: #4e9a06; } /* SpecialString */
+        code span.st { color: #4e9a06; } /* String */
+        code span.va { color: #000000; } /* Variable */
+        code span.vs { color: #4e9a06; } /* VerbatimString */
+        code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+    </style>
+        <link rel="stylesheet" href="./Peticiones HTTP desde nodejs_files/just.css">  
+    <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+    <![endif]-->
+        
+<style type="text/css">  .ali-helper-trend-card {    border-left: 1px solid lightgrey;  }  .ali-helper-trend-card:first-child {    border-left: none;  }  .ali-helper-trend-items-navigation-button {    padding: 1px 8px;    font-size: 16px;    font-weight: bolder;    background-color: white;    color: #FF530D;    cursor: pointer;  }  .ali-helper-trend-items-navigation-button[disabled] {    padding: 1px 8px;    font-size: 16px;    background-color: lightgrey;    color: black;    cursor: not-allowed;  }  .ali-helper-trend-items {    display: flex;    flex-direction: column;    margin-top: 10px;    border-radius: 15px;    background-color: white;    border-top-right-radius: 0;    border-top-left-radius: 0;    border: 1px solid rgb(18, 27, 33);    border-top: none;  }  .ali-helper-trend-items.home {    margin-top: 0;    width: 1200px;    min-width: 1200px;    margin: auto;    border-top-right-radius: 0;    border-top-left-radius: 0;    border: 1px solid rgb(18, 27, 33);    border-top: none;    margin-bottom: 2px;  }  .ali-helper-trend-box-container {    background-color: white;    padding-bottom: 10px;  }  #ali-helper-popover-conteiner {    position: absolute;    bottom: 55px;    left: 150px;    width: 220px;    background-color: white;    border: 1px solid darkgrey;    filter: drop-shadow(0 0 2rem black);    border-radius: 5px;    padding: 10px;    padding-right: 20px;    cursor: auto;  }  #ali-helper-popover-conteiner:before {    content: " ";    height: 0;    position: absolute;    width: 0;    bottom: -20px;    left: calc(50% - 10px);    border: 10px solid transparent;    border-top-color: white;  }</style><style type="text/css">
+    @font-face{font-family:"Roboto";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-100.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-100.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-100.ttf) format("truetype");font-style:normal;font-weight:100;font-display:swap}@font-face{font-family:"Roboto";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-300.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-300.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-300.ttf) format("truetype");font-style:normal;font-weight:300;font-display:swap}@font-face{font-family:"Roboto";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-400.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-400.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-400.ttf) format("truetype");font-style:normal;font-weight:400;font-display:swap}@font-face{font-family:"Roboto";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-500.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-500.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-500.ttf) format("truetype");font-style:normal;font-weight:500;font-display:swap}@font-face{font-family:"Roboto";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-700.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-700.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-700.ttf) format("truetype");font-style:normal;font-weight:700;font-display:swap}@font-face{font-family:"Roboto";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-900.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-900.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-900.ttf) format("truetype");font-style:normal;font-weight:900;font-display:swap}@font-face{font-family:"Rebond";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-400.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-400.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-400.ttf) format("truetype");font-style:normal;font-weight:400;font-display:swap}@font-face{font-family:"Rebond";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-500.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-500.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-500.ttf) format("truetype");font-style:normal;font-weight:500;font-display:swap}@font-face{font-family:"Rebond";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-600.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-600.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-600.ttf) format("truetype");font-style:normal;font-weight:600;font-display:swap}@font-face{font-family:"Rebond";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-700.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-700.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-700.ttf) format("truetype");font-style:normal;font-weight:700;font-display:swap}
+    #__wikibuy__ .__wikibuy.__onTop,body~div:not(#gdx-bubble-host),#piggyWrapper,#honeyContainer,#earny-root{position:absolute !important;z-index:100000 !important}.mm-slideout{z-index:initial}.sorry-for-this__empty-styles{position:relative;z-index:10000}
+    #beheaefbeeeificfjjjdjichegadbcda div:empty {
+      display: block !important;
+    }
+  </style><style>[_nghost-ng-c4214649903]{font-family:Open Sans,sans-serif;color:#121212}</style><style data-styled="active" data-styled-version="5.3.9">.dWTrLf{visibility:hidden;}.igvzJt{font-family:roboto;font-weight:100;}.igvzJr{font-family:roboto;font-weight:300;}.igvzJo{font-family:roboto;font-weight:400;}.igvzJp{font-family:roboto;font-weight:500;}.igvzJn{font-family:roboto;font-weight:700;}.igvzJl{font-family:roboto;font-weight:900;}.uAvZv{font-family:rebond;font-weight:400;}.uAvZu{font-family:rebond;font-weight:500;}.uAvZx{font-family:rebond;font-weight:600;}.uAvZw{font-family:rebond;font-weight:700;}</style></head>
+
+<body>
+    <div id="content">
+         <!--creating the button to handle opening the navbar-->
+
+<nav id="sitetoc">
+    <span onclick="openNav()" class="mobile-nav-open-icon">☰</span>
+    <span class="title"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/index.html">Unidad 4. Programación concurrente en nodeJS</a></span>
+</nav>
+
+<!-- this would work as the backdrop when navbar is open-->
+<!--div class="backdrop-container" id="backdrop"></div-->
+
+<!--the would be the drawer and it's content-->
+<div id="mySidenav" class="sidenav-container">
+    <div class="navContainer">
+
+        <!--span class="drawer-close-button "-->
+        <!--icon for closing of the navbar-->
+        <!--!a href="javascript:void(0) " class="closebtn " onclick="closeNav() ">&times;</a></span-->
+
+        <h3>
+            <a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/index.html">
+                <!--UnitTitle-->
+Unidad 4. Programación concurrente en nodeJS            </a>
+        </h3>
+
+        <!--navbarTemplate-->
+		<a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/1.IntroNode.html" onclick="closeNav()">1. Introducción a NodeJS</a>
+		<a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/2.IntroJS.html" onclick="closeNav()">2. El lenguaje Javascript</a>
+		<a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/3.PrgAsinc.html" onclick="closeNav()">3. Programació Asíncrona</a>
+		<a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html" onclick="closeNav()">4. HTTP</a>
+
+    </div>
+</div>
+
+<script>
+    var navOpen
+
+    function openNav() {
+        console.log(typeof(navOpen));
+        if (typeof(navOpen) == "undefined ") navOpen = true;
+
+        if (navOpen) {
+            //opens side navbar by 70 percent
+            document.getElementById("mySideNav").style.width = "40% "
+            document.getElementById("mySideNav").style.paddingLeft = "48px "
+            document.getElementById("mySideNav").style.paddingRight = "12px "
+            document.getElementById("mySideNav").style.boxShadow = "2px 20px 10px #dddddd "
+            document.getElementById("mySideNav").style.left = "0px "
+        } else {
+            document.getElementById("mySideNav").style.width = "0 "
+
+            document.getElementById("mySideNav").style.paddingLeft = "0px "
+            document.getElementById("mySideNav").style.border = "0px "
+            document.getElementById("mySideNav").style.boxShadow = "0px 0px 0px "
+            document.getElementById("mySideNav").style.left = "-50px "
+        }
+
+        navOpen = !navOpen;
+
+
+
+
+        //opens overlay display
+        //document.getElementById('backdrop').style.display = "block "
+    }
+
+    function closeNav() {
+        //closes side navbar totally
+        document.getElementById("mySideNav").style.width = "0 "
+
+        document.getElementById("mySideNav").style.paddingLeft = "0px "
+        document.getElementById("mySideNav").style.border = "0px "
+        document.getElementById("mySideNav").style.boxShadow = "0px 0px 0px "
+
+        //removes overlay display
+        //document.getElementById('backdrop').style.display = "none "
+    }
+</script>          <header id="title-block-header">
+            <h1 class="title">Peticiones HTTP desde nodejs</h1>
+            <!--        <p class="subtitle">UD 4. Programación
+concurrente con NodeJS</p>
+        -->
+            <!--  -->
+                    </header>
+                 <nav id="TOC" role="doc-toc">
+            <div class="navContainer">
+                                <h2 id="toc-title">Contenidos</h2>
+                 <ul>
+<li><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#introducci%C3%B3n.-comunicaci%C3%B3n-entre-aplicaciones." id="toc-introducción.-comunicación-entre-aplicaciones."><span class="toc-section-number">1</span> Introducción. Comunicación entre
+aplicaciones.</a></li>
+<li><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#peticiones-http" id="toc-peticiones-http"><span class="toc-section-number">2</span> Peticiones HTTP</a>
+<ul>
+<li><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#concatenando-peticiones" id="toc-concatenando-peticiones"><span class="toc-section-number">2.1</span> Concatenando peticiones</a></li>
+</ul></li>
+<li><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#peticiones-web-con-fetch" id="toc-peticiones-web-con-fetch"><span class="toc-section-number">3</span> Peticiones web con fetch</a></li>
+<li><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#asyncawait" id="toc-asyncawait"><span class="toc-section-number">4</span> async/await</a></li>
+</ul>
+            </div>
+        </nav>
+                <main>
+            <h1 data-number="1" id="introducción.-comunicación-entre-aplicaciones."><span class="header-section-number">1</span> Introducción.
+            Comunicación entre aplicaciones.</h1>
+            <p>Las Apis RESTFul (<em>Representational State
+            Transfer</em> o Transferencia de Estado Representacional)
+            son una arquitectura de software orientada a recursos (ROA)
+            para implementar <em>web services</em>. Se trata de una
+            arquitectura moderna y cada vez más popular, que hace uso
+            del protocolo HTTP para transferencia de datos, y
+            generalmente el formato JSON para su representación. Así
+            pues, con REST podremos crear aplicaciones y servicios entre
+            varios dispositivos, siempre y cuando estas entiendan el
+            protocolo HTTP, siendo Internet el medio natural a través
+            del cual ofrecer estos.</p>
+            <p>Cómo hemos dicho, REST presenta una arquitectura
+            orientada a recursos, donde cada recurso del servidor
+            dispone de una ruta (dirección URL) diferente, conocida
+            también como <em>endpoint</em>. Estos recursos se procesan
+            con los métodos de la interfaz uniforme GET, POST, PUT y
+            DELETE (HTTP tiene más métodos, pero no pertenecen a esta
+            interfaz).</p>
+            <p>El API que vamos a utilizar para los ejemplos se
+            encuentra documentada <a href="https://github.com/joamuran/node-comarques-rest-server">en
+            el siguiente repositorio de Github</a>. Para acceder a los
+            recursos, podemos probar con el navegador web las
+            direcciones que en ella se especifican, y que se encuentran
+            alojadas al servicio <a href="https://railway.app/">Railway
+            App</a>.</p>
+            <p>Por ejemplo, puedes probar desde tu navegador la
+            siguiente dirección URL:</p>
+            <ul>
+            <li><a href="https://node-comarques-rest-server-production.up.railway.app/api/provincies">https://node-comarques-rest-server-production.up.railway.app/api/provincies</a></li>
+            </ul>
+            <div class="note">
+            <p>Cuando hablamos de web services debemos mencionar el
+            protocolo SOAP. Dicho protocolo, fue diseñado antes que
+            REST, y definía la forma en que diferentes plataformas y
+            lenguajes podían intercambiar datos de un modo sencillo,
+            haciendo uso de XML para el intercambio de información.</p>
+            <p>Más adelante y en otros módulos profundizaremos en este
+            tipo de servicios.</p>
+            </div>
+            <h1 data-number="2" id="peticiones-http"><span class="header-section-number">2</span> Peticiones HTTP</h1>
+            <p>Para poder realizar peticiones web, ya sea a servicios
+            REST o cualquier otro recurso que se encuentre en la web
+            existen diferentes librerías que podemos usar en nuestras
+            aplicaciones javascript.</p>
+            <p>Cuando trabajamos desde Javascript para el navegador,
+            éste incorpora el objeto <code>XMLHTTPRequest</code>, que
+            supone la base sobre la que se construyen aplicaciones AJAX
+            (<em>Asynchronous Javacript XML</em>). Por su parte, nodejs
+            incorpora de manera estándard los módulos <code>http</code>
+            y <code>https</code>, que nos permiten tanto crear
+            servidores HTTP/HTTPS como realizar peticiones de este
+            tipo.</p>
+            <p>El esquema básico de una petición de tipo GET para
+            obtener un recurso web sería el siguiente:</p>
+            <div class="sourceCode" id="cb1"><pre class="sourceCode js" style="position: relative;"><code class="sourceCode javascript"><span id="cb1-1"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> https <span class="op">=</span> <span class="pp">require</span>(<span class="st">'https'</span>)<span class="op">;</span></span>
+<span id="cb1-2"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-3" aria-hidden="true" tabindex="-1"></a>https<span class="op">.</span><span class="fu">get</span>(URL<span class="op">,</span> (res) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-4"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Variable donde guardar los datos recibidos</span></span>
+<span id="cb1-5"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> data <span class="op">=</span> <span class="st">''</span><span class="op">;</span> </span>
+<span id="cb1-6"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Evento que se dispara cada vez que se reciben </span></span>
+<span id="cb1-8"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// fragmentos de datos.</span></span>
+<span id="cb1-9"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-9" aria-hidden="true" tabindex="-1"></a>    res<span class="op">.</span><span class="fu">on</span>(<span class="st">'data'</span><span class="op">,</span> (chunk) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-10"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-10" aria-hidden="true" tabindex="-1"></a>        data <span class="op">+=</span> chunk<span class="op">;</span></span>
+<span id="cb1-11"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-11" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb1-12"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Evento que se dispara cuando se ha recibido</span></span>
+<span id="cb1-14"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">// toda la respuesta.</span></span>
+<span id="cb1-15"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-15" aria-hidden="true" tabindex="-1"></a>    res<span class="op">.</span><span class="fu">on</span>(<span class="st">'end'</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb1-16"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="bu">JSON</span><span class="op">.</span><span class="fu">parse</span>(data)<span class="op">.</span><span class="at">explanation</span>)<span class="op">;</span></span>
+<span id="cb1-17"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-17" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb1-18"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">// Evento que se dispara en caso de error.</span></span>
+<span id="cb1-20"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-20" aria-hidden="true" tabindex="-1"></a>})<span class="op">.</span><span class="fu">on</span>(<span class="st">"error"</span><span class="op">,</span> (err) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-21"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">"Error: "</span> <span class="op">+</span> err<span class="op">.</span><span class="at">message</span>)<span class="op">;</span></span>
+<span id="cb1-22"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb1-22" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code><div class="open_grepper_editor" title="Edit &amp; Save To Grepper"></div></pre><div class="button-copy"></div></div>
+            <p>La mayoría de funcionalidades del módulo HTTP y HTTPs son
+            de bastante bajo nivel. En este caso, recibimos la respuesta
+            a nuestas peticiones en fragmentos de datos que debemos
+            analizar y reconstruir. Estos fragmentos son bastante
+            sencillos de reconstruir cuando se trata de respuestas en
+            formato JSON, pero no deja de suponer un paso adicional.</p>
+            <p>Analicemos por partes qué hemos hecho:</p>
+            <ul>
+            <li>En primer lugar, importamos el objeto https del módulo
+            con el mismo nombre:</li>
+            </ul>
+            <div class="sourceCode" id="cb2"><pre class="sourceCode js" style="position: relative;"><code class="sourceCode javascript"><span id="cb2-1"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> https <span class="op">=</span> <span class="pp">require</span>(<span class="st">'https'</span>)<span class="op">;</span></span></code><div class="open_grepper_editor" title="Edit &amp; Save To Grepper"></div></pre><div class="button-copy"></div></div>
+            <ul>
+            <li>Con este objeto, invocamos a su método <code>get</code>
+            con el siguiente código:</li>
+            </ul>
+            <div class="sourceCode" id="cb3"><pre class="sourceCode js" style="position: relative;"><code class="sourceCode javascript"><span id="cb3-1"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb3-1" aria-hidden="true" tabindex="-1"></a>https<span class="op">.</span><span class="fu">get</span>(URL<span class="op">,</span> (res) <span class="kw">=&gt;</span> {</span>
+<span id="cb3-2"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Cuerpo del callback    </span></span>
+<span id="cb3-3"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb3-4" aria-hidden="true" tabindex="-1"></a>    })<span class="op">.</span><span class="fu">on</span>(<span class="st">"error"</span><span class="op">,</span> (err) <span class="kw">=&gt;</span> {</span>
+<span id="cb3-5"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">"Error: "</span> <span class="op">+</span> err<span class="op">.</span><span class="at">message</span>)<span class="op">;</span></span>
+<span id="cb3-6"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb3-6" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span></code><div class="open_grepper_editor" title="Edit &amp; Save To Grepper"></div></pre><div class="button-copy"></div></div>
+            <p>Como vemos, al método <em>GET</em> le proporcionamos la
+            URL o recurso al que deseamos acceder, así como una función
+            de callback, que recibe el parámetro <em>res</em> con la
+            respuesta. Si se produce alguna excepción en esta llamada,
+            se ejecuta el segundo fragmento de código, mostrando el
+            error por pantalla.</p>
+            <ul>
+            <li>Dentro del cuerpo del callback que procesa las
+            respuestas, lo que hacemos es preparar una estructura para
+            almacenar datos cuando son recibidos:</li>
+            </ul>
+            <div class="sourceCode" id="cb4"><pre class="sourceCode js" style="position: relative;"><code class="sourceCode javascript"><span id="cb4-1"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> data <span class="op">=</span> <span class="st">''</span><span class="op">;</span> </span>
+<span id="cb4-2"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb4-3" aria-hidden="true" tabindex="-1"></a>res<span class="op">.</span><span class="fu">on</span>(<span class="st">'data'</span><span class="op">,</span> (chunk) <span class="kw">=&gt;</span> {</span>
+<span id="cb4-4"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb4-4" aria-hidden="true" tabindex="-1"></a>    data <span class="op">+=</span> chunk<span class="op">;</span></span>
+<span id="cb4-5"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb4-5" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code><div class="open_grepper_editor" title="Edit &amp; Save To Grepper"></div></pre><div class="button-copy"></div></div>
+            <ul>
+            <li>Y cuano terminamos de leer datos, lo que hacemos es ya
+            procesar la respuesta completa, en este caso, mostrarla por
+            pantalla:</li>
+            </ul>
+            <div class="sourceCode" id="cb5"><pre class="sourceCode js" style="position: relative;"><code class="sourceCode javascript"><span id="cb5-1"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb5-1" aria-hidden="true" tabindex="-1"></a>res<span class="op">.</span><span class="fu">on</span>(<span class="st">'end'</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb5-2"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="bu">JSON</span><span class="op">.</span><span class="fu">parse</span>(data)<span class="op">.</span><span class="at">explanation</span>)<span class="op">;</span></span>
+<span id="cb5-3"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb5-3" aria-hidden="true" tabindex="-1"></a> })<span class="op">;</span></span></code><div class="open_grepper_editor" title="Edit &amp; Save To Grepper"></div></pre><div class="button-copy"></div></div>
+            <p>Veamos cómo aplicaríamos este esquema para obtener los
+            datos sobre provincias:</p>
+            <div class="sourceCode" id="cb6"><pre class="sourceCode js" style="position: relative;"><code class="sourceCode javascript"><span id="cb6-1"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { <span class="kw">get</span> } <span class="im">from</span> <span class="st">'https'</span><span class="op">;</span></span>
+<span id="cb6-2"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">get</span>(<span class="st">'https://node-comarques-rest-server-production.up.railway.app/api/comarques'</span><span class="op">,</span> res <span class="kw">=&gt;</span> {</span>
+<span id="cb6-4"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> data <span class="op">=</span> <span class="st">''</span><span class="op">;</span></span>
+<span id="cb6-5"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Obtenemos el código de estado de la respuesta (200=Ok)</span></span>
+<span id="cb6-7"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">'Status Code:'</span><span class="op">,</span> res<span class="op">.</span><span class="at">statusCode</span>)<span class="op">;</span></span>
+<span id="cb6-8"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Y la fecha de ésta</span></span>
+<span id="cb6-9"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> headerDate <span class="op">=</span> res<span class="op">.</span><span class="at">headers</span> <span class="op">&amp;&amp;</span> res<span class="op">.</span><span class="at">headers</span><span class="op">.</span><span class="at">date</span> <span class="op">?</span> res<span class="op">.</span><span class="at">headers</span><span class="op">.</span><span class="at">date</span> <span class="op">:</span> <span class="st">'no response date'</span><span class="op">;</span></span>
+<span id="cb6-10"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">'Date in Response header:'</span><span class="op">,</span> headerDate)<span class="op">;</span></span>
+<span id="cb6-11"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb6-12" aria-hidden="true" tabindex="-1"></a>    res<span class="op">.</span><span class="fu">on</span>(<span class="st">'data'</span><span class="op">,</span> chunk <span class="kw">=&gt;</span> { data <span class="op">+=</span> chunk<span class="op">;</span> })<span class="op">;</span></span>
+<span id="cb6-13"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb6-14" aria-hidden="true" tabindex="-1"></a>    res<span class="op">.</span><span class="fu">on</span>(<span class="st">'end'</span><span class="op">,</span> () <span class="kw">=&gt;</span> { <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="bu">JSON</span><span class="op">.</span><span class="fu">parse</span>(data))<span class="op">;</span> }</span>
+<span id="cb6-15"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb6-15" aria-hidden="true" tabindex="-1"></a>    )<span class="op">;</span></span>
+<span id="cb6-16"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb6-16" aria-hidden="true" tabindex="-1"></a>})<span class="op">.</span><span class="fu">on</span>(<span class="st">'error'</span><span class="op">,</span> err <span class="kw">=&gt;</span> {</span>
+<span id="cb6-17"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">'Error: '</span><span class="op">,</span> err<span class="op">.</span><span class="at">message</span>)<span class="op">;</span></span>
+<span id="cb6-18"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb6-18" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code><div class="open_grepper_editor" title="Edit &amp; Save To Grepper"></div></pre><div class="button-copy"></div></div>
+            <h2 data-number="2.1" id="concatenando-peticiones"><span class="header-section-number">2.1</span> Concatenando
+            peticiones</h2>
+            <p>Ahora bien.. si ahora quisiéramos para cada provincia
+            obtener el nombre de las diferentes comarcas, qué
+            haríamos?</p>
+            <div class="sourceCode" id="cb7"><pre class="sourceCode js" style="position: relative;"><code class="sourceCode javascript"><span id="cb7-1"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> https <span class="op">=</span> <span class="pp">require</span>(<span class="st">'https'</span>)<span class="op">;</span></span>
+<span id="cb7-2"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-3" aria-hidden="true" tabindex="-1"></a>https<span class="op">.</span><span class="fu">get</span>(<span class="st">'https://node-comarques-rest-server-production.up.railway.app/api/comarques'</span><span class="op">,</span> res <span class="kw">=&gt;</span> {</span>
+<span id="cb7-4"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> data <span class="op">=</span> <span class="st">''</span><span class="op">;</span></span>
+<span id="cb7-5"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-5" aria-hidden="true" tabindex="-1"></a>    res<span class="op">.</span><span class="fu">on</span>(<span class="st">'data'</span><span class="op">,</span> chunk <span class="kw">=&gt;</span> {</span>
+<span id="cb7-6"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-6" aria-hidden="true" tabindex="-1"></a>        data <span class="op">+=</span> chunk<span class="op">;</span></span>
+<span id="cb7-7"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-7" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb7-8"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-8" aria-hidden="true" tabindex="-1"></a>    res<span class="op">.</span><span class="fu">on</span>(<span class="st">'end'</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb7-9"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> provincies <span class="op">=</span> <span class="bu">JSON</span><span class="op">.</span><span class="fu">parse</span>(data)<span class="op">;</span></span>
+<span id="cb7-11"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-11" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb7-12"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> (<span class="kw">let</span> provincia <span class="kw">of</span> provincies) {</span>
+<span id="cb7-13"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-13" aria-hidden="true" tabindex="-1"></a>            <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">'https://node-comarques-rest-server-production.up.railway.app/api/comarques/'</span> <span class="op">+</span> provincia<span class="op">.</span><span class="at">provincia</span>)<span class="op">;</span></span>
+<span id="cb7-14"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-14" aria-hidden="true" tabindex="-1"></a>            https<span class="op">.</span><span class="fu">get</span>(<span class="st">'https://node-comarques-rest-server-production.up.railway.app/api/comarques/'</span> <span class="op">+</span> provincia<span class="op">.</span><span class="at">provincia</span><span class="op">,</span> res <span class="kw">=&gt;</span> {</span>
+<span id="cb7-15"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-15" aria-hidden="true" tabindex="-1"></a>                <span class="kw">let</span> data <span class="op">=</span> <span class="st">''</span><span class="op">;</span></span>
+<span id="cb7-16"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-16" aria-hidden="true" tabindex="-1"></a>                res<span class="op">.</span><span class="fu">on</span>(<span class="st">'data'</span><span class="op">,</span> chunk <span class="kw">=&gt;</span> { data <span class="op">+=</span> chunk<span class="op">;</span> })<span class="op">;</span></span>
+<span id="cb7-17"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-18" aria-hidden="true" tabindex="-1"></a>                res<span class="op">.</span><span class="fu">on</span>(<span class="st">'end'</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb7-19"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-19" aria-hidden="true" tabindex="-1"></a>                    <span class="kw">let</span> comarques <span class="op">=</span> <span class="bu">JSON</span><span class="op">.</span><span class="fu">parse</span>(data)<span class="op">;</span></span>
+<span id="cb7-20"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-21" aria-hidden="true" tabindex="-1"></a>                    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">" </span><span class="sc">\n</span><span class="st">Comarques de "</span> <span class="op">+</span> provincia<span class="op">.</span><span class="at">provincia</span> <span class="op">+</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)<span class="op">;</span></span>
+<span id="cb7-22"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-22" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">for</span> (comarca <span class="kw">of</span> comarques) {</span>
+<span id="cb7-23"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-23" aria-hidden="true" tabindex="-1"></a>                        <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(comarca)<span class="op">;</span></span>
+<span id="cb7-24"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-24" aria-hidden="true" tabindex="-1"></a>                    }</span>
+<span id="cb7-25"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-25" aria-hidden="true" tabindex="-1"></a>                })<span class="op">;</span></span>
+<span id="cb7-26"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-26" aria-hidden="true" tabindex="-1"></a>            })<span class="op">.</span><span class="fu">on</span>(<span class="st">'error'</span><span class="op">,</span> err <span class="kw">=&gt;</span> {</span>
+<span id="cb7-27"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-27" aria-hidden="true" tabindex="-1"></a>                <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">'Error: '</span><span class="op">,</span> err<span class="op">.</span><span class="at">message</span>)<span class="op">;</span></span>
+<span id="cb7-28"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-28" aria-hidden="true" tabindex="-1"></a>            })<span class="op">;</span></span>
+<span id="cb7-29"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-30"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-30" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb7-31"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-31" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb7-32"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-32" aria-hidden="true" tabindex="-1"></a>})<span class="op">.</span><span class="fu">on</span>(<span class="st">'error'</span><span class="op">,</span> err <span class="kw">=&gt;</span> {</span>
+<span id="cb7-33"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-33" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">'Error: '</span><span class="op">,</span> err<span class="op">.</span><span class="at">message</span>)<span class="op">;</span></span>
+<span id="cb7-34"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb7-34" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code><div class="open_grepper_editor" title="Edit &amp; Save To Grepper"></div></pre><div class="button-copy"></div></div>
+            <p>Como vemos, cuando se finaliza la recepión de las
+            provincias, debemos recorrer éstas, y realizar de nuevo
+            peticiones, que se procesan del mismo modo, añadiendo un
+            nuevo nivel de anidamiento de callbacks.</p>
+            <div class="note">
+            <p>Disponéis de más información sobre transacciones HTTP en
+            los siguientes enlaces:</p>
+            <ul>
+            <li><p><a href="https://nodejs.org/api/http.html">https://nodejs.org/api/http.html</a></p></li>
+            <li><p><a href="https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/">https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/</a></p></li>
+            </ul>
+            </div>
+            <h1 data-number="3" id="peticiones-web-con-fetch"><span class="header-section-number">3</span> Peticiones web con
+            fetch</h1>
+            <p>El API <em>fetch</em> se introdujo en la versión 6 de
+            EcmaScript, y permite realizar peticiones asíncronas
+            mediante <em>Promesas</em>, que también se introdujeron en
+            esta versión. Mediante promesas vamos a poder trabajar con
+            peticiones asíncronas de una manera más cómoda que con los
+            callbacks.</p>
+            <p>Esta funcionalidad se implementó de forma experimental en
+            el <em>core</em> de nodejs en la versión 17.5. Hasta ese
+            momento, se requería de librerías como <em>Axios</em> o
+            node-<em>fetch</em>.</p>
+            <p>La forma de realizar una petición con <em>fetch</em> es
+            relativemente sencilla, y consiste en invocar a
+            <em>fetch</em> proporcionándole como argumento la URL del
+            recurso que deseamos obtener. Por ejemplo:</p>
+            <div class="sourceCode" id="cb8"><pre class="sourceCode js" style="position: relative;"><code class="sourceCode javascript"><span id="cb8-1"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> res <span class="op">=</span> <span class="fu">fetch</span>(<span class="st">'https://node-comarques-rest-server-production.up.railway.app/api/comarques'</span>)<span class="op">;</span></span></code><div class="open_grepper_editor" title="Edit &amp; Save To Grepper"></div></pre><div class="button-copy"></div></div>
+            <p>El API <code>fetch</code> devuelve un objeto de tipo
+            <code>Promise</code> con sus dos métodos <code>then()</code>
+            y <code>catch()</code>. Estos métodos reciben sendas
+            funciones de <em>callback</em> que serán invocadas bien
+            cuando se obtenga respuesta o bien cuando se produzca un
+            error. Hay que tener en cuenta que los erros que harán que
+            se ejecute el <code>catch</code> son aquellos relacionados
+            con errores de red o de otro tipo, pero no los errores HTTP
+            que devuelven un código de error (tipo 404, etc). Estos
+            errores se tendrán que tratar dentro del
+            <code>then()</code>.</p>
+            <div class="sourceCode" id="cb9"><pre class="sourceCode js" style="position: relative;"><code class="sourceCode javascript"><span id="cb9-1"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb9-1" aria-hidden="true" tabindex="-1"></a>res<span class="op">.</span><span class="fu">then</span>(<span class="kw">function</span>(result) {</span>
+<span id="cb9-2"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Procesamiento de la respuesta</span></span>
+<span id="cb9-3"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb9-3" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb9-4"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb9-4" aria-hidden="true" tabindex="-1"></a> <span class="op">.</span><span class="fu">catch</span>(<span class="kw">function</span>(err) {</span>
+<span id="cb9-5"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Tratamiento de errores de red</span></span>
+<span id="cb9-6"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb9-6" aria-hidden="true" tabindex="-1"></a> })<span class="op">;</span></span></code><div class="open_grepper_editor" title="Edit &amp; Save To Grepper"></div></pre><div class="button-copy"></div></div>
+            <p>O usando funciones flecha:</p>
+            <div class="sourceCode" id="cb10"><pre class="sourceCode js" style="position: relative;"><code class="sourceCode javascript"><span id="cb10-1"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb10-1" aria-hidden="true" tabindex="-1"></a>res<span class="op">.</span><span class="fu">then</span>((result) <span class="kw">=&gt;</span> {</span>
+<span id="cb10-2"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Procesamiento de la respuesta</span></span>
+<span id="cb10-3"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb10-3" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb10-4"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb10-4" aria-hidden="true" tabindex="-1"></a> <span class="op">.</span><span class="fu">catch</span>((err) <span class="kw">=&gt;</span> {</span>
+<span id="cb10-5"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Tratamiento de errores de red</span></span>
+<span id="cb10-6"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb10-6" aria-hidden="true" tabindex="-1"></a> })<span class="op">;</span></span></code><div class="open_grepper_editor" title="Edit &amp; Save To Grepper"></div></pre><div class="button-copy"></div></div>
+            <p>También hay que tener en cuenta que lo más habitual será
+            encontrarnos con dos promesas encadenadas para acceder al
+            cuerpo del mensaje que nos devuelve el servidor. Veámoslo
+            con un ejemplo. Para el caso de obtener las provincias, si
+            mostramos el resultado por pantalla:</p>
+            <div class="sourceCode" id="cb11"><pre class="sourceCode js" style="position: relative;"><code class="sourceCode javascript"><span id="cb11-1"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> res <span class="op">=</span> <span class="fu">fetch</span>(<span class="st">'https://node-comarques-rest-server-production.up.railway.app/api/comarques/provincies'</span>)<span class="op">;</span></span>
+<span id="cb11-2"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb11-3" aria-hidden="true" tabindex="-1"></a>res<span class="op">.</span><span class="fu">then</span>((result) <span class="kw">=&gt;</span> {</span>
+<span id="cb11-4"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(result)<span class="op">;</span></span>
+<span id="cb11-5"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb11-5" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code><div class="open_grepper_editor" title="Edit &amp; Save To Grepper"></div></pre><div class="button-copy"></div></div>
+            <p>Nos imprimirá el JSON con todo el objeto
+            <code>Response</code> devuelto por el servidor:</p>
+            <div class="sourceCode" id="cb12"><pre class="sourceCode json" style="position: relative;"><code class="sourceCode json"><span id="cb12-1"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="er">Response</span> <span class="fu">{</span></span>
+<span id="cb12-2"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="er">[Symbol(realm)]</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb12-3"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="er">[Symbol(state)]</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb12-4"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="er">aborted</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb12-5"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="er">...</span><span class="fu">,</span></span>
+<span id="cb12-6"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="er">statusText</span><span class="fu">:</span> <span class="er">'OK'</span><span class="fu">,</span></span>
+<span id="cb12-7"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="er">headersList</span><span class="fu">:</span> <span class="er">HeadersList</span> <span class="fu">{</span></span>
+<span id="cb12-8"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb12-8" aria-hidden="true" tabindex="-1"></a>      <span class="er">...</span></span>
+<span id="cb12-9"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
+<span id="cb12-10"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="er">urlList</span><span class="fu">:</span> <span class="ot">[</span> <span class="er">URL</span> <span class="fu">{}</span> <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb12-11"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="er">body</span><span class="fu">:</span> <span class="fu">{</span> <span class="er">stream</span><span class="fu">:</span> <span class="er">undefined</span> <span class="fu">}</span></span>
+<span id="cb12-12"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb12-13"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="er">...</span></span>
+<span id="cb12-14"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="er">,</span></span>
+<span id="cb12-15"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="ot">[</span><span class="er">Symbol(headers</span> <span class="er">map</span> <span class="er">sorted)</span><span class="ot">]</span><span class="er">:</span> <span class="er">null</span></span>
+<span id="cb12-16"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="er">}</span></span>
+<span id="cb12-17"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="er">}</span></span></code><div class="open_grepper_editor" title="Edit &amp; Save To Grepper"></div></pre><div class="button-copy"></div></div>
+            <p>Este objeto de tipo <code>Response</code> que se nos
+            devuelve, no dispone del contenido del cuerpo
+            (<em>body</em>) de forma directa, sino que proporciona
+            diferentes métodos para acceder al contenido, como son
+            <code>.json()</code> para obtener el contenido en formato
+            JSON o bien <code>.text()</code>, para obtenerlo en formato
+            texto. Estos método <code>.json()</code> y
+            <code>.text()</code>, nos devuelven otra promesa, que se
+            resolverá cuando se haya obtenido el contenido en uno u otro
+            formato. Esta promesa será tratada con otro
+            <code>then</code> encadenado, por ejemplo, para mostrar el
+            resultado:</p>
+            <div class="sourceCode" id="cb13"><pre class="sourceCode js" style="position: relative;"><code class="sourceCode javascript"><span id="cb13-1"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb13-1" aria-hidden="true" tabindex="-1"></a> <span class="kw">const</span> res <span class="op">=</span> <span class="fu">fetch</span>(<span class="st">'https://node-comarques-rest-server-production.up.railway.app/api/comarques/provincies'</span>)<span class="op">;</span></span>
+<span id="cb13-2"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb13-3" aria-hidden="true" tabindex="-1"></a>res<span class="op">.</span><span class="fu">then</span>((result) <span class="kw">=&gt;</span> {</span>
+<span id="cb13-4"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Obtenemos el contenido en JSON</span></span>
+<span id="cb13-5"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (result<span class="op">.</span><span class="fu">json</span>())<span class="op">;</span></span>
+<span id="cb13-6"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb13-6" aria-hidden="true" tabindex="-1"></a>})<span class="op">.</span><span class="fu">then</span>((result) <span class="kw">=&gt;</span> {</span>
+<span id="cb13-7"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Mostramos el JSON por pantalla</span></span>
+<span id="cb13-8"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(result)<span class="op">;</span></span>
+<span id="cb13-9"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb13-9" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code><div class="open_grepper_editor" title="Edit &amp; Save To Grepper"></div></pre><div class="button-copy"></div></div>
+            <p>Aparte de <code>text</code> y <code>json</code>, el
+            objeto <em>Response</em> proporciona otros métodos para el
+            acceso al contenido. Veámoslos en la siguiente tabla:</p>
+            <table>
+            <colgroup>
+            <col style="width: 27%">
+            <col style="width: 41%">
+            <col style="width: 31%">
+            </colgroup>
+            <thead>
+            <tr class="header">
+            <th>Método</th>
+            <th>Significado</th>
+            <th>Ejemplo</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="odd">
+            <td><code>response.texto()</code></td>
+            <td>Retorn el contenido en formado texto</td>
+            <td>[“València”,“Alacant”,“Castelló”]</td>
+            </tr>
+            <tr class="even">
+            <td><code>response.json()</code></td>
+            <td>Retorna el contenido en formato JSON</td>
+            <td>[ ‘València’, ‘Alacant’, ‘Castelló’ ]</td>
+            </tr>
+            <tr class="odd">
+            <td><code>response.arrayBuffer()</code></td>
+            <td>Retorna el contenido en formato ArrayBuffer</td>
+            <td>ArrayBuffer { byteLength: 35 }</td>
+            </tr>
+            <tr class="even">
+            <td><code>response.blob()</code></td>
+            <td>Retorna el contenido en formato Blob para gestionarlo
+            con <code>URL.createObjectURL()</code></td>
+            <td>data = Blob { <br> [Symbol(type)]: ‘application/json;
+            charset=utf-8’, <br> [Symbol(buffer)]: &lt;Buffer 5b 22 56
+            61 6c c3 a8 6e 63 69 61 22 2c 22 41 6c 61 63 61 6e 74 22 2c
+            22 43 61 73 74 65 6c 6c c3 b3 22 5d&gt; } <br> <br>
+            URL.createObjectURL(data)=blob:null/d7cf5197-0254-4feb-bdbe-cf9aaf1863ac</td>
+            </tr>
+            <tr class="odd">
+            <td><code>response.formData()</code></td>
+            <td>Retorna el contenido en formato FormData</td>
+            <td></td>
+            </tr>
+            </tbody>
+            </table>
+            <!-- Hay que tener en cuenta que estos métodos nos devuelven realmente una promesa, y cuando esta se resuelve, su método `then()` nos pasará el resultado a la función que le añadimos como callback. De este modo, solo podemos obtener el cuerpo de la respuesta una vez, tras la cual, ya no podremos volver a solicitar otra conversión. Para resolver esta situación, el objeto *Response* dispone del método `clone()`, que nos permite duplicar un objeto y gestionar varias veces el cuerpo (*body*). Vemos-lo con un ejemplo:
+
+            ```js
+            fetch('https://node-comarques-rest-server-production.up.railway.app/api/provincies')
+                .then(function(response) {
+
+                    let resposta1 = response.clone();
+                    // Clonamos la respuesta (response)
+                    // como resposta1 y la consumimos como texto.
+                    resposta1.text().then(function(data) {
+                        console.log(data);
+                    });
+
+                    let resposta2 = response.clone();
+                    // Volvemos a clonar response, ahora
+                    // como resposta2 y la consumimos como ko
+                    resposta2.json().then(function(data) {
+                        console.log(data);
+                    });
+
+                    // Ahora clonamos en resposta3 y 
+                    // la tratamos como un arrayBuffer.
+                    let resposta3 = response.clone();
+                    resposta3.arrayBuffer().then(function(data) {
+                        console.log(data);
+                    });
+
+                    // Y finalmente, resposta4 como blob.
+                    let resposta4 = response.clone();
+                    resposta4.blob().then(function(data) {
+                        console.log(data);
+                        console.log(URL.createObjectURL(data));
+                    });
+
+                })
+                .catch(function(err) {
+                    console.error(err);
+                });
+            ```
+
+            Con esto, hemos obtenido el resultado en diferentes formatos haciendo solo uso de un `fetch` y clonando la respuesta para obtener esta en diferentes formatos. Luego, utilizamos los diferentes métodos que nos devuelven promesas, y tratamos estas dentro del mismo `then` que nos devuelve el `fetch` (como podéis ver, ahora no hacemos el `return`).
+
+            De copilot:
+
+            Sí, pots utilitzar clone() per clonar la resposta, però hi ha una cosa important a tenir en compte: tant la resposta original com el clon es consumeixen quan els llegeixes. Això significa que si llegeixes la resposta original (o el clon), no podràs llegir l’altra.
+
+
+            fetch('https://node-comarques-rest-server-production.up.railway.app/api/comarques/provincies')
+                .then(function(response) {
+                    let resposta1 = response.clone();
+                    resposta1.text().then(function(data) {
+                        console.log("***"+data);
+                    });
+
+                    response.json().then(function(data) {
+                        console.log(data);
+                    });
+                })
+                .catch(function(err) {
+                    console.error(err);
+                });
+
+            -->
+            <h1 data-number="4" id="asyncawait"><span class="header-section-number">4</span> async/await</h1>
+            <p>En el apartado anterior ya introdujimos la mejora
+            sintáctica <code>async/await</code> de EcmaScript 2017. Esta
+            misma sintaxis podemos utilizarla para procesar las promesas
+            que recibimos cuando usamos la API Fetch.</p>
+            <p>El ejemplo de obtención de las provincias sería:</p>
+            <div class="sourceCode" id="cb14"><pre class="sourceCode js" style="position: relative;"><code class="sourceCode javascript"><span id="cb14-1"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">async</span> <span class="kw">function</span> <span class="fu">obtrenirProvincies</span>() {</span>
+<span id="cb14-2"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> resposta <span class="op">=</span> <span class="cf">await</span> <span class="fu">fetch</span>(<span class="st">'https://node-comarques-rest-server-production.up.railway.app/api/comarques/provincies'</span>)<span class="op">;</span></span>
+<span id="cb14-3"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> respostaJSon <span class="op">=</span> <span class="cf">await</span> resposta<span class="op">.</span><span class="fu">json</span>()<span class="op">;</span></span>
+<span id="cb14-4"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(respostaJSon)<span class="op">;</span></span>
+<span id="cb14-5"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb14-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-6"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="https://aules.edu.gva.es/fp/pluginfile.php/6996830/mod_resource/content/3/4.HTTP.html#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">obtrenirProvincies</span>()<span class="op">;</span></span></code><div class="open_grepper_editor" title="Edit &amp; Save To Grepper"></div></pre><div class="button-copy"></div></div>
+        </main>
+        
+
+        <!--- Modal images -->
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+            <!-- The Close Button -->
+            <!--span class="close">&times;</span-->
+
+            <!-- Modal Content (The Image) -->
+            <img class="modal-content" id="img01">
+
+            <!-- Modal Caption (Image Text) -->
+            <div id="caption"></div>
+        </div>
+
+        <!-- End Modal Images -->
+
+        <!-- Snackbar for copy code -->
+        <div id="snackbar">Codi copiat!</div>
+        <!-- End Snackbar -->
+
+        <script>
+            function ModalizeImages() {
+                // Script basat en https://www.w3schools.com/howto/howto_css_modal_images.asp
+                // PEr ampliar imatges en fer click
+
+                // Get the modal
+                var modal = document.getElementById("myModal");
+
+                var modalImg = document.getElementById("img01");
+                var captionText = document.getElementById("caption");
+
+                // Get the image and insert it inside the modal - use its "alt" text as a caption
+                //var img = document.getElementById("myImg");
+                document.querySelectorAll("img").forEach((img => {
+                        img.onclick = function() {
+                            modal.style.display = "block";
+                            modalImg.src = this.src;
+                            captionText.innerHTML = this.alt;
+                        }
+                    }))
+                    // Get the <span> element that closes the modal
+                var span = document.getElementsByClassName("close")[0];
+
+                // When the user clicks on <span> (x), close the modal
+                //span.onclick = function() {
+                myModal.onclick = function() {
+                    modal.style.display = "none";
+                }
+
+
+            }
+
+
+            function markItem(id) {
+                // Restaurem format de tots
+                document.querySelectorAll("#TOC a").forEach(function(item) {
+                        //item.style.fontWeight = "300";
+                        item.classList.remove("navItemSelected");
+                    })
+                    //item.style.color = "#ff0000";
+
+                // Afegim format
+                let items = document.querySelectorAll("#TOC a[href='#" + id + "']");
+                items.forEach(function(item) {
+                    //item.style.fontWeight = "bolder";
+                    item.classList.add("navItemSelected");
+                })
+
+            }
+
+            var observer = new IntersectionObserver(function(entries) {
+                // isIntersecting is true when element and viewport are overlapping
+                // isIntersecting is false when element and viewport don't overlap
+                if (entries[0].isIntersecting === true) {
+                    let id = entries[0].target.id;
+                    markItem(id);
+                }
+
+            }, {
+                threshold: [0]
+            });
+
+            window.addEventListener("load", function() {
+                document.querySelectorAll("h1, h2, h3").forEach(function(item) {
+                    observer.observe(item);
+                });
+
+                document.querySelectorAll("#TOC a").forEach(function(item) {
+                    item.addEventListener("click", function(item) {
+                        markItem(item.id);
+                    })
+                })
+
+                // Fem modals totes les imatges
+                ModalizeImages();
+            })
+
+            document.querySelector("#TOC").addEventListener("click", function(event) {
+                let toc = event.target
+                if (toc.offsetWidth > 10) {
+                    toc.classList.add("minimizedToc");
+                }
+            })
+
+            document.querySelector("#TOC").addEventListener("mouseover", function(event) {
+                let toc = event.target
+                if (toc.classList.contains("minimizedToc"))
+                    toc.classList.remove("minimizedToc");
+            })
+
+
+                        
+            /* PER COPIAR CODI */
+
+
+            // Busca tots els elements amb la classe "sourceCode"
+            var sourceCodeElements = document.querySelectorAll('div.sourceCode');
+
+            /*Afegim el botó a tots els divs */
+            // Afegir un botó per a cada element "sourceCode"
+            sourceCodeElements.forEach(function(element) {
+                console.log(element.id);
+                var button = document.createElement('div');
+                button.className = 'button-copy';
+
+                // Afegir una icona al botó (fa servir FontAwesome com a exemple)
+                //var icon = document.createElement('i');
+                //icon.className = 'fas fa-copy'; // Utilitza l'ícona "copy" de FontAwesome
+
+                // Obté l'ID de l'element actual
+                var elementId = element.id;
+
+                // Afegeix un event listener al botó per cridar la funció amb l'ID
+                button.addEventListener('click', function() {
+                    copyContent(elementId);
+                });
+
+                // Afegeix l'icona al botó i el botó just dins de l'element "sourceCode"
+                //button.appendChild(icon);
+                element.appendChild(button);
+            });
+
+
+
+            // Funció per copiar el contingut d'un element amb l'ID donat
+            function copyContent(elementId) {
+                var element = document.getElementById(elementId);
+                var textToCopy = element.innerText;
+
+                // Crea un element de text i copia el contingut
+                var textArea = document.createElement('textarea');
+                textArea.value = textToCopy;
+                document.body.appendChild(textArea);
+
+                // Selecciona i copia el text
+                textArea.select();
+                document.execCommand('copy');
+
+                // Elimina l'element de text afegit temporalment
+                document.body.removeChild(textArea);
+
+                // Notifica a l'usuari que el codi s'ha copiat
+                mostraSnackbar();
+            }
+
+            /* SNACKBAR EN COPIAR CODI */
+
+            function mostraSnackbar() {
+            // Busquem l'snackbar
+            var x = document.getElementById("snackbar");
+
+            // Li afegim la classe show
+            x.className = "show";
+
+            // I als tres segons la llevem
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+            } 
+
+
+
+
+        </script>
+    </div>
+
+
+
+<script id="dabedcdaaeejfddjbedaeiifbcecaefe" type="text/javascript" src="chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/js/jQuery.js"></script><script id="fbhaifefibeifhbaabhfffaadchaedcc" type="text/javascript" src="chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/js/jgi.js"></script><div id="beheaefbeeeificfjjjdjichegadbcda" style="color: initial; font: initial; font-palette: initial; font-synthesis: initial; forced-color-adjust: initial; position: relative; text-orientation: initial; text-rendering: initial; -webkit-font-smoothing: initial; -webkit-locale: initial; -webkit-text-orientation: initial; -webkit-writing-mode: initial; writing-mode: initial; zoom: initial; accent-color: initial; place-content: initial; place-items: initial; place-self: initial; alignment-baseline: initial; animation-composition: initial; animation: initial; app-region: initial; appearance: initial; aspect-ratio: initial; backdrop-filter: initial; backface-visibility: initial; background: initial; background-blend-mode: initial; baseline-shift: initial; baseline-source: initial; block-size: initial; border-block: initial; border: initial; border-radius: initial; border-collapse: initial; border-end-end-radius: initial; border-end-start-radius: initial; border-inline: initial; border-start-end-radius: initial; border-start-start-radius: initial; inset: initial; box-shadow: initial; box-sizing: initial; break-after: initial; break-before: initial; break-inside: initial; buffered-rendering: initial; caption-side: initial; caret-color: initial; clear: initial; clip: initial; clip-path: initial; clip-rule: initial; color-interpolation: initial; color-interpolation-filters: initial; color-rendering: initial; color-scheme: initial; columns: initial; column-fill: initial; gap: initial; column-rule: initial; column-span: initial; contain: initial; contain-intrinsic-block-size: initial; contain-intrinsic-size: initial; contain-intrinsic-inline-size: initial; container: initial; content: initial; content-visibility: initial; counter-increment: initial; counter-reset: initial; counter-set: initial; cursor: initial; cx: initial; cy: initial; d: initial; display: initial; dominant-baseline: initial; empty-cells: initial; fill: initial; fill-opacity: initial; fill-rule: initial; filter: initial; flex: initial; flex-flow: initial; float: initial; flood-color: initial; flood-opacity: initial; grid: initial; grid-area: initial; height: initial; hyphenate-character: initial; hyphenate-limit-chars: initial; hyphens: initial; image-orientation: initial; image-rendering: initial; initial-letter: initial; inline-size: initial; inset-block: initial; inset-inline: initial; isolation: initial; letter-spacing: initial; lighting-color: initial; line-break: initial; list-style: initial; margin-block: initial; margin: initial; margin-inline: initial; marker: initial; mask: initial; mask-type: initial; math-depth: initial; math-shift: initial; math-style: initial; max-block-size: initial; max-height: initial; max-inline-size: initial; max-width: initial; min-block-size: initial; min-height: initial; min-inline-size: initial; min-width: initial; mix-blend-mode: initial; object-fit: initial; object-position: initial; object-view-box: initial; offset: initial; opacity: initial; order: initial; orphans: initial; outline: initial; outline-offset: initial; overflow-anchor: initial; overflow-clip-margin: initial; overflow-wrap: initial; overflow: initial; overlay: initial; overscroll-behavior-block: initial; overscroll-behavior-inline: initial; overscroll-behavior: initial; padding-block: initial; padding: initial; padding-inline: initial; page: initial; page-orientation: initial; paint-order: initial; perspective: initial; perspective-origin: initial; pointer-events: initial; quotes: initial; r: initial; resize: initial; rotate: initial; ruby-position: initial; rx: initial; ry: initial; scale: initial; scroll-behavior: initial; scroll-margin-block: initial; scroll-margin: initial; scroll-margin-inline: initial; scroll-padding-block: initial; scroll-padding: initial; scroll-padding-inline: initial; scroll-snap-align: initial; scroll-snap-stop: initial; scroll-snap-type: initial; scroll-timeline: initial; scrollbar-color: initial; scrollbar-gutter: initial; scrollbar-width: initial; shape-image-threshold: initial; shape-margin: initial; shape-outside: initial; shape-rendering: initial; size: initial; speak: initial; stop-color: initial; stop-opacity: initial; stroke: initial; stroke-dasharray: initial; stroke-dashoffset: initial; stroke-linecap: initial; stroke-linejoin: initial; stroke-miterlimit: initial; stroke-opacity: initial; stroke-width: initial; tab-size: initial; table-layout: initial; text-align: initial; text-align-last: initial; text-anchor: initial; text-combine-upright: initial; text-decoration: initial; text-decoration-skip-ink: initial; text-emphasis: initial; text-emphasis-position: initial; text-indent: initial; text-overflow: initial; text-shadow: initial; text-size-adjust: initial; text-transform: initial; text-underline-offset: initial; text-underline-position: initial; white-space: initial; timeline-scope: initial; touch-action: initial; transform: initial; transform-box: initial; transform-origin: initial; transform-style: initial; transition: initial; translate: initial; user-select: initial; vector-effect: initial; vertical-align: initial; view-timeline: initial; view-transition-name: initial; visibility: initial; border-spacing: initial; -webkit-box-align: initial; -webkit-box-decoration-break: initial; -webkit-box-direction: initial; -webkit-box-flex: initial; -webkit-box-ordinal-group: initial; -webkit-box-orient: initial; -webkit-box-pack: initial; -webkit-box-reflect: initial; -webkit-line-break: initial; -webkit-line-clamp: initial; -webkit-mask-box-image: initial; -webkit-print-color-adjust: initial; -webkit-rtl-ordering: initial; -webkit-ruby-position: initial; -webkit-tap-highlight-color: initial; -webkit-text-combine: initial; -webkit-text-decorations-in-effect: initial; -webkit-text-fill-color: initial; -webkit-text-security: initial; -webkit-text-stroke: initial; -webkit-user-drag: initial; -webkit-user-modify: initial; widows: initial; width: initial; will-change: initial; word-break: initial; word-spacing: initial; x: initial; y: initial; z-index: 2147483647;"><div style="all: initial;"><template shadowrootmode="closed"><div class="shoptagr-inject"><div class="FontLoaderstyle__FontContainer-sc-xfvj6v-0 dWTrLf"><span class="FontLoaderstyle__FontItem-sc-xfvj6v-1 igvzJt"></span><span class="FontLoaderstyle__FontItem-sc-xfvj6v-1 igvzJr"></span><span class="FontLoaderstyle__FontItem-sc-xfvj6v-1 igvzJo"></span><span class="FontLoaderstyle__FontItem-sc-xfvj6v-1 igvzJp"></span><span class="FontLoaderstyle__FontItem-sc-xfvj6v-1 igvzJn"></span><span class="FontLoaderstyle__FontItem-sc-xfvj6v-1 igvzJl"></span><span class="FontLoaderstyle__FontItem-sc-xfvj6v-1 uAvZv"></span><span class="FontLoaderstyle__FontItem-sc-xfvj6v-1 uAvZu"></span><span class="FontLoaderstyle__FontItem-sc-xfvj6v-1 uAvZx"></span><span class="FontLoaderstyle__FontItem-sc-xfvj6v-1 uAvZw"></span></div><div><div><div class="st-app" id="st-app"><div class="InjectAppstyle__AppWidget-sc-2rfi8l-0 iVyJWt app-widget"><div class="InjectAppstyle__IframeWrap-sc-2rfi8l-1 fTPmQC"><div class="IframeAppstyle__IframeAppContainer-sc-118pdyz-0 krtaUZ shoptagr"><div class="StyledLayoutstyle__StyledLayout-sc-av8kjx-0 hAsFdH layout1"><div class="MainWindowLayoutstyle__Layout-sc-1jcvrg2-0 kauEDk"><div class="Stackstyles__StackContainer-sc-qgtqup-0 iWiZKP MainWindowHeaderstyle__HeaderWrapper-sc-jevnby-0 cOluVy"><div class="Stackstyles__StackContainer-sc-qgtqup-0 iJikCG MainWindowHeaderstyle__TitleWrapper-sc-jevnby-2 liAcne"><h4 class="ExtTypographystyles__H4-sc-1ktnqyg-3 isfeZd MainWindowHeaderstyle__Title-sc-jevnby-1 eBnAZB">Home</h4></div><div class="Stackstyles__StackContainer-sc-qgtqup-0 TVhSJ"><button data-alooma-disabled="false" data-alooma-section="header" data-alooma-source="home" data-alooma-element="notifications" class="MainWindowLinkstyle__StyledButton-sc-1lvni6x-0 iwzpvb MainWindowNotificationsLinkstyle__StyledNotificationLink-sc-1dcy3ni-0 guxove"><svg color="currentColor" width="24" height="24" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg" fill="none" class="BaseIconstyles__BaseIconRoot-sc-1uucpm5-0 gNIZkE"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.4119 10.2502V11.4876C6.4119 13.5196 5.62397 15.4724 4.21379 16.9354L3.88945 17.2719V18.4926H21.3895V17.2719L21.0651 16.9354C19.6549 15.4724 18.867 13.5196 18.867 11.4876V11.0599C18.867 8.39708 17.8148 6.82181 16.5634 5.88708C15.2706 4.92138 13.697 4.59264 12.6639 4.59264C10.0917 4.59264 8.57072 5.56614 7.67066 6.70794C6.74179 7.88628 6.41961 9.31698 6.4119 10.2502ZM6.33559 5.65552C7.57186 4.08722 9.59375 2.89264 12.6639 2.89264C13.982 2.89264 15.9348 3.29563 17.5808 4.5251C19.2682 5.78555 20.567 7.86891 20.567 11.0599V11.4876C20.567 13.0796 21.1843 14.6095 22.2891 15.7557L22.7114 16.1938C22.9539 16.4454 23.0895 16.7813 23.0895 17.1307V20.1926H2.18945V17.1307C2.18945 16.7813 2.32496 16.4454 2.56747 16.1938L2.98981 15.7557C4.0946 14.6095 4.7119 13.0796 4.7119 11.4876V10.2405C4.7212 9.00554 5.12916 7.18597 6.33559 5.65552Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M10.0233 20.1924C10.3814 21.2952 11.4173 22.0924 12.6395 22.0924C13.8616 22.0924 14.8975 21.2952 15.2556 20.1924H10.0233ZM16.2395 19.3424V18.4924H9.03945V19.3424H8.18945C8.18945 21.8001 10.1818 23.7924 12.6395 23.7924C15.0971 23.7924 17.0895 21.8001 17.0895 19.3424H16.2395Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M13.4891 0.142639V3.74264H11.7891V0.142639H13.4891Z" fill="currentColor"></path></svg></button><button data-alooma-disabled="false" data-alooma-section="header" data-alooma-source="home" data-alooma-element="my_account" class="MainWindowLinkstyle__StyledButton-sc-1lvni6x-0 iwzpvb MainWindowProfileLinkstyle__StyledProfileLink-sc-j39m08-0 bAmawX"><svg color="currentColor" width="24" height="24" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg" fill="none" class="BaseIconstyles__BaseIconRoot-sc-1uucpm5-0 gNIZkE"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.6383 2.19286C7.14305 2.19286 2.68828 6.64763 2.68828 12.1429C2.68828 17.6381 7.14305 22.0929 12.6383 22.0929C18.1335 22.0929 22.5883 17.6381 22.5883 12.1429C22.5883 6.64763 18.1335 2.19286 12.6383 2.19286ZM0.988281 12.1429C0.988281 5.70874 6.20416 0.492859 12.6383 0.492859C19.0724 0.492859 24.2883 5.70874 24.2883 12.1429C24.2883 18.577 19.0724 23.7929 12.6383 23.7929C6.20416 23.7929 0.988281 18.577 0.988281 12.1429Z" fill="currentColor"></path><path d="M10.2387 9.14287C10.2387 10.137 9.43278 10.9429 8.43867 10.9429C7.44456 10.9429 6.63867 10.137 6.63867 9.14287C6.63867 8.14875 7.44456 7.34286 8.43867 7.34286C9.43278 7.34286 10.2387 8.14875 10.2387 9.14287Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M8.51747 14.0324C9.45848 15.2852 10.9539 16.0929 12.6383 16.0929C14.3226 16.0929 15.8181 15.2852 16.7591 14.0324L18.1183 15.0534C16.8701 16.7152 14.8799 17.7929 12.6383 17.7929C10.3967 17.7929 8.40649 16.7152 7.1582 15.0534L8.51747 14.0324Z" fill="currentColor"></path><path d="M18.6391 9.14287C18.6391 10.137 17.8332 10.9429 16.8391 10.9429C15.845 10.9429 15.0391 10.137 15.0391 9.14287C15.0391 8.14875 15.845 7.34286 16.8391 7.34286C17.8332 7.34286 18.6391 8.14875 18.6391 9.14287Z" fill="currentColor"></path></svg></button><svg color="#1B1C1D" width="19" height="19" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg" fill="none" role="button" data-alooma-section="header" data-alooma-source="home" data-alooma-element="cross" class="BaseIconstyles__BaseIconRoot-sc-1uucpm5-0 hnDiSM"><path fill-rule="evenodd" clip-rule="evenodd" d="M22.2392 3.74389L4.23919 21.7439L3.03711 20.5418L21.0371 2.54181L22.2392 3.74389Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M4.23919 2.54181L22.2392 20.5418L21.0371 21.7439L3.03711 3.74389L4.23919 2.54181Z" fill="currentColor"></path></svg></div></div><div class="MainWindowLayoutstyle__MainWindowContent-sc-1jcvrg2-1 hkcbMn"><div class="Stackstyles__StackContainer-sc-qgtqup-0 cfzqAx"><div class="Stackstyles__StackContainer-sc-qgtqup-0 cfzqAx"><div class="Stackstyles__StackContainer-sc-qgtqup-0 idXJAk"><svg aria-labelledby="yyi025k-aria" role="img" width="207" height="23" viewBox="0 0 207 23"><title id="yyi025k-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#yyi025k-diff)" style="fill: url(&quot;#yyi025k-animated-diff&quot;);"></rect><defs><clippath id="yyi025k-diff"><rect x="0" y="0" rx="5" ry="5" width="207" height="23"></rect></clippath><lineargradient id="yyi025k-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg></div><div class="Stackstyles__StackContainer-sc-qgtqup-0 kSFwqO" style="overflow: hidden;"><svg aria-labelledby="biflu4u-aria" role="img" width="100" height="100" viewBox="0 0 100 100"><title id="biflu4u-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#biflu4u-diff)" style="fill: url(&quot;#biflu4u-animated-diff&quot;);"></rect><defs><clippath id="biflu4u-diff"><rect x="0" y="0" rx="10" ry="10" width="100" height="100"></rect></clippath><lineargradient id="biflu4u-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg><svg aria-labelledby="pg7r20u-aria" role="img" width="100" height="100" viewBox="0 0 100 100"><title id="pg7r20u-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#pg7r20u-diff)" style="fill: url(&quot;#pg7r20u-animated-diff&quot;);"></rect><defs><clippath id="pg7r20u-diff"><rect x="0" y="0" rx="10" ry="10" width="100" height="100"></rect></clippath><lineargradient id="pg7r20u-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg><svg aria-labelledby="vh2z0r-aria" role="img" width="100" height="100" viewBox="0 0 100 100"><title id="vh2z0r-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#vh2z0r-diff)" style="fill: url(&quot;#vh2z0r-animated-diff&quot;);"></rect><defs><clippath id="vh2z0r-diff"><rect x="0" y="0" rx="10" ry="10" width="100" height="100"></rect></clippath><lineargradient id="vh2z0r-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg><svg aria-labelledby="9cupjsn-aria" role="img" width="100" height="100" viewBox="0 0 100 100"><title id="9cupjsn-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#9cupjsn-diff)" style="fill: url(&quot;#9cupjsn-animated-diff&quot;);"></rect><defs><clippath id="9cupjsn-diff"><rect x="0" y="0" rx="10" ry="10" width="100" height="100"></rect></clippath><lineargradient id="9cupjsn-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg></div><div class="Stackstyles__StackContainer-sc-qgtqup-0 fVSsvC"><svg aria-labelledby="3kpruip-aria" role="img" width="40" height="20" viewBox="0 0 40 20"><title id="3kpruip-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#3kpruip-diff)" style="fill: url(&quot;#3kpruip-animated-diff&quot;);"></rect><defs><clippath id="3kpruip-diff"><rect x="0" y="0" rx="5" ry="5" width="40" height="20"></rect></clippath><lineargradient id="3kpruip-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg></div></div></div><div class="Stackstyles__StackContainer-sc-qgtqup-0 cfzqAx"><div class="Stackstyles__StackContainer-sc-qgtqup-0 cfzqAx"><div class="Stackstyles__StackContainer-sc-qgtqup-0 idXJAk"><svg aria-labelledby="c8d0r19-aria" role="img" width="207" height="23" viewBox="0 0 207 23"><title id="c8d0r19-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#c8d0r19-diff)" style="fill: url(&quot;#c8d0r19-animated-diff&quot;);"></rect><defs><clippath id="c8d0r19-diff"><rect x="0" y="0" rx="5" ry="5" width="207" height="23"></rect></clippath><lineargradient id="c8d0r19-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg></div><div class="Stackstyles__StackContainer-sc-qgtqup-0 hdbPH"><svg aria-labelledby="umo401c-aria" role="img" width="335" height="120" viewBox="0 0 335 120"><title id="umo401c-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#umo401c-diff)" style="fill: url(&quot;#umo401c-animated-diff&quot;);"></rect><defs><clippath id="umo401c-diff"><rect x="0" y="0" rx="10" ry="10" width="335" height="120"></rect></clippath><lineargradient id="umo401c-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg><svg aria-labelledby="ba5u4q-aria" role="img" width="335" height="120" viewBox="0 0 335 120"><title id="ba5u4q-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#ba5u4q-diff)" style="fill: url(&quot;#ba5u4q-animated-diff&quot;);"></rect><defs><clippath id="ba5u4q-diff"><rect x="0" y="0" rx="10" ry="10" width="335" height="120"></rect></clippath><lineargradient id="ba5u4q-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg><svg aria-labelledby="ho4xt5-aria" role="img" width="335" height="120" viewBox="0 0 335 120"><title id="ho4xt5-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#ho4xt5-diff)" style="fill: url(&quot;#ho4xt5-animated-diff&quot;);"></rect><defs><clippath id="ho4xt5-diff"><rect x="0" y="0" rx="10" ry="10" width="335" height="120"></rect></clippath><lineargradient id="ho4xt5-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg></div></div></div><div class="Stackstyles__StackContainer-sc-qgtqup-0 cfzqAx"><div class="Stackstyles__StackContainer-sc-qgtqup-0 cfzqAx"><div class="Stackstyles__StackContainer-sc-qgtqup-0 idXJAk"><svg aria-labelledby="3wqjqn-aria" role="img" width="207" height="23" viewBox="0 0 207 23"><title id="3wqjqn-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#3wqjqn-diff)" style="fill: url(&quot;#3wqjqn-animated-diff&quot;);"></rect><defs><clippath id="3wqjqn-diff"><rect x="0" y="0" rx="5" ry="5" width="207" height="23"></rect></clippath><lineargradient id="3wqjqn-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg></div><div class="Stackstyles__StackContainer-sc-qgtqup-0 jRtIaY" style="overflow: hidden;"><svg aria-labelledby="0z0qpui-aria" role="img" width="263" height="40" viewBox="0 0 263 40"><title id="0z0qpui-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#0z0qpui-diff)" style="fill: url(&quot;#0z0qpui-animated-diff&quot;);"></rect><defs><clippath id="0z0qpui-diff"><rect x="0" y="0" rx="5" ry="5" width="263" height="40"></rect></clippath><lineargradient id="0z0qpui-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg><svg aria-labelledby="0tz7de3-aria" role="img" width="263" height="40" viewBox="0 0 263 40"><title id="0tz7de3-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#0tz7de3-diff)" style="fill: url(&quot;#0tz7de3-animated-diff&quot;);"></rect><defs><clippath id="0tz7de3-diff"><rect x="0" y="0" rx="5" ry="5" width="263" height="40"></rect></clippath><lineargradient id="0tz7de3-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg></div><div class="Stackstyles__StackContainer-sc-qgtqup-0 fVSsvC"><svg aria-labelledby="ziy96ol-aria" role="img" width="40" height="20" viewBox="0 0 40 20"><title id="ziy96ol-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#ziy96ol-diff)" style="fill: url(&quot;#ziy96ol-animated-diff&quot;);"></rect><defs><clippath id="ziy96ol-diff"><rect x="0" y="0" rx="5" ry="5" width="40" height="20"></rect></clippath><lineargradient id="ziy96ol-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg></div></div></div><div class="Stackstyles__StackContainer-sc-qgtqup-0 cfzqAx"><div class="Stackstyles__StackContainer-sc-qgtqup-0 cfzqAx"><div class="Stackstyles__StackContainer-sc-qgtqup-0 idXJAk"><svg aria-labelledby="alozypm-aria" role="img" width="207" height="23" viewBox="0 0 207 23"><title id="alozypm-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#alozypm-diff)" style="fill: url(&quot;#alozypm-animated-diff&quot;);"></rect><defs><clippath id="alozypm-diff"><rect x="0" y="0" rx="5" ry="5" width="207" height="23"></rect></clippath><lineargradient id="alozypm-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg></div><div class="Stackstyles__StackContainer-sc-qgtqup-0 dCVlWL" style="overflow: hidden;"><div class="Stackstyles__StackContainer-sc-qgtqup-0 ecTviN"><svg aria-labelledby="2n7wtvv-aria" role="img" width="200" height="187" viewBox="0 0 200 187"><title id="2n7wtvv-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#2n7wtvv-diff)" style="fill: url(&quot;#2n7wtvv-animated-diff&quot;);"></rect><defs><clippath id="2n7wtvv-diff"><rect x="0" y="0" rx="10" ry="10" width="200" height="187"></rect></clippath><lineargradient id="2n7wtvv-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg><div class="Stackstyles__StackContainer-sc-qgtqup-0 iFFOpu"><svg aria-labelledby="um3qz4i-aria" role="img" width="100" height="21" viewBox="0 0 100 21"><title id="um3qz4i-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#um3qz4i-diff)" style="fill: url(&quot;#um3qz4i-animated-diff&quot;);"></rect><defs><clippath id="um3qz4i-diff"><rect x="0" y="0" rx="5" ry="5" width="100" height="21"></rect></clippath><lineargradient id="um3qz4i-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg><svg aria-labelledby="6k0lfz4-aria" role="img" width="200" height="40" viewBox="0 0 200 40"><title id="6k0lfz4-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#6k0lfz4-diff)" style="fill: url(&quot;#6k0lfz4-animated-diff&quot;);"></rect><defs><clippath id="6k0lfz4-diff"><rect x="0" y="0" rx="5" ry="5" width="200" height="40"></rect></clippath><lineargradient id="6k0lfz4-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg></div></div><div class="Stackstyles__StackContainer-sc-qgtqup-0 ecTviN"><svg aria-labelledby="9hmo89g-aria" role="img" width="200" height="187" viewBox="0 0 200 187"><title id="9hmo89g-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#9hmo89g-diff)" style="fill: url(&quot;#9hmo89g-animated-diff&quot;);"></rect><defs><clippath id="9hmo89g-diff"><rect x="0" y="0" rx="10" ry="10" width="200" height="187"></rect></clippath><lineargradient id="9hmo89g-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg><div class="Stackstyles__StackContainer-sc-qgtqup-0 iFFOpu"><svg aria-labelledby="ulevka-aria" role="img" width="100" height="21" viewBox="0 0 100 21"><title id="ulevka-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#ulevka-diff)" style="fill: url(&quot;#ulevka-animated-diff&quot;);"></rect><defs><clippath id="ulevka-diff"><rect x="0" y="0" rx="5" ry="5" width="100" height="21"></rect></clippath><lineargradient id="ulevka-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg><svg aria-labelledby="7okqs0f-aria" role="img" width="200" height="40" viewBox="0 0 200 40"><title id="7okqs0f-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#7okqs0f-diff)" style="fill: url(&quot;#7okqs0f-animated-diff&quot;);"></rect><defs><clippath id="7okqs0f-diff"><rect x="0" y="0" rx="5" ry="5" width="200" height="40"></rect></clippath><lineargradient id="7okqs0f-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg></div></div><div class="Stackstyles__StackContainer-sc-qgtqup-0 ecTviN"><svg aria-labelledby="zde00vs-aria" role="img" width="200" height="187" viewBox="0 0 200 187"><title id="zde00vs-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#zde00vs-diff)" style="fill: url(&quot;#zde00vs-animated-diff&quot;);"></rect><defs><clippath id="zde00vs-diff"><rect x="0" y="0" rx="10" ry="10" width="200" height="187"></rect></clippath><lineargradient id="zde00vs-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg><div class="Stackstyles__StackContainer-sc-qgtqup-0 iFFOpu"><svg aria-labelledby="n7mwgne-aria" role="img" width="100" height="21" viewBox="0 0 100 21"><title id="n7mwgne-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#n7mwgne-diff)" style="fill: url(&quot;#n7mwgne-animated-diff&quot;);"></rect><defs><clippath id="n7mwgne-diff"><rect x="0" y="0" rx="5" ry="5" width="100" height="21"></rect></clippath><lineargradient id="n7mwgne-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg><svg aria-labelledby="kmluibe-aria" role="img" width="200" height="40" viewBox="0 0 200 40"><title id="kmluibe-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#kmluibe-diff)" style="fill: url(&quot;#kmluibe-animated-diff&quot;);"></rect><defs><clippath id="kmluibe-diff"><rect x="0" y="0" rx="5" ry="5" width="200" height="40"></rect></clippath><lineargradient id="kmluibe-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg></div></div></div><div class="Stackstyles__StackContainer-sc-qgtqup-0 fVSsvC"><svg aria-labelledby="jrlka8-aria" role="img" width="40" height="20" viewBox="0 0 40 20"><title id="jrlka8-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#jrlka8-diff)" style="fill: url(&quot;#jrlka8-animated-diff&quot;);"></rect><defs><clippath id="jrlka8-diff"><rect x="0" y="0" rx="5" ry="5" width="40" height="20"></rect></clippath><lineargradient id="jrlka8-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg></div></div></div><div class="Stackstyles__StackContainer-sc-qgtqup-0 cfzqAx"><div class="Stackstyles__StackContainer-sc-qgtqup-0 cfzqAx"><div class="Stackstyles__StackContainer-sc-qgtqup-0 idXJAk"><svg aria-labelledby="r3jy34e-aria" role="img" width="207" height="23" viewBox="0 0 207 23"><title id="r3jy34e-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#r3jy34e-diff)" style="fill: url(&quot;#r3jy34e-animated-diff&quot;);"></rect><defs><clippath id="r3jy34e-diff"><rect x="0" y="0" rx="5" ry="5" width="207" height="23"></rect></clippath><lineargradient id="r3jy34e-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg></div><div class="Stackstyles__StackContainer-sc-qgtqup-0 jRtIaY" style="overflow: hidden;"><div class="Stackstyles__StackContainer-sc-qgtqup-0 cKXhCN"><svg aria-labelledby="vu802y-aria" role="img" width="255" height="170" viewBox="0 0 255 170"><title id="vu802y-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#vu802y-diff)" style="fill: url(&quot;#vu802y-animated-diff&quot;);"></rect><defs><clippath id="vu802y-diff"><rect x="0" y="0" rx="10" ry="10" width="255" height="170"></rect></clippath><lineargradient id="vu802y-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg><svg aria-labelledby="0sggubi-aria" role="img" width="162" height="21" viewBox="0 0 162 21"><title id="0sggubi-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#0sggubi-diff)" style="fill: url(&quot;#0sggubi-animated-diff&quot;);"></rect><defs><clippath id="0sggubi-diff"><rect x="0" y="0" rx="5" ry="5" width="162" height="21"></rect></clippath><lineargradient id="0sggubi-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg></div><div class="Stackstyles__StackContainer-sc-qgtqup-0 cKXhCN"><svg aria-labelledby="xsh32hg-aria" role="img" width="255" height="170" viewBox="0 0 255 170"><title id="xsh32hg-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#xsh32hg-diff)" style="fill: url(&quot;#xsh32hg-animated-diff&quot;);"></rect><defs><clippath id="xsh32hg-diff"><rect x="0" y="0" rx="10" ry="10" width="255" height="170"></rect></clippath><lineargradient id="xsh32hg-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg><svg aria-labelledby="68fn4tt-aria" role="img" width="162" height="21" viewBox="0 0 162 21"><title id="68fn4tt-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#68fn4tt-diff)" style="fill: url(&quot;#68fn4tt-animated-diff&quot;);"></rect><defs><clippath id="68fn4tt-diff"><rect x="0" y="0" rx="5" ry="5" width="162" height="21"></rect></clippath><lineargradient id="68fn4tt-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg></div></div><div class="Stackstyles__StackContainer-sc-qgtqup-0 fVSsvC"><svg aria-labelledby="hmwk5c-aria" role="img" width="40" height="20" viewBox="0 0 40 20"><title id="hmwk5c-aria">Loading...</title><rect role="presentation" x="0" y="0" width="100%" height="100%" clip-path="url(#hmwk5c-diff)" style="fill: url(&quot;#hmwk5c-animated-diff&quot;);"></rect><defs><clippath id="hmwk5c-diff"><rect x="0" y="0" rx="5" ry="5" width="40" height="20"></rect></clippath><lineargradient id="hmwk5c-animated-diff"><stop offset="0%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="#eee" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="#DDD8C2" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></lineargradient></defs></svg></div></div></div></div></div><div class="AlertsPortalstyle__AlertsWrapper-sc-ulhwai-0 qwRPZ"><div class="AlertsPortalstyle__AlertsContainer-sc-ulhwai-1 hOiApn"></div></div><div class="Stackstyles__StackContainer-sc-qgtqup-0 crGMfD MainWindowFooterstyle__FooterWrapper-sc-1p4w2zh-0 gDKwHV"><button data-alooma-disabled="false" data-alooma-section="footer" data-alooma-source="home" data-alooma-element="home" id="home-tab" class="MainWindowLinkstyle__StyledButton-sc-1lvni6x-0 iwzpvb MainWindowNavButtonstyle__StyledRouteLink-sc-1k4ey7y-0 dHTJWo"><svg color="currentColor" width="20" height="20" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg" fill="none" class="BaseIconstyles__BaseIconRoot-sc-1uucpm5-0 fskGsU"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.08867 7.34262V20.2426C5.08867 20.6016 5.37969 20.8926 5.73867 20.8926H19.5387C19.8977 20.8926 20.1887 20.6016 20.1887 20.2426V7.34262H21.8887V20.2426C21.8887 21.5405 20.8365 22.5926 19.5387 22.5926H5.73867C4.4408 22.5926 3.38867 21.5405 3.38867 20.2426V7.34262H5.08867Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M12.6387 1.4541L14.4844 2.93072C17.3666 5.23646 20.9477 6.49263 24.6387 6.49263V8.19263C20.5617 8.19263 16.6061 6.80508 13.4225 4.2582L12.6387 3.63116L11.8549 4.2582C8.67128 6.80508 4.71567 8.19263 0.638672 8.19263V6.49263C4.32965 6.49263 7.91073 5.23646 10.7929 2.93072L12.6387 1.4541Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M9.38867 14.3426C9.38867 13.3209 10.2169 12.4926 11.2387 12.4926H14.0387C15.0604 12.4926 15.8887 13.3209 15.8887 14.3426V21.7426H14.1887V14.3426C14.1887 14.2598 14.1215 14.1926 14.0387 14.1926H11.2387C11.1558 14.1926 11.0887 14.2598 11.0887 14.3426V21.7426H9.38867V14.3426Z" fill="currentColor"></path></svg><div class="ExtTypographystyles__LabelSmall-sc-1ktnqyg-13 eoQmXG">Home</div></button><button data-alooma-disabled="false" data-alooma-section="footer" data-alooma-source="home" data-alooma-element="coupons" id="coupons-tab" class="MainWindowLinkstyle__StyledButton-sc-1lvni6x-0 iwzpvb MainWindowNavButtonstyle__StyledRouteLink-sc-1k4ey7y-0 Lzwes"><svg color="currentColor" width="20" height="20" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg" fill="none" class="BaseIconstyles__BaseIconRoot-sc-1uucpm5-0 fskGsU"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.10156 3.88962H21.3266C22.9006 3.88962 24.1766 5.16561 24.1766 6.73962V17.7771C24.1766 19.3511 22.9006 20.6271 21.3266 20.6271H1.10156V15.2658L1.95156 15.2658C3.38209 15.2658 4.65736 13.9858 4.65736 12.2584C4.65736 10.5309 3.38209 9.25093 1.95156 9.25092L1.10156 9.25092V3.88962ZM2.80156 5.58962V7.63726C4.86907 8.06445 6.35736 10.0213 6.35736 12.2584C6.35736 14.4954 4.86907 16.4523 2.80156 16.8795V18.9271H21.3266C21.9617 18.9271 22.4766 18.4122 22.4766 17.7771V6.73962C22.4766 6.10449 21.9617 5.58962 21.3266 5.58962H2.80156Z" fill="currentColor"></path><path d="M19.5016 12.2584C19.5016 13.18 18.7544 13.9271 17.8328 13.9271C16.9112 13.9271 16.1641 13.18 16.1641 12.2584C16.1641 11.3368 16.9112 10.5896 17.8328 10.5896C18.7544 10.5896 19.5016 11.3368 19.5016 12.2584Z" fill="currentColor"></path></svg><div class="ExtTypographystyles__LabelSmall-sc-1ktnqyg-13 eoQmXG">Coupons</div></button><button data-alooma-disabled="false" data-alooma-section="footer" data-alooma-source="home" data-alooma-element="save" id="save-tab" class="MainWindowLinkstyle__StyledButton-sc-1lvni6x-0 iwzpvb MainWindowNavButtonstyle__StyledRouteLink-sc-1k4ey7y-0 Lzwes"><svg color="currentColor" width="20" height="20" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg" fill="none" class="BaseIconstyles__BaseIconRoot-sc-1uucpm5-0 fskGsU"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.6383 2.19286C7.14305 2.19286 2.68828 6.64763 2.68828 12.1429C2.68828 17.6381 7.14305 22.0929 12.6383 22.0929C18.1335 22.0929 22.5883 17.6381 22.5883 12.1429C22.5883 6.64763 18.1335 2.19286 12.6383 2.19286ZM0.988281 12.1429C0.988281 5.70874 6.20416 0.492859 12.6383 0.492859C19.0724 0.492859 24.2883 5.70874 24.2883 12.1429C24.2883 18.577 19.0724 23.7929 12.6383 23.7929C6.20416 23.7929 0.988281 18.577 0.988281 12.1429Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M13.4891 6.49265V17.7926H11.7891V6.49265H13.4891Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M6.98828 11.2925H18.2883V12.9925H6.98828V11.2925Z" fill="currentColor"></path></svg><div class="ExtTypographystyles__LabelSmall-sc-1ktnqyg-13 eoQmXG">Add</div></button><button data-alooma-disabled="false" data-alooma-section="footer" data-alooma-source="home" data-alooma-element="items" id="items-tab" class="MainWindowLinkstyle__StyledButton-sc-1lvni6x-0 iwzpvb MainWindowNavButtonstyle__StyledRouteLink-sc-1k4ey7y-0 Lzwes"><svg color="currentColor" width="20" height="20" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg" fill="none" class="BaseIconstyles__BaseIconRoot-sc-1uucpm5-0 fskGsU"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.37956 15.9444L12.7059 20.4879L21.5739 11.326C23.3941 9.44553 23.3941 6.37443 21.5739 4.49396C19.7921 2.65307 16.9301 2.64365 15.1371 4.47162L12.6219 7.03587L10.0863 4.41615C8.31365 2.58478 5.46334 2.58478 3.69072 4.41615C1.87672 6.29028 1.89001 9.35479 3.71884 11.2118L8.37956 15.9444ZM12.6959 22.9426L7.15828 17.1271L2.50759 12.4047C0.0307958 9.88967 0.0135542 5.77086 2.4692 3.23382C4.90991 0.712221 8.86708 0.71222 11.3078 3.23382L12.63 4.59989L13.9235 3.28121C16.3862 0.770366 20.3489 0.783956 22.7955 3.31164C25.2536 5.85123 25.2536 9.96873 22.7955 12.5083L12.6959 22.9426Z" fill="currentColor"></path></svg><div class="ExtTypographystyles__LabelSmall-sc-1ktnqyg-13 eoQmXG">Saved</div></button></div></div></div></div></div><div class="InjectAppstyle__AppWidget-sc-2rfi8l-0 iVyJWt app-widget"><div class="InjectAppstyle__IframeWrap-sc-2rfi8l-1 fTPmQC"></div></div></div></div></div><style data-styled="active" data-styled-version="5.3.9">.dWTrLf{visibility:hidden;}.igvzJt{font-family:roboto;font-weight:100;}.igvzJr{font-family:roboto;font-weight:300;}.igvzJo{font-family:roboto;font-weight:400;}.igvzJp{font-family:roboto;font-weight:500;}.igvzJn{font-family:roboto;font-weight:700;}.igvzJl{font-family:roboto;font-weight:900;}.uAvZv{font-family:rebond;font-weight:400;}.uAvZu{font-family:rebond;font-weight:500;}.uAvZx{font-family:rebond;font-weight:600;}.uAvZw{font-family:rebond;font-weight:700;}.gNIZkE{vertical-align:middle;min-width:24px;min-height:24px;max-width:24px;max-height:24px;}.hnDiSM{vertical-align:middle;min-width:19px;min-height:19px;max-width:19px;max-height:19px;}.fskGsU{vertical-align:middle;min-width:20px;min-height:20px;max-width:20px;max-height:20px;}.isfeZd{font-weight:500;font-size:20px;line-height:23px;font-family:'Rebond';font-style:normal;text-align:inherit;margin-bottom:0px;margin-left:0px;margin-right:0px;margin-top:0px;color:currentColor;-webkit-text-decoration:none;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}.eoQmXG{font-weight:400;font-size:12px;line-height:16px;font-family:'Roboto';font-style:normal;text-align:inherit;margin-bottom:0px;margin-left:0px;margin-right:0px;margin-top:0px;color:currentColor;-webkit-text-decoration:none;text-decoration:none;}.iWiZKP{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:8px;margin-bottom:0px;margin-left:0px;margin-right:0px;margin-top:0px;}.iJikCG{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-box-pack:start;-webkit-justify-content:flex-start;-ms-flex-pack:start;justify-content:flex-start;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:8px;margin-bottom:0px;margin-left:0px;margin-right:0px;margin-top:0px;}.TVhSJ{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-box-pack:end;-webkit-justify-content:flex-end;-ms-flex-pack:end;justify-content:flex-end;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:15px;margin-bottom:0px;margin-left:0px;margin-right:0px;margin-top:0px;}.cfzqAx{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;-webkit-align-items:flex-start;-webkit-box-align:flex-start;-ms-flex-align:flex-start;align-items:flex-start;gap:0;width:100%;margin-bottom:0px;margin-left:0px;margin-right:0px;margin-top:0px;}.idXJAk{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-box-pack:start;-webkit-justify-content:flex-start;-ms-flex-pack:start;justify-content:flex-start;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:0;margin-bottom:20px;margin-left:0px;margin-right:0px;margin-top:0px;}.kSFwqO{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:right;-ms-flex-direction:right;flex-direction:right;-webkit-box-pack:start;-webkit-justify-content:flex-start;-ms-flex-pack:start;justify-content:flex-start;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:8px;margin-bottom:20px;margin-left:0px;margin-right:0px;margin-top:0px;}.fVSsvC{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-box-pack:start;-webkit-justify-content:flex-start;-ms-flex-pack:start;justify-content:flex-start;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:0;margin-bottom:44px;margin-left:0px;margin-right:0px;margin-top:0px;}.hdbPH{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:12px;width:100%;margin-bottom:44px;margin-left:0px;margin-right:0px;margin-top:0px;}.jRtIaY{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:right;-ms-flex-direction:right;flex-direction:right;-webkit-box-pack:start;-webkit-justify-content:flex-start;-ms-flex-pack:start;justify-content:flex-start;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:20px;margin-bottom:20px;margin-left:0px;margin-right:0px;margin-top:0px;}.dCVlWL{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:right;-ms-flex-direction:right;flex-direction:right;-webkit-box-pack:start;-webkit-justify-content:flex-start;-ms-flex-pack:start;justify-content:flex-start;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:14px;margin-bottom:20px;margin-left:0px;margin-right:0px;margin-top:0px;}.ecTviN{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;-webkit-align-items:flex-start;-webkit-box-align:flex-start;-ms-flex-align:flex-start;align-items:flex-start;gap:12px;margin-bottom:0px;margin-left:0px;margin-right:0px;margin-top:0px;}.iFFOpu{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;-webkit-align-items:flex-start;-webkit-box-align:flex-start;-ms-flex-align:flex-start;align-items:flex-start;gap:4px;margin-bottom:0px;margin-left:0px;margin-right:0px;margin-top:0px;}.cKXhCN{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:20px;margin-bottom:0px;margin-left:0px;margin-right:0px;margin-top:0px;}.crGMfD{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:0;margin-bottom:0px;margin-left:0px;margin-right:0px;margin-top:0px;}.qwRPZ{position:absolute;bottom:78px;width:100%;z-index:1000;max-height:60px;}.hOiApn{position:relative;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column-reverse;-ms-flex-direction:column-reverse;flex-direction:column-reverse;}.iwzpvb{cursor:pointer;padding:0;border:none;outline:none;background:transparent;}.dHTJWo{width:25%;color:#FFB514;background:#000000;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;gap:5px;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;height:100%;}.Lzwes{width:25%;color:#808178;background:#000000;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;gap:5px;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;height:100%;}.bAmawX{color:#1B1C1D;-webkit-transition:color 0.15s ease-in-out;transition:color 0.15s ease-in-out;}.bAmawX:hover{color:#E4D6F4;}.guxove{color:#1B1C1D;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;-webkit-transition:color 0.15s ease-in-out;transition:color 0.15s ease-in-out;}.guxove:hover{color:#E4D6F4;}.gDKwHV{position:absolute;bottom:0;left:0;width:100%;height:68px;background:#000000;z-index:1000;}.cOluVy{height:68px;min-height:68px;line-height:68px;background:#FBFBF8;color:#1B1C1D;padding:0 12px;border-bottom:1px solid #ECE9DD;}.eBnAZB::first-letter{text-transform:uppercase;}.liAcne{overflow:hidden;white-space:nowrap;}.hkcbMn{overflow-y:auto;overflow-x:hidden;-webkit-scrollbar-width:none;-moz-scrollbar-width:none;-ms-scrollbar-width:none;scrollbar-width:none;position:relative;height:calc(650px - 68px - 68px);padding:20px;}.hAsFdH{background:#FBFBF8;color:#1B1C1D;padding-bottom:68px;height:inherit;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;}.krtaUZ{width:375px;height:650px;position:relative;background:#FBFBF8;border-radius:10px;overflow:hidden;}.iVyJWt{z-index:1000000004;position:fixed;top:35px;float:none;width:auto;right:0px;}@media (max-height:685px){.iVyJWt{top:5px;}}.fTPmQC{display:none;opacity:0;vertical-align:top;border-radius:10px;}</style></div><style type="text/css">@font-face{font-family:"Roboto";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-100.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-100.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-100.ttf) format("truetype");font-style:normal;font-weight:100;font-display:swap}@font-face{font-family:"Roboto";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-300.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-300.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-300.ttf) format("truetype");font-style:normal;font-weight:300;font-display:swap}@font-face{font-family:"Roboto";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-400.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-400.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-400.ttf) format("truetype");font-style:normal;font-weight:400;font-display:swap}@font-face{font-family:"Roboto";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-500.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-500.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-500.ttf) format("truetype");font-style:normal;font-weight:500;font-display:swap}@font-face{font-family:"Roboto";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-700.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-700.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-700.ttf) format("truetype");font-style:normal;font-weight:700;font-display:swap}@font-face{font-family:"Roboto";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-900.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-900.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Roboto/roboto-900.ttf) format("truetype");font-style:normal;font-weight:900;font-display:swap}@font-face{font-family:"Rebond";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-400.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-400.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-400.ttf) format("truetype");font-style:normal;font-weight:400;font-display:swap}@font-face{font-family:"Rebond";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-500.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-500.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-500.ttf) format("truetype");font-style:normal;font-weight:500;font-display:swap}@font-face{font-family:"Rebond";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-600.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-600.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-600.ttf) format("truetype");font-style:normal;font-weight:600;font-display:swap}@font-face{font-family:"Rebond";src:url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-700.woff) format("woff"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-700.woff2) format("woff2"),url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Rebond/rebond-700.ttf) format("truetype");font-style:normal;font-weight:700;font-display:swap}*::-webkit-scrollbar{width:5px;background:rgba(0,0,0,.05)}*::-webkit-scrollbar:hover{width:25px;background:rgba(0,0,0,.1)}*::-webkit-scrollbar-track{border-radius:50%}*::-webkit-scrollbar-thumb{border-radius:5px;background:rgba(0,0,0,.1)}*::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.2)}a:active,a:focus,button:active,button:focus,textarea:active,textarea:focus,input:active,input:focus{outline:none}a{text-decoration:none}a:hover,a:focus,a:active{text-decoration:none}input::-moz-placeholder,textarea::-moz-placeholder{color:inherit;opacity:inherit}input::-ms-input-placeholder,textarea::-ms-input-placeholder{color:inherit;opacity:inherit}input::-moz-placeholder,textarea::-moz-placeholder{color:inherit;opacity:inherit}[role=button]{cursor:pointer}*,*::before,*::after{box-sizing:border-box}.shoptagr-inject{direction:initial;box-sizing:border-box;text-align:left;font-family:Roboto,sans-serif;font-size:16px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.react-select div[class*=-control]>div[class*=css-]:first-child{padding:0}</style></template></div></div></body><app-content ng-version="16.0.0"><template shadowrootmode="open"><!----><app-similar-tools _nghost-ng-c4214649903=""><!----><!----><!----></app-similar-tools><!----><!----><style>[_nghost-ng-c4214649903]{font-family:Open Sans,sans-serif;color:#121212}</style></template></app-content></html>
