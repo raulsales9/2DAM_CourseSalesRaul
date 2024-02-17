@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListCell?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<!--fx:root type="javafx.scene.control.ListCell" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"-->
+<fx:root type="javafx.scene.control.ListCell" xmlns:fx="http://javafx.com/fxml/1">
+    <graphic>
+        <!--VBox-->
+        <!--children>
+                <Label fx:id="labelId" /-->
+        <VBox fx:id="bubbleContainer">
+            <VBox fx:id="bubble" maxWidth="300.0" prefWidth="200.0" style="-fx-background-color: #ffffff; -fx-border-color: #dddddd; -fx-border-radius:3">
+                <children>
+                    <Label fx:id="user" textFill="#8d8d8d">
+                        <font>
+                            <Font name="Ubuntu" size="10.0" />
+                        </font>
+                    </Label>
+                    <Label fx:id="content" />
+                </children>
+            </VBox>
+        </VBox>
+        <!--/children>
+        </VBox-->
+    </graphic>
+</fx:root>

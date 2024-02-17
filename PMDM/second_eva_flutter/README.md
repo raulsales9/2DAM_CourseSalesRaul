@@ -1,0 +1,1 @@
+No me carrega el clima ni en provider, ni en bloc. Estic intentant revisar, si hi han canvis te avisarè.

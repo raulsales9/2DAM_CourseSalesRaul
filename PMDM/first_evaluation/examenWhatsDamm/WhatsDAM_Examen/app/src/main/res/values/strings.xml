@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">WhatsDAM</string>
+    <string name="nickname">Nickname</string>
+    <string name="serverAddress">1.1.1.1</string>
+    <string name="Connect">Connect</string>
+    <string name="repy">Reply</string>
+</resources>
